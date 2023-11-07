@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -24,4 +24,50 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+} */
+
+input {
+  @apply px-2 py-1 bg-white rounded w-40; 
 }
+button {
+  @apply cursor-pointer rounded p-2 ; 
+}
+
+
+@layer utilities{
+  .bg-DAD1C5{
+    background-color: #DAD1C5;
+  }
+  .co-5B6E60{
+    color:#5B6E60
+  }
+  .co-434E4E{
+    color:#434E4E;
+  }
+  .co-646564{
+    color:#646564
+  }
+  .bg-F5F2ED{
+    background-color:#F5F2ED;
+  }
+  .bg-739A65{
+    background-color: #739A65;
+  }
+  .bg-5B6E60{
+    background-color: #5B6E60;
+  }
+  .bg-005264{
+    background-color: #005264;
+  }
+  .bg-6697A2{
+    background-color: #6697A2;
+  }
+ 
+  .w-1296 {
+    width: 1296px;
+  }
+  .w-350 {
+    width: 350px;
+  }
+}
+
