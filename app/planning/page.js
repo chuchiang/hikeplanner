@@ -1,18 +1,20 @@
+//page.js
+
 "use client"
 import '../globals.css'
-import ClientMap from '../components/mapa'
-import {Map} from '../components/mapContainer'
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 
 
-
-
+const DynamicMap = dynamic(() => import('../components/baseMap'), {
+  ssr: false
+});
 
 function RouteMap() {
   return (
     <>
-      <div className='bg-739A65 mt-10'><Map/><ClientMap/></div>
+      <div className='bg-739A65 mt-10'><DynamicMap /></div>
     </>
   )
 }
@@ -50,7 +52,7 @@ function Route() {
           </div>
         </div>
         <div className='pb-2'>
-        <div className='flex space-x-5'>
+          <div className='flex space-x-5'>
             <div className='w-7 h-7 bg-739A65 text-xl text-white flex items-center justify-center rounded-lg '>1</div>
             <input className=' w-14'></input>
             <input className='w-52'></input>
@@ -81,7 +83,7 @@ function Route() {
           </div>
         </div>
         <div className='pb-2'>
-        <div className='flex space-x-5'>
+          <div className='flex space-x-5'>
             <div className='w-7 h-7 bg-739A65 text-xl text-white flex items-center justify-center rounded-lg '>1</div>
             <input className=' w-14'></input>
             <input className='w-52'></input>
@@ -108,8 +110,8 @@ export default function Home() {
     // </main>
     <div className='flex justify-center'>
       <Route />
-     
-      <RouteMap/>
+
+      <RouteMap />
     </div>
   )
 }
