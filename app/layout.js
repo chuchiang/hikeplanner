@@ -1,15 +1,7 @@
 import Link from 'next/link'
-import { Rammetto_One, Noto_Sans_TC } from 'next/font/google'
 import './globals.css'
 
-const rammettoOne = Rammetto_One({
-  subsets: ['latin'],
-  weight: '400'
-})
 
-const notoSansTC = Noto_Sans_TC({
-  subsets: ['latin'],
-})
 
 
 function Header() {
@@ -19,7 +11,7 @@ function Header() {
         <Link href='/'>
           <div className='flex items-center'>
             <img className='w-12' src='/logo.png' alt='logo'></img>
-            <h3 className={`${rammettoOne.className} text-2xl co-434E4E`}>HikePlanner</h3>
+            <h2 className='text-2xl co-41588C'>HikePlanner</h2>
           </div>
         </Link>
         <div className='flex space-x-4 items-center'>
@@ -41,7 +33,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={notoSansTC.className}>
+      <body>
         <Header />
         {children}
       </body>

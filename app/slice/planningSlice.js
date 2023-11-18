@@ -1,0 +1,37 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+export const planningSlice = createSlice({
+    name: 'planning',
+    initialState: {//初始
+        locations: [] // 初始化 locations 為空數組
+    },//初始
+
+    reducers: {//狀態管理器，所有方法都要寫在這裡
+
+        //增加景點
+        addLocation: (state, action) => {
+            console.log(state, action)
+            state.locations.push(action.payload);
+        },
+
+        //增加特定index的路徑取得
+        updataLocationDirection: (state, action) => {
+            const { index, direction,isLoading } = action.payload; // 從action.payload 解構
+            console.log(action.payload);
+            if (index >= 0 && index < state.locations.length) {//檢查index 使否有效
+                state.locations[index] = { ...state.locations[index], direction,isLoading }
+            }
+        }
+        
+    }
+});
+
+
+//定義的REDUCERS可以使用ACTION匯出(具名匯出)
+//會帶入REDUCER 定義的名稱
+export const { addLocation, updataLocationDirection } = planningSlice.actions;
+
+
+
+
+export default planningSlice.reducer;

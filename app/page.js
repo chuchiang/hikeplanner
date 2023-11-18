@@ -1,17 +1,13 @@
 "use client" 
-import { Rammetto_One } from 'next/font/google'
 import './globals.css'
 
-const rammettoOne = Rammetto_One({
-  subsets: ['latin'],
-  weight: '400'
-})
+
 
 function Banner() {
   return (<div className='relative items-center'>
     <img src='/mountain.jpg' alt='mountain banner'></img>
     <div className='text-gray-50 absolute top-1/2 transform -translate-y-1/2 left-1/2 transform -translate-x-1/2'>
-      <h2 className={`${rammettoOne.className}  text-6xl pb-3 opacity-75`}>HikePlanner</h2>
+      <h2 className='text-6xl pb-3 opacity-75'>HikePlanner</h2>
       <h3 className='text-center opacity-75 font-medium text-xl'>讓山徑由你設計</h3 >
     </div>
    

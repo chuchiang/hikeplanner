@@ -1,7 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&family=Rammetto+One&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+body{
+  font-family: 'Noto Sans TC', sans-serif;
+}
+h2{
+  font-family: 'Rammetto One', sans-serif;
+}
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -26,6 +35,9 @@ body {
     rgb(var(--background-start-rgb));
 } */
 
+
+
+
 input {
   @apply px-2 py-1 bg-white rounded w-40; 
 }
@@ -35,6 +47,9 @@ button {
 
 
 @layer utilities{
+  .co-41588C{
+    color:#41588C;
+  }
   .bg-DAD1C5{
     background-color: #DAD1C5;
   }
@@ -46,6 +61,9 @@ button {
   }
   .co-646564{
     color:#646564
+  }
+  .co-005264{
+    color: #005264;
   }
   .bg-F5F2ED{
     background-color:#F5F2ED;
@@ -66,8 +84,16 @@ button {
   .w-1296 {
     width: 1296px;
   }
-  .w-350 {
-    width: 350px;
+  .w-380 {
+    width: 380px;
   }
+  .h-70 {
+    height: 700px;
+  }
+  .custom-button:focus {
+    box-shadow: none !important;
+  }
+  
+  
 }
 
