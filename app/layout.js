@@ -7,7 +7,7 @@ import './globals.css'
 function Header() {
   return (
     <div className='bg-DAD1C5'>
-      <div className='mx-auto w-1296 flex justify-between'>
+      <div className='mx-auto w-1200 flex justify-between'>
         <Link href='/'>
           <div className='flex items-center'>
             <img className='w-12' src='/logo.png' alt='logo'></img>
