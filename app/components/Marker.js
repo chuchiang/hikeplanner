@@ -12,13 +12,12 @@ import fetchLocation from '../api/fetchLocation';
 export const Markers = () => {
 
     const getsearchLocation = useSelector((state) => state.geoSearch.searchLocation);//取得地圖經緯度(click 或 搜尋)
-    const [locations, setLocations] = useState([]);//處理陣列資料
     const [legend, setLegend] = useState(null);//地圖控制區
     const [attraction, setAttraction] = useState('');
     const dispatch = useDispatch();
     const map = useMap();
 
-    const planning = useSelector((state) => {
+    const planningMarker = useSelector((state) => {
         return state.planning.locations
     })
 
@@ -98,14 +97,13 @@ export const Markers = () => {
 
         if ( getsearchLocation && getsearchLocation.length > 0) {
             const newMark = {
-                id: locations.length + 1,
+                id: planningMarker.length + 1,
                 lat: getsearchLocation[0].lat,
                 lng: getsearchLocation[0].lng,
                 name: attraction.name,
                 region: attraction.region
             };
             dispatch(addLocation(newMark)); // redux 資料給 planning
-            setLocations([...locations, newMark]); // 存mark座標
             dispatch(clearSearchLocations());// 清除 geoSearch 的 經緯度
         }
     };
@@ -113,7 +111,7 @@ export const Markers = () => {
 
     return (
         <>
-            {locations.map((position) => (
+            {planningMarker.map((position) => (
                 <Marker key={position.id} position={[position.lat, position.lng]}>
                     <Popup>
                         經度:{position.lng}<br />緯度:{position.lat}

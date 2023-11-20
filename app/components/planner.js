@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
-import { updataLocationDirection } from '../slice/planningSlice'
+import { updataLocationDirection, deleteLocation } from '../slice/planningSlice'
 
 
 
@@ -24,8 +24,9 @@ function Route() {
 
     const [plannerDate, setPlannerDate] = useState(new Date().toISOString().split('T')[0]);
     const [plannerTime, setPlannerTime] = useState("08:00")
-    const [planner, setPlanner] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [deletedIndex, setDeletedIndex] = useState(null);
+
     const dispatch = useDispatch();
     const previousLengthRef = useRef();
 
@@ -46,16 +47,20 @@ function Route() {
     }
 
 
-    //放入planner 陣列
-    useEffect(() => {
-        setPlanner(addNewLocation)
-    }, [addNewLocation])
 
 
-    //刪除地點
-    const handleDeleteLocation = (event) =>{
 
-    }
+    // //刪除地點
+    // const handleDeleteLocation = (index) => {
+    //     dispatch(deleteLocation(index))
+    //     console.log(addNewLocation)
+    // }
+
+    const handleDeleteLocation = (index) => () => {
+        dispatch(deleteLocation(index));
+        setDeletedIndex(index)
+        console.log(addNewLocation)
+    };
 
 
     // for (let i = 0; i < addNewLocation.length - 1; i++) {
@@ -65,145 +70,178 @@ function Route() {
     //     const coordinatesEnd = [end.lng, end.lat];
     //     }
 
+    const previousLocationsRef = useRef();
+
 
     useEffect(() => {
+        //判斷是否執行fetch
+        const openRouteServiceApi = '5b3ce3597851110001cf62484e6df37ed2944841aeaa8f432926647b';
+        const lastIndex = addNewLocation.length - 1;//最後的位置
+        // 如果planning 資料大於2 就去fetch
 
-        const fetchData = async () => {
-            
-           //判斷是否執行fetch
-            const openRouteServiceApi = '5b3ce3597851110001cf62484e6df37ed2944841aeaa8f432926647b';
-            const lastIndex = addNewLocation.length-1;//最後的位置
-            // 如果planning 資料大於2 就去fetch
-            if (lastIndex >= 1) {
-                    dispatch(updataLocationDirection({ index: lastIndex-1, isLoading: true }));
+        const fetchData = async (coordinatesStar, coordinatesEnd) => {
+            // ... 現有的 fetchData 邏輯 ...
+            const url = 'https://api.openrouteservice.org/v2/directions/foot-hiking/geojson';
+            const body = JSON.stringify({ "coordinates": [coordinatesStar, coordinatesEnd], "elevation": "true", "extra_info": ["steepness"] })
+            try {
 
-                    const star = addNewLocation[lastIndex-1];
-                    const end = addNewLocation[lastIndex];
-                    const coordinatesStar = [star.lng, star.lat];
-                    const coordinatesEnd = [end.lng, end.lat];
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                        'Content-Type': 'application/json',
+                        'Authorization': openRouteServiceApi
+                    },
+                    body: body
+                });
 
-                    const url = 'https://api.openrouteservice.org/v2/directions/foot-hiking/geojson';
-                    const body = JSON.stringify({ "coordinates": [coordinatesStar, coordinatesEnd], "elevation": "true", "extra_info": ["steepness"] })
-                    try {
-
-                        const response = await fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-                                'Content-Type': 'application/json',
-                                'Authorization': openRouteServiceApi
-                            },
-                            body: body
-                        });
-
-                        const data = await response.json();
-                        if (data.error) {
-                            // 如果返回的數據包含錯誤信息，也拋出錯誤
-                            const errorInfo = {
-                                code: data.error.code,
-                                message: data.error.message
-                            }
-                            throw errorInfo;
-                        } else {
-                            const distance = data.features[0].properties.segments[0].distance;//距離
-                            const kilometers = (distance / 1000).toFixed(1);;
-                            const ascent = Math.round(data.features[0].properties.segments[0].ascent);//上升
-                            const descent = Math.round(data.features[0].properties.segments[0].descent);//下將
-                            const path = data.features[0].geometry.coordinates;
-                            const ascentTimePerHour = 300; // 每上升 300 米增加 1 小時的行走時間
-
-                            // 計算總共需要的行走時間（以小時為單位）
-                            let totalTime = distance / 5000; // 每 5 公里（約3.1英里）增加 1 小時的基本行走時間
-                            totalTime += ascent / ascentTimePerHour; // 加上爬升需要的額外時間
-                            const hours = Math.floor(totalTime); // 獲得完整小時數
-                            const minutes = Math.round((totalTime - hours) * 60); // 將小數部分轉換為分鐘
-                            const duration = totalTime.toFixed(2);//期間
-
-
-                            // console.log('Total Walking Time:', totalTime.toFixed(2), 'hours');
-
-                            const newDirection = {
-                                path: path, kilometers: kilometers, duration: duration, ascent: ascent, descent: descent, hours: hours, minutes: minutes
-
-                            }
-
-                            console.log(newDirection);
-                            // 放入特定index path
-                            dispatch(updataLocationDirection({ index: lastIndex-1, direction: newDirection , isLoading: false }))
-                            //fetch 晚成顯示
-                            
-                        }
-
-
-
-                    } catch (error) {
-                        console.error('Error:', error);
-                        // 判斷錯誤是來自網絡問題還是 API 響應
-                        if (error.code = "2010") {
-                            Swal.fire({
-                                title: '錯誤! 無法找到可用路徑',
-                                text: `Error: ${error.message}`,
-                                icon: 'error',
-                                confirmButtonText: '好的',
-                                confirmButtonColor: '#5B6E60',
-                                customClass: {
-                                    confirmButton: 'custom-button',
-                                    title: 'text-2xl',
-                                    text: 'text-base'
-                                },
-                            });
-                        } else if (error.code = "2004") {
-                            Swal.fire({
-                                title: '錯誤! 超出距離搜尋範圍',
-                                text: `Error: ${error.message}`,
-                                icon: 'error',
-                                confirmButtonText: '好的',
-                                confirmButtonColor: '#5B6E60',
-
-                                customClass: {
-                                    confirmButton: 'custom-button',
-                                    title: 'text-2xl',
-                                    text: 'text-base'
-                                },
-                            });
-
-                        } else {
-                            Swal.fire({
-                                title: '錯誤!',
-                                text: `Error: ${error.message}`,
-                                icon: 'error',
-                                confirmButtonText: '好的',
-                                confirmButtonColor: '#5B6E60',
-                                customClass: {
-                                    confirmButton: 'custom-button',
-                                    title: 'text-2xl',
-                                    text: 'text-base'
-                                },
-                            });
-
-
-                        }
-                        
+                const data = await response.json();
+                if (data.error) {
+                    // 如果返回的數據包含錯誤信息，也拋出錯誤
+                    const errorInfo = {
+                        code: data.error.code,
+                        message: data.error.message
                     }
-                
+                    throw errorInfo;
+                } else {
+                    const distance = data.features[0].properties.segments[0].distance;//距離
+                    const kilometers = (distance / 1000).toFixed(1);;
+                    const rawAscent = data.features[0].properties.segments[0].ascent;//上升
+                    const ascent = isNaN(rawAscent) ? 0 : Math.round(rawAscent);//上升
+                    const rawDescent = data.features[0].properties.segments[0].descent;
+                    const descent = isNaN(rawDescent) ? 0 : Math.round(rawDescent)
+                    const path = data.features[0].geometry.coordinates;
+                    const ascentTimePerHour = 300; // 每上升 300 米增加 1 小時的行走時間
+
+                    // 計算總共需要的行走時間（以小時為單位）
+                    let totalTime = distance / 5000; // 每 5 公里（約3.1英里）增加 1 小時的基本行走時間
+                    totalTime += ascent / ascentTimePerHour; // 加上爬升需要的額外時間
+                    const hours = Math.floor(totalTime); // 獲得完整小時數
+                    const minutes = Math.round((totalTime - hours) * 60); // 將小數部分轉換為分鐘
+                    const duration = totalTime.toFixed(2);//期間
+
+
+                    // console.log('Total Walking Time:', totalTime.toFixed(2), 'hours');
+
+                    const newDirection = {
+                        path: path, kilometers: kilometers, duration: duration, ascent: ascent, descent: descent, hours: hours, minutes: minutes
+
+                    }
+
+                    console.log(newDirection);
+                    // 放入特定index path
+                    dispatch(updataLocationDirection({ index: lastIndex - 1, direction: newDirection, isLoading: false }))
+                    //fetch 晚成顯示
+
+                }
+
+
+
+            } catch (error) {
+                console.error('Error:', error);
+                // 判斷錯誤是來自網絡問題還是 API 響應
+                if (error.code = "2010") {
+                    Swal.fire({
+                        title: '錯誤! 無法找到可用路徑',
+                        text: `Error: ${error.message}`,
+                        icon: 'error',
+                        confirmButtonText: '好的',
+                        confirmButtonColor: '#5B6E60',
+                        customClass: {
+                            confirmButton: 'custom-button',
+                            title: 'text-2xl',
+                            text: 'text-base'
+                        },
+                    });
+                } else if (error.code = "2004") {
+                    Swal.fire({
+                        title: '錯誤! 超出距離搜尋範圍',
+                        text: `Error: ${error.message}`,
+                        icon: 'error',
+                        confirmButtonText: '好的',
+                        confirmButtonColor: '#5B6E60',
+
+                        customClass: {
+                            confirmButton: 'custom-button',
+                            title: 'text-2xl',
+                            text: 'text-base'
+                        },
+                    });
+
+                } else {
+                    Swal.fire({
+                        title: '錯誤!',
+                        text: `Error: ${error.message}`,
+                        icon: 'error',
+                        confirmButtonText: '好的',
+                        confirmButtonColor: '#5B6E60',
+                        customClass: {
+                            confirmButton: 'custom-button',
+                            title: 'text-2xl',
+                            text: 'text-base'
+                        },
+                    });
+
+
+                }
 
             }
         };
- 
 
-        //藉由計算長度看要不要 fetchData
-        if (previousLengthRef.current !== addNewLocation.length) {
-            // 新位置被添加，進行操作
-            console.log("addNewLocation.a" + addNewLocation.length)
-            console.log("previousLengthRef.a" + previousLengthRef.current)
-            fetchData();
+
+        if (addNewLocation.length > 1) {
+            if (addNewLocation.length > previousLocationsRef.current.length) {
+
+                // 發生添加操作
+                dispatch(updataLocationDirection({ index: lastIndex - 1, isLoading: true }));
+                const star = addNewLocation[lastIndex - 1];
+                const end = addNewLocation[lastIndex];
+                const coordinatesStar = [star.lng, star.lat];
+                const coordinatesEnd = [end.lng, end.lat];
+                fetchData(coordinatesStar, coordinatesEnd);
+
+            } else if (addNewLocation.length < previousLocationsRef.current.length) {
+                // // 發生刪除操作
+                // // 重新計算被影響的路徑
+               
+                if (addNewLocation.length < previousLocationsRef.current.length) {
+                    // 發生刪除操作
+                    let star, end;
+            
+                    if (deletedIndex === 0) {
+                        // 刪除第一個點
+                        if (addNewLocation.length > 1) {
+                            dispatch(updataLocationDirection({ index: deletedIndex, isLoading: true }));
+                            star = addNewLocation[deletedIndex];
+                            end = addNewLocation[deletedIndex + 1];
+                        }
+                    } else if (deletedIndex === previousLocationsRef.current.length - 1) {
+                        // 刪除最後一個點
+                        dispatch(updataLocationDirection({ index: deletedIndex - 2, isLoading: true }));
+                        star = addNewLocation[deletedIndex - 2];
+                        end = addNewLocation[deletedIndex - 1];
+                    } else {
+                        // 刪除中間的點
+                        dispatch(updataLocationDirection({ index: deletedIndex - 1, isLoading: true }));
+                        star = addNewLocation[deletedIndex - 1];
+                        end = addNewLocation[deletedIndex];
+                    }
+            
+                    if (star && end) {
+                        const coordinatesStar = [star.lng, star.lat];
+                        const coordinatesEnd = [end.lng, end.lat];
+                        fetchData(coordinatesStar, coordinatesEnd);
+                    }
+                }
+            }
         }
-        // 更新 ref 為當前數組長度 
-        previousLengthRef.current = addNewLocation.length;
-        console.log("addNewLocation.b" + addNewLocation.length)
-        console.log("previousLengthRef.b" + previousLengthRef.current)
 
-    }, [addNewLocation.length])
+        // 更新參考以追蹤當前陣列狀態
+        previousLocationsRef.current = addNewLocation;
+    }, [addNewLocation.length]);
+
+
+
 
 
 
@@ -238,7 +276,7 @@ function Route() {
                         /></p>
 
 
-                    {planner.map((location, index) => {
+                    {addNewLocation.map((location, index) => {
                         // 計算每個地點的預計到達時間
                         let locationTime = plannerTime;
 
@@ -260,8 +298,8 @@ function Route() {
                                     type='text'
                                     defaultValue={`${addNewLocation[index]?.name}/${addNewLocation[index]?.region}`}
                                 />
-                                <button className='w-8 p-0' id={index} ><img src='/delete.png' alt='mountain banner' ></img></button>
-
+                                <button className='w-8 p-0' id={index} onClick={handleDeleteLocation(index)}><img src='/delete.png' alt='mountain banner' ></img></button>
+                                
                             </div>
 
 
@@ -309,3 +347,148 @@ function Route() {
 
 
 export default Route
+
+
+
+// useEffect(() => {
+
+
+
+//     const fetchData = async () => {
+
+//         //判斷是否執行fetch
+//         const openRouteServiceApi = '5b3ce3597851110001cf62484e6df37ed2944841aeaa8f432926647b';
+//         const lastIndex = addNewLocation.length - 1;//最後的位置
+//         // 如果planning 資料大於2 就去fetch
+//         if (lastIndex >= 1) {
+//             dispatch(updataLocationDirection({ index: lastIndex - 1, isLoading: true }));
+
+//             const star = addNewLocation[lastIndex - 1];
+//             const end = addNewLocation[lastIndex];
+//             const coordinatesStar = [star.lng, star.lat];
+//             const coordinatesEnd = [end.lng, end.lat];
+
+//             const url = 'https://api.openrouteservice.org/v2/directions/foot-hiking/geojson';
+//             const body = JSON.stringify({ "coordinates": [coordinatesStar, coordinatesEnd], "elevation": "true", "extra_info": ["steepness"] })
+//             try {
+
+//                 const response = await fetch(url, {
+//                     method: 'POST',
+//                     headers: {
+//                         'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+//                         'Content-Type': 'application/json',
+//                         'Authorization': openRouteServiceApi
+//                     },
+//                     body: body
+//                 });
+
+//                 const data = await response.json();
+//                 if (data.error) {
+//                     // 如果返回的數據包含錯誤信息，也拋出錯誤
+//                     const errorInfo = {
+//                         code: data.error.code,
+//                         message: data.error.message
+//                     }
+//                     throw errorInfo;
+//                 } else {
+//                     const distance = data.features[0].properties.segments[0].distance;//距離
+//                     const kilometers = (distance / 1000).toFixed(1);;
+//                     const rawAscent = data.features[0].properties.segments[0].ascent;//上升
+//                     const ascent = isNaN(rawAscent) ? 0 : Math.round(rawAscent);//上升
+//                     const rawDescent = data.features[0].properties.segments[0].descent;
+//                     const descent = isNaN(rawDescent) ? 0 : Math.round(rawDescent)
+//                     const path = data.features[0].geometry.coordinates;
+//                     const ascentTimePerHour = 300; // 每上升 300 米增加 1 小時的行走時間
+
+//                     // 計算總共需要的行走時間（以小時為單位）
+//                     let totalTime = distance / 5000; // 每 5 公里（約3.1英里）增加 1 小時的基本行走時間
+//                     totalTime += ascent / ascentTimePerHour; // 加上爬升需要的額外時間
+//                     const hours = Math.floor(totalTime); // 獲得完整小時數
+//                     const minutes = Math.round((totalTime - hours) * 60); // 將小數部分轉換為分鐘
+//                     const duration = totalTime.toFixed(2);//期間
+
+
+//                     // console.log('Total Walking Time:', totalTime.toFixed(2), 'hours');
+
+//                     const newDirection = {
+//                         path: path, kilometers: kilometers, duration: duration, ascent: ascent, descent: descent, hours: hours, minutes: minutes
+
+//                     }
+
+//                     console.log(newDirection);
+//                     // 放入特定index path
+//                     dispatch(updataLocationDirection({ index: lastIndex - 1, direction: newDirection, isLoading: false }))
+//                     //fetch 晚成顯示
+
+//                 }
+
+
+
+//             } catch (error) {
+//                 console.error('Error:', error);
+//                 // 判斷錯誤是來自網絡問題還是 API 響應
+//                 if (error.code = "2010") {
+//                     Swal.fire({
+//                         title: '錯誤! 無法找到可用路徑',
+//                         text: `Error: ${error.message}`,
+//                         icon: 'error',
+//                         confirmButtonText: '好的',
+//                         confirmButtonColor: '#5B6E60',
+//                         customClass: {
+//                             confirmButton: 'custom-button',
+//                             title: 'text-2xl',
+//                             text: 'text-base'
+//                         },
+//                     });
+//                 } else if (error.code = "2004") {
+//                     Swal.fire({
+//                         title: '錯誤! 超出距離搜尋範圍',
+//                         text: `Error: ${error.message}`,
+//                         icon: 'error',
+//                         confirmButtonText: '好的',
+//                         confirmButtonColor: '#5B6E60',
+
+//                         customClass: {
+//                             confirmButton: 'custom-button',
+//                             title: 'text-2xl',
+//                             text: 'text-base'
+//                         },
+//                     });
+
+//                 } else {
+//                     Swal.fire({
+//                         title: '錯誤!',
+//                         text: `Error: ${error.message}`,
+//                         icon: 'error',
+//                         confirmButtonText: '好的',
+//                         confirmButtonColor: '#5B6E60',
+//                         customClass: {
+//                             confirmButton: 'custom-button',
+//                             title: 'text-2xl',
+//                             text: 'text-base'
+//                         },
+//                     });
+
+
+//                 }
+
+//             }
+
+
+//         }
+//     };
+
+
+//     //藉由計算長度看要不要 fetchData
+//     if (previousLengthRef.current !== addNewLocation.length) {
+//         // 新位置被添加，進行操作
+//         console.log("addNewLocation.a" + addNewLocation.length)
+//         console.log("previousLengthRef.a" + previousLengthRef.current)
+//         fetchData();
+//     }
+//     // 更新 ref 為當前數組長度
+//     previousLengthRef.current = addNewLocation.length;
+//     console.log("addNewLocation.b" + addNewLocation.length)
+//     console.log("previousLengthRef.b" + previousLengthRef.current)
+
+// }, [addNewLocation.length])

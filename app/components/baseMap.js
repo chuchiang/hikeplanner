@@ -39,7 +39,7 @@ const leafletMap = () => {
             console.log(newLocation)
             dispatch(clearSearchLocations());// 清除 geoSearch 的 經緯度
             dispatch(geoSearchAdd(newLocation)); // 更新 geoSearch 的 經緯度
-        };
+    };
 
 
 
