@@ -5,7 +5,7 @@ import { Marker, useMapEvents, useMap, Popup } from 'react-leaflet';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addLocation } from '../slice/planningSlice';
-import { geoSearchAdd,clearSearchLocations } from '../slice/mapSlice';
+import { geoSearchAdd, clearSearchLocations } from '../slice/mapSlice';
 import fetchLocation from '../api/fetchLocation';
 
 
@@ -18,8 +18,9 @@ export const Markers = () => {
     const map = useMap();
 
     const planningMarker = useSelector((state) => {
-        return state.planning.locations
+        return state.planning.days
     })
+
 
 
     //經緯度去搜尋地點名稱
@@ -33,15 +34,15 @@ export const Markers = () => {
                 }
             }
         };
-        fetchData(); 
-    }, [getsearchLocation]); 
+        fetchData();
+    }, [getsearchLocation]);
 
 
     // 建立圖例控制項
     useEffect(() => {
-       
+
         const legendControl = L.control({ position: 'bottomright' });
-        
+
 
         // 設定圖例內容
         legendControl.onAdd = function () {
@@ -95,7 +96,7 @@ export const Markers = () => {
     window.handleAddMarker = (e) => {
         L.DomEvent.stopPropagation(e); // 阻止 Leaflet 事件傳播
 
-        if ( getsearchLocation && getsearchLocation.length > 0) {
+        if (getsearchLocation && getsearchLocation.length > 0) {
             const newMark = {
                 id: planningMarker.length + 1,
                 lat: getsearchLocation[0].lat,
@@ -111,17 +112,20 @@ export const Markers = () => {
 
     return (
         <>
-            {planningMarker.map((position) => (
-                <Marker key={position.id} position={[position.lat, position.lng]}>
-                    <Popup>
-                        經度:{position.lng}<br />緯度:{position.lat}
-                    </Popup>
+            {planningMarker.map(day =>
+                day.locations.map((location, index) => (
+                    <Marker key={`${day.date}-${index}`} position={[location.lat, location.lng]}>
+                        <Popup>
+                            經度:{location.lng}<br />緯度:{location.lat}
+                        </Popup>
 
-                </Marker>
-            ))}
+                    </Marker>
+                ))
 
-            {getsearchLocation && getsearchLocation.length > 0 &&(
-                <Marker   position={[getsearchLocation[0].lat, getsearchLocation[0].lng]} interactive={false}>
+            )}
+
+            {getsearchLocation && getsearchLocation.length > 0 && (
+                <Marker position={[getsearchLocation[0].lat, getsearchLocation[0].lng]} interactive={false}>
                     <div
                         className=' bg-white rounded-lg'
                         style={{ zIndex: 997 }}

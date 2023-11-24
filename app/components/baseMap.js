@@ -8,7 +8,7 @@ import { Markers } from './Marker'
 import SearchControl from './mapSearch'
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import { useSelector, useDispatch } from 'react-redux';
-import { geoSearchAdd,clearSearchLocations } from '../slice/mapSlice';
+import { geoSearchAdd, clearSearchLocations } from '../slice/mapSlice';
 
 
 const leafletMap = () => {
@@ -22,24 +22,57 @@ const leafletMap = () => {
 
     //最短路徑資料取得
     const addPath = useSelector((state) => {
-        console.log(state.planning.locations)
-        return state.planning.locations
+        console.log(state.planning.days)
+        return state.planning.days
     })
-    //最短路徑資料整理
-    const combinedPath = addPath.flatMap(location => 
-        location.direction && location.direction.path ? location.direction.path : []
+
+    //最短路徑資料整理，遍裡每個day對像的locations模組，並取得direction.path
+    // const combinedPath = addPath.flatMap(day =>
+    //     day.locations.flatMap(attraction =>
+    //         attraction.direction && attraction.direction.path ? attraction.direction.path : [] // 如果存在返回 path，否則返回空
+    //     ),
+    // );
+    // console.log(combinedPath)
+
+    // 最短路徑資料整理
+    const combinedPath = addPath.flatMap(day =>
+        day.locations.flatMap((attraction, index) => {
+            if (attraction.direction && index < day.locations.length - 1) {
+                return [attraction.direction.path];
+            }
+            return [];
+        }),
     );
-    
+
+    // // 计算 combinedPath，这将在 addPath 更改时自动重新执行
+    // const combinedPath = useMemo(() => {
+    //     return addPath.flatMap(day =>
+    //         day.locations.flatMap((attraction, index) => {
+    //             if (attraction.direction && index < day.locations.length - 1) {
+    //                 // 生成路径段
+    //                 return [attraction.direction.path];
+    //             }
+    //             return [];
+    //         }),
+    //     );
+    // }, [addPath]); // 依赖项为 addPath，当 addPath 改变时重新计算
+
+
+
+
+
+
     //搜尋事件資料
     const handleSearchResult = (result) => {
-            const newLocation = {
-                lat: result[0],
-                lng: result[1]
-            };
-            console.log(newLocation)
-            dispatch(clearSearchLocations());// 清除 geoSearch 的 經緯度
-            dispatch(geoSearchAdd(newLocation)); // 更新 geoSearch 的 經緯度
+        const newLocation = {
+            lat: result[0],
+            lng: result[1]
+        };
+        console.log(newLocation)
+        dispatch(clearSearchLocations());// 清除 geoSearch 的 經緯度
+        dispatch(geoSearchAdd(newLocation)); // 更新 geoSearch 的 經緯度
     };
+
 
 
 
@@ -62,10 +95,10 @@ const leafletMap = () => {
                     keepResult={true}
                     onResult={(result) => {
                         console.log(result);
-                        const coordinates = [result.location.y,result.location.x]; //搜尋結果
+                        const coordinates = [result.location.y, result.location.x]; //搜尋結果
                         handleSearchResult(coordinates);
-                      }}
-                    
+                    }}
+
                 />
                 <LayersControl position='topright'>
                     <LayersControl.BaseLayer checked name="開放街圖">
@@ -90,12 +123,19 @@ const leafletMap = () => {
                     <Markers />
                 </LayersControl>
                 {/* 最短路徑 */}
-                {combinedPath.length > 0 && (<Polyline
+                {/* {combinedPath.length > 0 && (<Polyline
                     pathOptions={{ color: 'red' }}
                     positions={combinedPath.map(coord => [coord[1], coord[0]])}
 
                 />
-                )}
+                )} */}
+                {combinedPath.map((segment, index) => (
+                    <Polyline
+                        key={index}
+                        pathOptions={{ color: 'red' }}
+                        positions={segment.map(coord => [coord[1], coord[0]])}
+                    />
+                ))}
             </MapContainer>
         </div>
     )
@@ -105,4 +145,3 @@ export default leafletMap
 
 
 
-    
