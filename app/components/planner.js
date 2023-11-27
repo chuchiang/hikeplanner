@@ -22,7 +22,6 @@ function addTime(startTime, hoursToAdd, minutesToAdd) {
 
 function Route() {
 
-    const [plannerTime, setPlannerTime] = useState("08:00")
     const [isLoading, setIsLoading] = useState(true);
     const [deletedIndex, setDeletedIndex] = useState(null);
 

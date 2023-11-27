@@ -1,10 +1,50 @@
+"use client"
 import Link from 'next/link'
 import './globals.css'
+import LoginForm from './components/login'
+import RegisterForm from './components/register'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setUser, clearUser, selectorCurrentUser } from './slice/authSlice'
+import { store } from './store';//剛剛的store 要引入
+import { Provider } from 'react-redux';//Provider 要引入
+import { auth } from "./api/firebase/firebase"; // 確保這裡是正確的導入
+
+import LogOut from './components/logout'
+
+function Header({ onLoginClick }) {
+
+  const currentUser = useSelector(selectorCurrentUser);
+  const dispatch = useDispatch();
 
 
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        // 用戶已登入，更新 Redux store
+        dispatch(setUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        }));
+      } else {
+        // 用戶未登入，清除 store 中的用戶信息
+        dispatch(clearUser());
+      }
+    });
 
-function Header() {
+    // 清理監聽器
+    return () => unsubscribe();
+  }, [dispatch ]);
+
+  useEffect(() => {
+    // 這裡您可以根據 currentUser 的變化進行一些操作
+    // 例如，打印日誌、發送追蹤事件等
+    console.log('Current user changed:', currentUser);
+  }, [currentUser]);
+
+
   return (
     <div className='bg-DAD1C5'>
       <div className='mx-auto w-1200 flex justify-between'>
@@ -17,26 +57,64 @@ function Header() {
         <div className='flex space-x-4 items-center'>
           <Link href='/planning' className='co-5B6E60 font-medium'>規劃助手</Link>
           <Link href='/planning' className='co-5B6E60 font-medium'>行程分享</Link>
-          <Link href='/planning' className='co-5B6E60 font-medium'>會員中心</Link>
+          {currentUser ? (
+            <div>
+              <Link className='co-5B6E60 font-medium' href="/member-center">會員中心</Link>
+              <LogOut/>
+              {/* <button className='co-5B6E60 font-medium' onClick={handleLogout}>登出</button> */}
+            </div>
+          ) : (
+            <div>
+              <button className='co-5B6E60 font-medium' onClick={onLoginClick}>登入與註冊</button>
+            </div>
+          )}
         </div>
       </div>
     </div>)
 }
 
 
-export const metadata = {
-  title: 'HikePlanner',
-  description: 'Your exclusive hiking route planning platform',
-}
-
-
 export default function RootLayout({ children }) {
+
+  const [showLogin, setShowLogin] = useState(false);
+  const [isLoginMode, setIsLoginMode] = useState(true); // 新增用於追踪登入或註冊模式的狀態
+
+  const handleLoginClick = () => {
+    setShowLogin(true);
+    setIsLoginMode(true); // 點擊登入時，設置為登入模式
+  };
+
+  const handleRegisterClick = () => {
+    setShowLogin(true);
+    setIsLoginMode(false); // 點擊註冊時，設置為註冊模式
+  };
+
+
   return (
     <html lang="en">
-      <body>
-        <Header />
+      <body>      <Provider store={store}>
+
+        <Header onLoginClick={handleLoginClick} />
         {children}
+        {/* 登入覆蓋整個頁面*/}
+        {showLogin && (
+          isLoginMode ?
+            <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
+            <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
+        )}
+      </Provider>
+
       </body>
     </html>
   )
 }
+
+
+
+
+
+// 頁面標題
+// export const metadata = {
+//   title: 'HikePlanner',
+//   description: 'Your exclusive hiking route planning platform',
+// }

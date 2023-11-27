@@ -8,6 +8,7 @@ import Route from "../components/planner"
 import '../globals.css'
 import { store } from '../store';//剛剛的store 要引入
 import { Provider } from 'react-redux';//Provider 要引入
+import ElevationChart from '../components/lineChart';
 
 
 const DynamicMap = dynamic(() => import('../components/baseMap'), {
@@ -32,11 +33,14 @@ export default function Home() {
   return (
     // <main className="flex bg-white min-h-screen flex-col items-center justify-between p-24 ">
     // </main>
-    <div className='flex justify-center mb-10'>
-          <Provider store={store}>
-            <Route />
-            <RouteMap />
-          </Provider>
-    </div>
+    <>
+      <Provider store={store}>
+        <div className='flex justify-center mb-10'>
+          <Route />
+          <RouteMap />
+        </div>
+        <ElevationChart />
+      </Provider>
+    </>
   )
 }

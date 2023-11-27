@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400&family=Rammetto+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+TC:wght@400&family=Rammetto+One&display=swap');
 
 
 @tailwind base;
@@ -39,7 +39,7 @@ body {
 
 
 input {
-  @apply px-2 py-1 bg-white rounded w-40; 
+  @apply outline-none px-2 py-1 bg-white rounded w-40; 
 }
 button {
   @apply cursor-pointer rounded p-2 ; 
