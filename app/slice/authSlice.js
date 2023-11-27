@@ -16,6 +16,7 @@ export const authSlice = createSlice({
             console.log(state, action)
             state.currentUser = action.payload;
         },
+        
         //刪除會員狀態
         clearUser: (state, action) => {
             console.log(state, action)

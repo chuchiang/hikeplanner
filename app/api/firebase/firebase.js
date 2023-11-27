@@ -4,21 +4,10 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 
-import {
-    getAuth,
-    signInWithRedirect,
-    signInWithPopup,
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword, // import **信箱/登入** sign-in method
-  } from 'firebase/auth';
+import {getAuth,} from 'firebase/auth';
 
-
-import {
-    getFirestore, // 用來創造一個 firestore 實例
-    doc, // 用來創造一個 document 實例
-    getDoc, // 取得 document data
-    setDoc // 設定 document data
-  } from 'firebase/firestore';
+ // 用來創造一個 firestore 實例
+import {getFirestore,} from 'firebase/firestore';
 
 
 // Your web app's Firebase configuration

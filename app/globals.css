@@ -84,11 +84,14 @@ button {
   .w-1200 {
     width: 1200px;
   }
+  .w-800 {
+    width: 800px;
+  }
   .w-380 {
     width: 360px;
   }
-  .h-70 {
-    height: 700px;
+  .h-72 {
+    height: 720px;
   }
   .custom-button:focus {
     box-shadow: none !important;

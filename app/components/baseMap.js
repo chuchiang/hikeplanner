@@ -81,7 +81,7 @@ const leafletMap = () => {
             {/* <SearchLocation />
             <GetMyLocation /> */}
 
-            <MapContainer style={{ width: '800px', height: '760px' }} center={coord} zoom={13} scrollWheelZoom={false} >
+            <MapContainer style={{ width: '800px', height: '720px' }} center={coord} zoom={13} scrollWheelZoom={false} >
                 <SearchControl
                     provider={prov}
                     showMarker={false}

@@ -17,12 +17,13 @@ const LoginForm = ({ onClose, handleRegisterClick }) => {
     });
 
 
-    //登入
+    //Google登入
     const logGoogleUser = async () => {
         try {
             const response = await signInWithGooglePopup();
-            // router.push('/planning');
             console.log(response);
+            onClose();
+
         }
         catch (error) {
             const errorCode = error.code;
@@ -41,7 +42,6 @@ const LoginForm = ({ onClose, handleRegisterClick }) => {
         console.log(data)
     }
 
-    // const router = useRouter();
 
     const submit = async (e) => {
         e.preventDefault();
@@ -49,9 +49,7 @@ const LoginForm = ({ onClose, handleRegisterClick }) => {
         try {
             const user = await firebaseLogin(data);
             console.log(user.user)
-            window.location.href='/'
-           
-            // router.push('/planning');
+            onClose();
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -60,7 +58,7 @@ const LoginForm = ({ onClose, handleRegisterClick }) => {
             setError("信箱或密碼輸入錯誤");
         }
     }
-    
+
 
 
 
