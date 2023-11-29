@@ -26,13 +26,6 @@ const leafletMap = () => {
         return state.planning.days
     })
 
-    //最短路徑資料整理，遍裡每個day對像的locations模組，並取得direction.path
-    // const combinedPath = addPath.flatMap(day =>
-    //     day.locations.flatMap(attraction =>
-    //         attraction.direction && attraction.direction.path ? attraction.direction.path : [] // 如果存在返回 path，否則返回空
-    //     ),
-    // );
-    // console.log(combinedPath)
 
     // 最短路徑資料整理
     const combinedPath = addPath.flatMap(day =>
@@ -43,23 +36,6 @@ const leafletMap = () => {
             return [];
         }),
     );
-
-    // // 计算 combinedPath，这将在 addPath 更改时自动重新执行
-    // const combinedPath = useMemo(() => {
-    //     return addPath.flatMap(day =>
-    //         day.locations.flatMap((attraction, index) => {
-    //             if (attraction.direction && index < day.locations.length - 1) {
-    //                 // 生成路径段
-    //                 return [attraction.direction.path];
-    //             }
-    //             return [];
-    //         }),
-    //     );
-    // }, [addPath]); // 依赖项为 addPath，当 addPath 改变时重新计算
-
-
-
-
 
 
     //搜尋事件資料

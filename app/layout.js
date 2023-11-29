@@ -25,7 +25,6 @@ function Header({ onLoginClick }) {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
-          
         }));
       } else {
         // 用戶未登入，清除 store 中的用戶信息
@@ -49,7 +48,7 @@ function Header({ onLoginClick }) {
         </Link>
         <div className='flex space-x-4 items-center'>
           <Link href='/planning' className='co-5B6E60 font-medium'>規劃助手</Link>
-          <Link href='/planning' className='co-5B6E60 font-medium'>行程分享</Link>
+          <Link href='/share' className='co-5B6E60 font-medium'>行程分享</Link>
           {currentUser ? (
             <>
               <Link href='/member' className='co-5B6E60 font-medium'>會員中心</Link>

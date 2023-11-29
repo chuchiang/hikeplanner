@@ -10,7 +10,7 @@ const TotalDorection = ()=>{
     })
 
     const total = {
-        kilmeters:0.0,
+        kilometers:0.0,
         hours:0,
         minutes:0,
         ascent:0,
@@ -20,7 +20,8 @@ const TotalDorection = ()=>{
     directionData.forEach(day => {
         day.locations.forEach(location=>{
             if(location.direction){
-                total.kilmeters+=parseFloat(location.direction.kilometers);
+                console.log(location.direction.kilometers)
+                total.kilometers = parseFloat((total.kilometers + parseFloat(location.direction.kilometers)).toFixed(1));
                 total.ascent+=location.direction.ascent;
                 total.descent+=location.direction.descent;
                 total.hours+=location.direction.hours;
@@ -38,7 +39,7 @@ const TotalDorection = ()=>{
     return (
         <div className='flex justify-between items-center mt-3'>
           <ul className='flex space-x-2 mb-2'>
-            <li className='co-646564 text-base'>總距離：<br/>{total.kilmeters}km</li>
+            <li className='co-646564 text-base'>總距離：<br/>{total.kilometers}km</li>
             <li className='border-r-2 text-base'></li>
             <li className='co-646564 text-base'>總預估時間：<br/>{total.hours}h{total.minutes}min</li>
             <li className='border-r-2'></li>

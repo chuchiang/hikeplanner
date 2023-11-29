@@ -3,9 +3,10 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
-import { updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation } from '../slice/planningSlice'
+import { updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName } from '../slice/planningSlice'
 import ExportGpx from './exportGPX';
-
+import asyncAddData from '../api/firebase/asyncAdd';
+import { selectorCurrentUser } from '../slice/authSlice';
 
 
 // 函數：添加時間（小時和分鐘）
@@ -24,15 +25,26 @@ function Route() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [deletedIndex, setDeletedIndex] = useState(null);
+    const [routeName, setRouteName] = useState('');
+    const [shareTrip, setShareTrip] = useState(false)
 
     const dispatch = useDispatch();
     const previousLocationsRef = useRef();
 
     //取得 planning資料
     const addNewLocation = useSelector((state) => {
-        console.log(state.planning.days)
+        console.log(state.planning)
         return state.planning.days
     })
+
+    //取得 planning資料
+    const addNewPlanning = useSelector((state) => {
+        return state.planning
+    })
+
+    //取得 auth資料
+    const currentUser = useSelector(selectorCurrentUser);
+
 
     //日期改變
     const handleDateChange = (event) => {
@@ -55,12 +67,7 @@ function Route() {
             deleteDayIndex: dayIndex,
             deleteIndex: index
         }));
-        // if (index == addNewLocation[dayIndex].locations.length - 1){
-        //     dispatch(deleteLocation({
-        //         deleteDayIndex: dayIndex+1,
-        //         deleteIndex: 0
-        //     }));
-        // }
+
         //第一天第一個景點
         const isFirstLocation = dayIndex === 0 && index === 0;
 
@@ -159,27 +166,13 @@ function Route() {
     }
 
 
-
+    // 最短路徑計算
     useEffect(() => {
 
         // locations 長度發生變化的邏輯
         if (previousLocationsRef.current && didLocationsLengthChange(addNewLocation, previousLocationsRef.current)) {
             //判斷是否執行fetch
             const openRouteServiceApi = '5b3ce3597851110001cf62484e6df37ed2944841aeaa8f432926647b';
-            // if (deletedIndex !== null) {
-            //     const deleteLocationDay = deletedIndex.deleteDayIndex
-            //     const deleteLocationIndex = deletedIndex.deleteIndex
-            // }
-
-
-
-            // const lastDayDirection = addNewLocation[addNewLocation.length-1].locations.direction // 最後一天的locations
-            // const lastIndex = lastDayDirection.length - 1;//最後的位置
-
-            // const lastDay = addNewLocation[addNewLocation.length - 1]//最後一天
-            // const lastDayLoctionIndex = lastDay.locations.length - 1//最後一天最後一個地點index
-
-
 
             // 如果planning 資料大於2 就去fetch
             const fetchData = async (coordinatesStar, coordinatesEnd, dayIndex, locationIndex) => {
@@ -223,24 +216,11 @@ function Route() {
                         const hours = Math.floor(totalTime); // 獲得完整小時數
                         const minutes = Math.round((totalTime - hours) * 60); // 將小數部分轉換為分鐘
                         const duration = totalTime.toFixed(2);//期間
-
-
-                        // console.log('Total Walking Time:', totalTime.toFixed(2), 'hours');
-
                         const newDirection = {
                             path: path, kilometers: kilometers, duration: duration, ascent: ascent, descent: descent, hours: hours, minutes: minutes
 
                         }
-
                         console.log(newDirection);
-                        // 放入特定index path
-                        // if (deletedIndex !== null) {
-                        //     dispatch(updataLocationDirection({ index: deletedIndex - 1, direction: newDirection, isLoading: false }))
-                        //     setDeletedIndex(null)
-                        // } else {
-                        //     dispatch(updataLocationDirection({ index: lastDayLoctionIndex - 1, direction: newDirection, isLoading: false }))
-                        // }
-
                         if (deletedIndex && deletedIndex.deleteDayIndex !== undefined) {
                             const deleteLocationDay = deletedIndex.deleteDayIndex;
                             const deleteLocationIndex = deletedIndex.deleteIndex;
@@ -275,14 +255,10 @@ function Route() {
                         wrongIndex: locationIndex + 1,
 
                     }));
-                    // dispatch(deleteLocation({
-                    //     deleteDayIndex: dayIndex,
-                    //     deleteIndex: locationIndex-1,
-                    //     isLoading: false
-                    // }));
+
                     if (error.code = "2010") {
                         Swal.fire({
-                            title: '錯誤! 無法找到可用路徑',
+                            title: '錯誤 無法找到可用路徑',
                             text: `Error: ${error.message}`,
                             icon: 'error',
                             confirmButtonText: '好的',
@@ -295,7 +271,7 @@ function Route() {
                         });
                     } else if (error.code = "2004") {
                         Swal.fire({
-                            title: '錯誤! 超出距離搜尋範圍',
+                            title: '錯誤 超出距離搜尋範圍',
                             text: `Error: ${error.message}`,
                             icon: 'error',
                             confirmButtonText: '好的',
@@ -310,7 +286,7 @@ function Route() {
 
                     } else {
                         Swal.fire({
-                            title: '錯誤!',
+                            title: '錯誤',
                             text: `Error: ${error.message}`,
                             icon: 'error',
                             confirmButtonText: '好的',
@@ -376,111 +352,211 @@ function Route() {
         previousLocationsRef.current = addNewLocation;
     }, [addNewLocation]);
 
+    // 路線名稱Change
+    const handleRouteNameChange = (e) => {
+        setRouteName(e.target.value);
+        dispatch(addRouteName(e.target.value))
+    }
+
+    // 是否同意分享行程
+    const handleShareTripChange = (e) => {
+        setShareTrip(e.target.checked)
+    }
+
+    //資料轉換
+    const transformDataForFirestore = (data) => {
+        return data.map(day => ({
+            ...day,
+            locations: day.locations.map(location => ({
+                ...location,
+                direction: location.direction ? {
+                    ...location.direction,
+                    path: location.direction.path.map(coord => ({
+                        lon: coord[0],
+                        lat: coord[1],
+                        ele: coord[2],
+                    }))
+                } : ""
+            }))
+        }))
+    }
 
 
 
+    //計算總行走時間
+    function calculateTotal(directionData) {
+        const total = {
+            kilometers: 0.0,
+            hours: 0,
+            minutes: 0,
+            ascent: 0,
+            descent: 0
+        };
+
+        directionData.forEach(day => {
+            day.locations.forEach(location => {
+                if (location.direction) {
+                    total.kilometers = parseFloat((total.kilometers + parseFloat(location.direction.kilometers)).toFixed(1));
+                    total.ascent += location.direction.ascent;
+                    total.descent += location.direction.descent;
+                    total.hours += location.direction.hours;
+                    total.minutes += location.direction.minutes;
+
+                    while (total.minutes >= 60) {
+                        total.hours += 1;
+                        total.minutes -= 60;
+                    }
+                }
+            });
+        });
+
+        return total;
+    }
+
+
+
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        const transformedData = transformDataForFirestore(addNewLocation);
+        const totalData = calculateTotal(addNewLocation);
+
+        if (!routeName.trim()) {
+            Swal.fire({
+                title: '錯誤',
+                text: `請填寫路線名稱`,
+                icon: 'error',
+                confirmButtonText: '好的',
+                confirmButtonColor: '#5B6E60',
+                customClass: {
+                    confirmButton: 'custom-button',
+                    title: 'text-2xl',
+                    text: 'text-base'
+                },
+            });
+            return; // 阻止提交
+        }
+        try {
+            const dataToSave = {
+                auth: currentUser.uid,
+                userName:currentUser.displayName,
+                id: addNewPlanning.id,
+                routeName: routeName,
+                shareTrip: shareTrip,
+                total: totalData,
+                locations: transformedData,
+            }
+            const docRef = await asyncAddData(dataToSave);
+            Swal.fire({
+                title: '成功',
+                text: `儲存成功`,
+                icon: 'success',
+                timer: 2000,
+                timerProgressBar: true,
+                allowOutsideClick: true,
+                showConfirmButton: false, // 不显示确认按钮
+            });
+            console.log("Document written with ID: ", docRef.id)
+
+        } catch (e) {
+            console.error("添加文檔時出錯：", e);
+        }
+
+    }
+
+
+    // onSubmit={handleSubmit(onSubmit)}
     return (
         <div className='flex flex-col mt-10 mr-5 w-380 '>
-            <div className='bg-F5F2ED p-5 rounded h-72 overflow-y-scroll'>
-                <div className='flex mb-5 justify-center'>
-                    <div className='flex flex-col mb-2'>
-                        <label className='co-434E4E font-medium '>路線名稱</label>
-                        <input className='mr-2.5'></input>
+            <form onSubmit={onSubmit}>
+                <div className='bg-F5F2ED p-5 rounded h-72 overflow-y-scroll'>
+                    <div className='flex mb-5 justify-center'>
+                        <div className='flex flex-col mb-2'>
+                            <label className='co-434E4E font-medium '>路線名稱</label>
+                            <input className='mr-2.5' onChange={handleRouteNameChange} value={addNewPlanning.routeName}></input>
+                        </div>
+                        <div className='flex flex-col mb-2'>
+                            <label className='co-434E4E font-medium'>開始日期</label>
+                            <input
+                                type='date'
+                                value={addNewLocation[0].date}
+                                onChange={handleDateChange}
+                            ></input>
+                        </div>
                     </div>
-                    <div className='flex flex-col mb-2'>
-                        <label className='co-434E4E font-medium'>開始日期</label>
-                        <input
-                            type='date'
-                            value={addNewLocation[0].date}
-                            onChange={handleDateChange}
-                        ></input>
-                    </div>
-                </div>
-                <hr className='mb-2' />
-                {addNewLocation.map((day, dayIndex) => {
 
-                    //計算日期
-                    return (
-                        <div key={dayIndex} className='pb-2'>
-                            {day.date && (
-                                <p className='co-005264 font-bold text-center mb-2'>-- 第{dayIndex + 1}天 --  {day.date}
-                                    <input
-                                        className='w-32 bg-F5F2ED px-1'
-                                        type='time'
-                                        value={day.time}
-                                        onChange={(event) => handleTimeChange(dayIndex, event)}
-                                    /></p>)}
-                            {day.locations.map((attraction, index) => {
-                                //計算景點時間
-
-                                console.log(attraction)
-                                let locationTime = day.time;
+                    <hr className='mb-2' />
+                    {addNewLocation.map((day, dayIndex) => {
+                        let locationTime = day.time;
 
 
-                                // 如果當前景點不是第一個，有 direction 就累加時間
-                                if (index > 0 && day.locations[index - 1].direction) {
-                                    const prevDirection = day.locations[index - 1].direction;
-                                    if (!isNaN(prevDirection.hours) && !isNaN(prevDirection.minutes)) {
-                                        locationTime = addTime(locationTime, prevDirection.hours, prevDirection.minutes);
+                        //計算日期
+                        return (
+                            <div key={dayIndex} className='pb-2'>
+
+                                {day.date && (
+                                    <p className='co-005264 font-bold text-center mb-2'>-- 第{dayIndex + 1}天 --  {day.date}
+                                        <input
+                                            className='w-32 bg-F5F2ED px-1'
+                                            type='time'
+                                            value={day.time}
+                                            onChange={(event) => handleTimeChange(dayIndex, event)}
+                                        /></p>)}
+
+                                {day.locations.map((attraction, index) => {
+                                    //計算景點時間
+                                    console.log(attraction)
+                                    // 如果當前景點不是第一個，有 direction 就累加時間
+                                    if (index > 0 && day.locations[index - 1].direction) {
+                                        const prevDirection = day.locations[index - 1].direction;
+                                        if (!isNaN(prevDirection.hours) && !isNaN(prevDirection.minutes)) {
+                                            locationTime = addTime(locationTime, prevDirection.hours, prevDirection.minutes);
+                                        }
                                     }
-                                }
+                                    return (<div key={`${dayIndex}-${index}`} >
+                                        {/* 地點訊息 */}
+                                        <div className='flex space-x-3'>
+                                            <div className='w-8 h-8 bg-739A65 text-xl text-white flex items-center justify-center rounded '>{index + 1}</div>
+                                            <p className="text-center flex items-center bg-005264 text-white rounded px-1">{locationTime}</p>
+                                            <div className='w-44 px-2 py-1 bg-white rounded'>{`${attraction.name}/${attraction.region}`} </div>
+                                            <button type="button" className='w-8 p-0' onClick={handleDeleteLocation(dayIndex, index)}><img src='/delete.png' alt='delete icon' /></button>
+                                        </div>
 
+                                        {/* 路線訊息 */}
+                                        {attraction.isLoading ? (
+                                            <div>計算數據中...</div>
+                                        ) : (
+                                            attraction.direction ? (<div className='co-646564 border-l-2 border-slate-300 ml-3 mb-2'>
+                                                <div className='ml-9 mt-2'>
+                                                    <p>行走時間：{attraction.direction.hours} 小時 {attraction.direction.minutes} 分鐘</p>
+                                                    <p>距離：{attraction.direction.kilometers} km </p>
+                                                    <p>總爬升高度：{attraction.direction.ascent} m</p>
+                                                    <p>總下降高度：{attraction.direction.descent} m</p>
+                                                </div>
+                                            </div>) : null
 
-                                return (<div key={`${dayIndex}-${index}`} >
-                                    {/* 地點訊息 */}
-                                    <div className='flex space-x-3'>
-                                        <div className='w-8 h-8 bg-739A65 text-xl text-white flex items-center justify-center rounded '>{index + 1}</div>
-                                        <p className="text-center flex items-center bg-005264 text-white rounded px-1">{locationTime}</p>
-                                        <input className='w-44' type='text' value={`${attraction.name}/${attraction.region}`} />
-                                        <button className='w-8 p-0' onClick={handleDeleteLocation(dayIndex, index)}><img src='/delete.png' alt='delete icon' /></button>
+                                        )
+                                        }
+                                    </div>)
+                                })}
+
+                                {dayIndex == addNewLocation.length - 1 && day.locations.length >= 2 && (
+                                    <div className='flex justify-end'>
+                                        <button onClick={addNewDay} className='bg-5B6E60 text-white w-28 mt-4 '>新增下一天</button>
                                     </div>
+                                )}
 
-                                    {/* 路線訊息 */}
-                                    {attraction.isLoading ? (
-                                        <div>計算數據中...</div>
-                                    ) : (
-                                        attraction.direction ? (<div className='co-646564 border-l-2 border-slate-300 ml-3 mb-2'>
-                                            <div className='ml-9 mt-2'>
-                                                <p>行走時間：{attraction.direction.hours} 小時 {attraction.direction.minutes} 分鐘</p>
-                                                <p>距離：{attraction.direction.kilometers} km </p>
-                                                <p>總爬升高度：{attraction.direction.ascent} m</p>
-                                                <p>總下降高度：{attraction.direction.descent} m</p>
-                                            </div>
-                                        </div>) : null
-
-                                    )
-                                    }
-                                </div>)
-
-
-
-
-
-
-                            })}
-                            {dayIndex == addNewLocation.length - 1 && day.locations.length >= 2 && (
-                                <div className='flex justify-end'>
-                                    <button onClick={addNewDay} className='bg-5B6E60 text-white w-28 mt-4 '>新增下一天</button>
-                                </div>
-                            )}
-                        </div>)
-                })}
-
-
-
-
-
-
-            </div>
-            <div className='flex justify-between mt-3'>
-                <button className='bg-005264 w-32 text-white'>儲存</button>
-                <ExportGpx />
-            </div>
-
+                            </div>)
+                    })}
+                </div>
+                <div className='flex justify-between mt-3 items-center'>
+                    <ExportGpx />
+                    <button className='bg-005264 w-32 text-white' type="submit ">儲存</button>
+                    <p>分享行程</p>
+                    <input className='w-8' type="checkbox" name="myCheckbox" onChange={handleShareTripChange} />
+                </div>
+            </form>
         </div >
     )
-
-
 }
 
 

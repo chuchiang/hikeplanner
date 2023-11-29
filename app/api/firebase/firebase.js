@@ -3,11 +3,11 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+import { collection } from 'firebase/firestore';
+import { getAuth, } from 'firebase/auth';
 
-import {getAuth,} from 'firebase/auth';
-
- // 用來創造一個 firestore 實例
-import {getFirestore,} from 'firebase/firestore';
+// 用來創造一個 firestore 實例
+import { getFirestore, } from 'firebase/firestore';
 
 
 // Your web app's Firebase configuration
@@ -21,7 +21,7 @@ const firebaseConfig = {
 };
 
 
-export const ACCOINTING_COLLECTION_NAME = 'hikeplanner';
+export const ACCOINTING_COLLECTION_NAME = 'plan';
 
 
 // Initialize Firebase
@@ -29,4 +29,7 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase Authentication 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-
+export const hikeDocRef = collection(
+  db,
+  ACCOINTING_COLLECTION_NAME
+);

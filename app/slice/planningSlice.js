@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const planningSlice = createSlice({
     name: 'planning',
     initialState: {//初始
+        id:'',
+        routeName:'',
         days: [
             {
                 date: new Date().toISOString().split('T')[0],
@@ -13,6 +15,10 @@ export const planningSlice = createSlice({
     },
 
     reducers: {//狀態管理器，所有方法都要寫在這裡
+        //增加名稱
+        addRouteName:(state,action)=>{
+            state.routeName=action.payload
+        },
 
         //增加景點
         addLocation: (state, action) => {
@@ -27,7 +33,6 @@ export const planningSlice = createSlice({
                 console.error("No days available to add location");
             }
         },
-
 
         //增加特定index的路徑取得
         updataLocationDirection: (state, action) => {
@@ -46,8 +51,6 @@ export const planningSlice = createSlice({
             }
         },
 
-
-
         //刪除景點
         deleteLocation: (state, action) => {
             const { deleteDayIndex, deleteIndex } = action.payload;
@@ -64,6 +67,8 @@ export const planningSlice = createSlice({
             //檢查是不是某天第一格沒有下一格
             const hasNextLocation = state.days[deleteDayIndex].locations.length === 1
             const notFirstLocation = deleteDayIndex !== 0
+            const isFirstLocation = deleteDayIndex === 0
+
 
 
             //如果是最後一格並且有下一天
@@ -79,10 +84,13 @@ export const planningSlice = createSlice({
                     //複製下一天第一個位置到當前天最後一個
                     state.days[deleteDayIndex].locations.splice(deleteIndex, 1);
                     state.days[deleteDayIndex + 1].locations.splice(0, 1);
+                    state.days[deleteDayIndex].locations.push({ ...nextDayFirstLocation });
                     if (state.days[deleteDayIndex].locations.length > 1) {
                         state.days[deleteDayIndex].locations[deleteIndex - 1].direction = undefined;
+                        state.days[deleteDayIndex].locations[deleteIndex].direction = undefined;
+
                     }
-                    state.days[deleteDayIndex].locations.push({ ...nextDayFirstLocation });
+
                 }
             } // 某天第一格，沒有下一個點
             else if (isFirstLocationOfDay && hasPreviousDay) {
@@ -100,16 +108,19 @@ export const planningSlice = createSlice({
                     state.days[deleteDayIndex - 1].locations[previousDayLastLocationIndex] = { ...nextLocation };
                     state.days[deleteDayIndex - 1].locations[previousDayLastLocationIndex].direction = undefined;
 
-
-
-                } // 如果當天只有一個位置，刪除整天
+                }
+                // 如果當天只有一個位置，刪除整天
                 else {
-                    
                     state.days[deleteDayIndex - 1].locations.splice(previousDayLastLocationIndex, 1);
                     state.days[deleteDayIndex - 1].locations[previousDayLastLocationIndex - 1].direction = undefined;
                     state.days.splice(deleteDayIndex, 1);
                 }
-            } else {
+            }//第一格位置 
+            else if (isFirstLocationOfDay && isFirstLocation) {
+                state.days[deleteDayIndex].locations.splice(0, 1); // 删除当前天的第一个位置
+                state.days.splice(1, 1);
+            }
+            else {
                 state.days[deleteDayIndex].locations.splice(deleteIndex, 1); // 這將會刪除指定索引的元素
                 // 如果不是刪除第一個位置，則清除前一個位置的 direction
                 if (deleteIndex > 0) {
@@ -129,7 +140,7 @@ export const planningSlice = createSlice({
                 state.days[addWrongLocation].locations[wrongIndex - 1].isLoading = false;
             }
             state.days[addWrongLocation].locations.splice(wrongIndex, 1);
-            
+
         },
 
         //增加天數
@@ -161,6 +172,14 @@ export const planningSlice = createSlice({
                 state.days[dayIndex].time = newTime
             }
 
+        },
+
+        //增加data
+        addData:(state,action)=>{
+            const newData = action.payload;
+            state.id = newData.id;
+            state.days = newData.days;
+            state.routeName = newData.routeName;
         }
 
     }
@@ -169,7 +188,7 @@ export const planningSlice = createSlice({
 
 //定義的REDUCERS可以使用ACTION匯出(具名匯出)
 //會帶入REDUCER 定義的名稱
-export const { addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation } = planningSlice.actions;
+export const { addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation,addRouteName,addData } = planningSlice.actions;
 
 
 
