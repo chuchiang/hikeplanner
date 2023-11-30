@@ -82,6 +82,7 @@ const MyPlanner = () => {
         try {
             await asyncDeleteData(id);
             setMyPlan()
+            
         } catch (error) {
             console.error('Error deleting document', error)
         }

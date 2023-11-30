@@ -15,6 +15,7 @@ import { selectorCurrentUser } from '../slice/authSlice';
 import LoginForm from '../components/login';
 import RegisterForm from '../components/register'
 import TotalDorection from '../components/totalDirection'
+import Head from 'next/head';
 
 const DynamicMap = dynamic(() => import('../components/baseMap'), {
   ssr: false
@@ -72,6 +73,9 @@ export default function Home() {
     // <main className="flex bg-white min-h-screen flex-col items-center justify-between p-24 ">
     // </main>
     <>
+      <Head>
+        <script src="/leaflet-image.js"></script>
+      </Head>
       <Provider store={store}>
         <div className='flex justify-center mb-10'>
           <Route />

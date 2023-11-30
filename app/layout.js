@@ -34,7 +34,7 @@ function Header({ onLoginClick }) {
 
     // 清理監聽器
     return () => unsubscribe();
-  }, [dispatch ]);
+  }, [dispatch]);
 
 
   return (
@@ -52,7 +52,7 @@ function Header({ onLoginClick }) {
           {currentUser ? (
             <>
               <Link href='/member' className='co-5B6E60 font-medium'>會員中心</Link>
-              <LogOut/>
+              <LogOut />
             </>
           ) : (
             <div>
@@ -70,7 +70,7 @@ export default function RootLayout({ children }) {
   const [showLogin, setShowLogin] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true); // 新增用於追踪登入或註冊模式的狀態
 
-  
+
   const handleLoginClick = () => {
     setShowLogin(true);
     setIsLoginMode(true); // 點擊登入時，設置為登入模式
@@ -81,24 +81,23 @@ export default function RootLayout({ children }) {
     setIsLoginMode(false); // 點擊註冊時，設置為註冊模式
   };
 
-  
- 
+
+
 
 
   return (
     <html lang="en">
-      <body>      
+      <body>
         <Provider store={store}>
-
-        <Header onLoginClick={handleLoginClick} />
-        {children}
-        {/* 登入覆蓋整個頁面*/}
-        {showLogin && (
-          isLoginMode ?
-            <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
-            <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
-        )}
-      </Provider>
+          <Header onLoginClick={handleLoginClick} />
+          {children}
+          {/* 登入覆蓋整個頁面*/}
+          {showLogin && (
+            isLoginMode ?
+              <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
+              <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
+          )}
+        </Provider>
 
       </body>
     </html>

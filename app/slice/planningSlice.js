@@ -3,8 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 export const planningSlice = createSlice({
     name: 'planning',
     initialState: {//初始
-        id:'',
-        routeName:'',
+        id: '',
+        routeName: '',
+        snapshot: null,
+        captureSnapshotFunction: null,
+        img: null,
+        imgState: null,
         days: [
             {
                 date: new Date().toISOString().split('T')[0],
@@ -16,8 +20,8 @@ export const planningSlice = createSlice({
 
     reducers: {//狀態管理器，所有方法都要寫在這裡
         //增加名稱
-        addRouteName:(state,action)=>{
-            state.routeName=action.payload
+        addRouteName: (state, action) => {
+            state.routeName = action.payload
         },
 
         //增加景點
@@ -175,12 +179,32 @@ export const planningSlice = createSlice({
         },
 
         //增加data
-        addData:(state,action)=>{
+        addData: (state, action) => {
             const newData = action.payload;
             state.id = newData.id;
             state.days = newData.days;
             state.routeName = newData.routeName;
+        },
+
+        saveMapSnapshot: (state, action) => {
+            console.log(action.payload)
+            state.snapshot = action.payload;
+        },
+        saveMapSnapshotFunction: (state, action) => {
+            console.log(action.payload)
+            state.captureSnapshotFunction = action.payload;
+        },
+
+        addimg: (state, action) => {
+            console.log(action, payload)
+            state.img = action.payload;
+        },
+
+        addimgState: (state, action) => {
+            console.log(action.payload)
+            state.imgState = action.payload;
         }
+
 
     }
 });
@@ -188,9 +212,10 @@ export const planningSlice = createSlice({
 
 //定義的REDUCERS可以使用ACTION匯出(具名匯出)
 //會帶入REDUCER 定義的名稱
-export const { addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation,addRouteName,addData } = planningSlice.actions;
+export const { addimgState,addimg, addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, addData, saveMapSnapshot, saveMapSnapshotFunction } = planningSlice.actions;
 
-
+export const getMapSnapshot = state => state.planning.snapshot;
+export const getMapSnapshotFunction = state => state.planning.captureSnapshotFunction;
 
 
 export default planningSlice.reducer;

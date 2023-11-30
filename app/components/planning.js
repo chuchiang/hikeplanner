@@ -3,11 +3,16 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
-import { updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName } from '../slice/planningSlice'
+import { addimgState, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName } from '../slice/planningSlice'
 import ExportGpx from './exportGPX';
 import asyncAddData from '../api/firebase/asyncAdd';
 import { selectorCurrentUser } from '../slice/authSlice';
-
+// import MapContext from '../context/mapContext';
+// import { useContext } from 'react';
+// import { usePrintFirebase } from '../components/printToFirebase';
+// import { useMap } from 'react-leaflet'
+// import { getMapSnapshotFunction } from '../slice/planningSlice';
+import { HandlePrint } from '../components/baseMap'
 
 // 函數：添加時間（小時和分鐘）
 function addTime(startTime, hoursToAdd, minutesToAdd) {
@@ -22,14 +27,23 @@ function addTime(startTime, hoursToAdd, minutesToAdd) {
 
 
 function Route() {
-
     const [isLoading, setIsLoading] = useState(true);
     const [deletedIndex, setDeletedIndex] = useState(null);
     const [routeName, setRouteName] = useState('');
-    const [shareTrip, setShareTrip] = useState(false)
+    const [shareTrip, setShareTrip] = useState(false);
+    // const captureMapSnapshot = useSelector(getMapSnapshotFunction);
+
+    const addNewImg = useSelector((state) => {
+        console.log(state.planning)
+        return state.planning.img
+    })
+
+
 
     const dispatch = useDispatch();
     const previousLocationsRef = useRef();
+    // const mapRef = useContext(MapContext);
+
 
     //取得 planning資料
     const addNewLocation = useSelector((state) => {
@@ -204,8 +218,8 @@ function Route() {
                         const distance = data.features[0].properties.segments[0].distance;//距離
                         const kilometers = (distance / 1000).toFixed(1);;
                         const rawAscent = data.features[0].properties.segments[0].ascent;//上升
-                        const ascent = isNaN(rawAscent) ? 0 : Math.round(rawAscent);//上升
-                        const rawDescent = data.features[0].properties.segments[0].descent;
+                        const ascent = isNaN(rawAscent) ? 0 : Math.round(rawAscent);
+                        const rawDescent = data.features[0].properties.segments[0].descent;//降下
                         const descent = isNaN(rawDescent) ? 0 : Math.round(rawDescent)
                         const path = data.features[0].geometry.coordinates;
                         const ascentTimePerHour = 300; // 每上升 300 米增加 1 小時的行走時間
@@ -314,8 +328,10 @@ function Route() {
                     const newLocationIndex = day.locations.length - 1;
                     const lastLocation = day.locations[newLocationIndex - 1];
                     const lastSecondLocation = day.locations[newLocationIndex];
-                    const coordinatesStar = [lastSecondLocation.lng, lastSecondLocation.lat];
-                    const coordinatesEnd = [lastLocation.lng, lastLocation.lat];
+                    // const coordinatesStar = [lastSecondLocation.lng, lastSecondLocation.lat];
+                    // const coordinatesEnd = [lastLocation.lng, lastLocation.lat];
+                    const coordinatesStar = [lastLocation.lng, lastLocation.lat];
+                    const coordinatesEnd = [lastSecondLocation.lng, lastSecondLocation.lat];
                     fetchData(coordinatesStar, coordinatesEnd, dayIndex, newLocationIndex - 1);
                     dispatch(updataLocationDirection({
                         dayIndex: dayIndex,
@@ -415,8 +431,16 @@ function Route() {
 
 
 
+
+
+
+    //儲存檔案
     const onSubmit = async (event) => {
         event.preventDefault();
+
+
+
+        dispatch(addimgState('True'))
         const transformedData = transformDataForFirestore(addNewLocation);
         const totalData = calculateTotal(addNewLocation);
 
@@ -435,31 +459,39 @@ function Route() {
             });
             return; // 阻止提交
         }
-        try {
-            const dataToSave = {
-                auth: currentUser.uid,
-                userName:currentUser.displayName,
-                id: addNewPlanning.id,
-                routeName: routeName,
-                shareTrip: shareTrip,
-                total: totalData,
-                locations: transformedData,
-            }
-            const docRef = await asyncAddData(dataToSave);
-            Swal.fire({
-                title: '成功',
-                text: `儲存成功`,
-                icon: 'success',
-                timer: 2000,
-                timerProgressBar: true,
-                allowOutsideClick: true,
-                showConfirmButton: false, // 不显示确认按钮
-            });
-            console.log("Document written with ID: ", docRef.id)
 
-        } catch (e) {
-            console.error("添加文檔時出錯：", e);
-        }
+        // if (addNewImg) {
+            try {
+                const dataToSave = {
+                    auth: currentUser.uid,
+                    userName: currentUser.displayName,
+                    id: addNewPlanning.id,
+                    routeName: routeName,
+                    shareTrip: shareTrip,
+                    total: totalData,
+                    locations: transformedData,
+                    img: addNewImg
+                }
+                const docRef = await asyncAddData(dataToSave);
+                dispatch(addimgState('False'))
+                Swal.fire({
+                    title: '成功',
+                    text: `儲存成功`,
+                    icon: 'success',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    allowOutsideClick: true,
+                    showConfirmButton: false, // 不显示确认按钮
+                });
+                console.log("Document written with ID: ", docRef.id)
+
+            } catch (e) {
+                console.error("添加文檔時出錯：", e);
+            }
+        // }
+
+
+
 
     }
 
@@ -517,7 +549,7 @@ function Route() {
                                         <div className='flex space-x-3'>
                                             <div className='w-8 h-8 bg-739A65 text-xl text-white flex items-center justify-center rounded '>{index + 1}</div>
                                             <p className="text-center flex items-center bg-005264 text-white rounded px-1">{locationTime}</p>
-                                            <div className='w-44 px-2 py-1 bg-white rounded'>{`${attraction.name}/${attraction.region}`} </div>
+                                            <input className='w-44 px-2 py-1 bg-white rounded' value={`${attraction.name}/${attraction.region}`} readOnly></input>
                                             <button type="button" className='w-8 p-0' onClick={handleDeleteLocation(dayIndex, index)}><img src='/delete.png' alt='delete icon' /></button>
                                         </div>
 
@@ -555,6 +587,8 @@ function Route() {
                     <input className='w-8' type="checkbox" name="myCheckbox" onChange={handleShareTripChange} />
                 </div>
             </form>
+            {/* <button type="button" onClick={() => handlePrint(map)}>截圖地圖</button> */}
+            {/* <HandlePrint /> */}
         </div >
     )
 }

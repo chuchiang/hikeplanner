@@ -3,22 +3,83 @@
 
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Popup, LayersControl, Polyline } from 'react-leaflet'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Markers } from './Marker'
 import SearchControl from './mapSearch'
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import { useSelector, useDispatch } from 'react-redux';
 import { geoSearchAdd, clearSearchLocations } from '../slice/mapSlice';
+import { PrintComponent } from '../components/printMap'
+import { useMap } from 'react-leaflet';
+import { addimg, addimgState } from '../slice/planningSlice';
+
+
+
+import dynamic from 'next/dynamic';
+
+// const EasyPrint = dynamic(() => import('leaflet-easyprint'), { ssr: false });
+
+// const HandlePrint = () => {
+//     const map = useMap();
+//     const dispatch = useDispatch();
+
+//     const addimgState = useSelector((state) => {
+//         console.log(state.planning);
+//         return state.planning.imgState;
+//     });
+
+//     useEffect(() => {
+//         if (addimgState === 'True') {
+//             if (EasyPrint) {
+//                 const printer = L.easyPrint({
+//                     sizeModes: ['Current'],
+//                     hidden: true,
+//                     exportOnly: true
+//                 }).addTo(map);
+//                 console.log(printer.printMap);
+
+//                 printer.printMap('CurrentSize', 'MyMap', (ImageData) => {
+//                     // 轉換 ImageData 為 Base64
+//                     console.log(ImageData);
+//                     const image = new Image();
+//                     image.onload = () => {
+//                         const canvas = document.createElement('canvas');
+//                         canvas.width = image.width;
+//                         canvas.height = image.height;
+//                         const ctx = canvas.getContext('2d');
+//                         ctx.drawImage(image, 0, 0);
+//                         const base64String = canvas.toDataURL();
+
+//                         // 存儲 Base64 字符串到 Redux
+//                         dispatch(addimg(base64String));
+//                         console.log(base64String);
+
+//                         if (callback && typeof callback === 'function') {
+//                             callback(); // 在快照完成後調用回調函數
+//                         }
+//                     };
+//                     image.src = ImageData;
+//                 });
+//             }
+//         }
+//     }, [addimgState]);
+// };
+
+
 
 
 const leafletMap = () => {
-
     const [coord, setCoord] = useState([23.248325497821178, 120.98989311938537])
     const dispatch = useDispatch();
     const prov = new OpenStreetMapProvider();
     const accessToken = 'pk.eyJ1IjoibHVsdWNoZW5nIiwiYSI6ImNsb3Bja3Z6YzA0cDMya28xYjJvOXE4bncifQ.RWepwc59NHV8-OnF5-C7pQ'
     const mapboxUsername = 'lulucheng'
     const mapboxId = 'clopfkjxr003s01pqhazl2dn9';
+
+
+
+
+
 
     //最短路徑資料取得
     const addPath = useSelector((state) => {
@@ -37,7 +98,6 @@ const leafletMap = () => {
         }),
     );
 
-
     //搜尋事件資料
     const handleSearchResult = (result) => {
         const newLocation = {
@@ -49,15 +109,10 @@ const leafletMap = () => {
         dispatch(geoSearchAdd(newLocation)); // 更新 geoSearch 的 經緯度
     };
 
-
-
-
     return (
-        <div>
-            {/* <SearchLocation />
-            <GetMyLocation /> */}
+        <div  >
 
-            <MapContainer style={{ width: '800px', height: '720px' }} center={coord} zoom={13} scrollWheelZoom={false} >
+            <MapContainer id='map' style={{ width: '800px', height: '720px' }} center={coord} zoom={13} scrollWheelZoom={false} >
                 <SearchControl
                     provider={prov}
                     showMarker={false}
@@ -99,12 +154,6 @@ const leafletMap = () => {
                     <Markers />
                 </LayersControl>
                 {/* 最短路徑 */}
-                {/* {combinedPath.length > 0 && (<Polyline
-                    pathOptions={{ color: 'red' }}
-                    positions={combinedPath.map(coord => [coord[1], coord[0]])}
-
-                />
-                )} */}
                 {combinedPath.map((segment, index) => (
                     <Polyline
                         key={index}
@@ -112,8 +161,10 @@ const leafletMap = () => {
                         positions={segment.map(coord => [coord[1], coord[0]])}
                     />
                 ))}
+                <PrintComponent />
+                {/* <HandlePrint /> */}
             </MapContainer>
-        </div>
+        </div >
     )
 }
 
