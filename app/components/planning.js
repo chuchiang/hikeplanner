@@ -12,7 +12,7 @@ import { selectorCurrentUser } from '../slice/authSlice';
 // import { usePrintFirebase } from '../components/printToFirebase';
 // import { useMap } from 'react-leaflet'
 // import { getMapSnapshotFunction } from '../slice/planningSlice';
-import { HandlePrint } from '../components/baseMap'
+// import { HandlePrint } from '../components/baseMap'
 
 // 函數：添加時間（小時和分鐘）
 function addTime(startTime, hoursToAdd, minutesToAdd) {
@@ -33,10 +33,10 @@ function Route() {
     const [shareTrip, setShareTrip] = useState(false);
     // const captureMapSnapshot = useSelector(getMapSnapshotFunction);
 
-    const addNewImg = useSelector((state) => {
-        console.log(state.planning)
-        return state.planning.img
-    })
+    // const addNewImg = useSelector((state) => {
+    //     console.log(state.planning)
+    //     return state.planning.img
+    // })
 
 
 
@@ -470,7 +470,7 @@ function Route() {
                     shareTrip: shareTrip,
                     total: totalData,
                     locations: transformedData,
-                    img: addNewImg
+                    // img: addNewImg
                 }
                 const docRef = await asyncAddData(dataToSave);
                 dispatch(addimgState('False'))
