@@ -44,6 +44,12 @@ leaflet-tile {
   border: none !important;
 }
 
+/* 不要格線 */
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+    border: none !important;
+}
 
 leaflet-tile-container {
   background-image: none !important;

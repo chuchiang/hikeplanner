@@ -12,6 +12,7 @@ const SharePlan = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [sharePlan, setSharePlan] = useState([]);
+    const [searchTerm,setSearchTerm] = useState('');
 
 
     // useEffect 用來在元件載入後取得 Firebase 中的資料
@@ -42,7 +43,6 @@ const SharePlan = () => {
             return {
                 ...day,
                 locations: day.locations.map(location => {
-
                     const transformPath = location.direction ?
                         location.direction.path.map(coord => [coord.lon, coord.lat, coord.ele])
                         : undefined
@@ -84,7 +84,7 @@ const SharePlan = () => {
                 <div className='bg-e9edc9 flex rounded-xl w-full p-3 items-center'>
                     <p className='co-005264 font-bold mr-2'>請搜尋路線名稱：</p>
                     <div className='rounded-xl border-black flex items-center bg-white'>
-                        <input className='rounded-xl w-600'></input><button><img src='/search.png' className='w-6'></img></button>
+                        <input className='rounded-xl w-600' valur={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)}></input><button><img src='/search.png' className='w-6'></img></button>
                     </div>
                 </div>
                 {sharePlan && sharePlan.length > 0 ? (

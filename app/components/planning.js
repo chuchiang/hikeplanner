@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
-import { addimgState, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName } from '../slice/planningSlice'
+import { addimg,addimgState, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName } from '../slice/planningSlice'
 import ExportGpx from './exportGPX';
 import asyncAddData from '../api/firebase/asyncAdd';
 import { selectorCurrentUser } from '../slice/authSlice';
@@ -12,7 +12,7 @@ import { selectorCurrentUser } from '../slice/authSlice';
 // import { usePrintFirebase } from '../components/printToFirebase';
 // import { useMap } from 'react-leaflet'
 // import { getMapSnapshotFunction } from '../slice/planningSlice';
-import { HandlePrint } from '../components/baseMap'
+// import { HandlePrint } from '../components/baseMap'
 
 // 函數：添加時間（小時和分鐘）
 function addTime(startTime, hoursToAdd, minutesToAdd) {
@@ -436,10 +436,7 @@ function Route() {
 
     //儲存檔案
     const onSubmit = async (event) => {
-        event.preventDefault();
-
-        dispatch(addimgState('True'))
-        
+        event.preventDefault();        
 
         if (!routeName.trim()) {
             Swal.fire({
@@ -455,6 +452,8 @@ function Route() {
                 },
             });
             return; // 阻止提交
+        }else{
+            dispatch(addimgState('True'))
         }
 
 
@@ -481,7 +480,6 @@ function Route() {
 
             try {
                 const docRef = await asyncAddData(dataToSave);
-                dispatch(addimgState('False'));
                 Swal.fire({
                     title: '成功',
                     text: `儲存成功`,
@@ -491,12 +489,13 @@ function Route() {
                     allowOutsideClick: true,
                     showConfirmButton: false
                 });
+                dispatch(addimg());
+                dispatch(addimgState());
                 console.log("Document written with ID: ", docRef.id);
             } catch (e) {
                 console.error("添加文檔時出錯：", e);
             }
         };
-
         saveToFirebase();
     }, [addNewImg]);
 

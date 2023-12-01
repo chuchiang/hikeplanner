@@ -81,8 +81,10 @@ const MyPlanner = () => {
     const handleDeleteRouteClick = async (id) => {
         try {
             await asyncDeleteData(id);
-            setMyPlan()
-            
+
+            setMyPlan(currentPlans => currentPlans.filter(plan => plan.id != id))
+
+
         } catch (error) {
             console.error('Error deleting document', error)
         }
@@ -98,7 +100,7 @@ const MyPlanner = () => {
                     return (
                         <div key={index} className='mt-5 bg-F5F2ED  rounded-md p-5 w-800 '>
 
-                            <div className='flex items-center mb-4'><img src='/logo.png' className='w-10 h-10'/><h3 className='co-5B6E60 font-bold text-xl'>{item.routeName}</h3></div>
+                            <div className='flex items-center mb-4'><img src='/logo.png' className='w-10 h-10' /><h3 className='co-5B6E60 font-bold text-xl'>{item.routeName}</h3></div>
                             <div className='flex space-x-5 mb-2'>
                                 <span className='flex '><img src='/plan/direction.png' className='w-6 m-1  ' /><p>距離：{item.total.kilometers}km</p></span>
                                 <span className='flex'><img src='/plan/time.png' className='w-6 m-1' /><p>預估時間：{item.total.hours}h {item.total.minutes}min</p></span>
@@ -121,6 +123,9 @@ const MyPlanner = () => {
 
             ) : <div className='co-005264 mt-5 font-medium'> 沒有已規劃的路線，請前往<Link href='/planning' className='hover:font-bold'>規劃助手</Link>，制定專屬路線 </div>
             }
+
+
+
         </>
 
     )

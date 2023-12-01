@@ -200,7 +200,7 @@ export const planningSlice = createSlice({
 
 //定義的REDUCERS可以使用ACTION匯出(具名匯出)
 //會帶入REDUCER 定義的名稱
-export const { addimgState,addimg, addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, addData, saveMapSnapshot, saveMapSnapshotFunction } = planningSlice.actions;
+export const { addimgState,addimg, addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, addData } = planningSlice.actions;
 
 
 export default planningSlice.reducer;

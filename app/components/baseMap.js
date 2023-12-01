@@ -52,15 +52,12 @@ const MapScreenshoter = () => {
             }
         }
 
-    
+
 
     }, [map, imgState, dispatch]);
 
     return null;
 };
-
-
-
 
 const leafletMap = () => {
     const [coord, setCoord] = useState([23.248325497821178, 120.98989311938537])
@@ -70,17 +67,11 @@ const leafletMap = () => {
     const mapboxUsername = 'lulucheng'
     const mapboxId = 'clopfkjxr003s01pqhazl2dn9';
 
-
-
-
-
-
     //最短路徑資料取得
     const addPath = useSelector((state) => {
         console.log(state.planning.days)
         return state.planning.days
     })
-
 
     // 最短路徑資料整理
     const combinedPath = addPath.flatMap(day =>
@@ -99,13 +90,12 @@ const leafletMap = () => {
             lng: result[1]
         };
         console.log(newLocation)
-        dispatch(clearSearchLocations());// 清除 geoSearch 的 經緯度
+        dispatch(clearSearchLocations()); //清除 geoSearch 的 經緯度
         dispatch(geoSearchAdd(newLocation)); // 更新 geoSearch 的 經緯度
     };
 
     return (
         <div  >
-
             <MapContainer id='map' style={{ width: '800px', height: '720px' }} center={coord} zoom={13} scrollWheelZoom={false} >
                 <SearchControl
                     provider={prov}
@@ -123,16 +113,15 @@ const leafletMap = () => {
                         const coordinates = [result.location.y, result.location.x]; //搜尋結果
                         handleSearchResult(coordinates);
                     }}
-
                 />
                 <LayersControl position='topright'>
-                    <LayersControl.BaseLayer  name="開放街圖">
+                    <LayersControl.BaseLayer name="開放街圖">
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                     </LayersControl.BaseLayer>
-                    <LayersControl.BaseLayer  name='魯地圖 Taiwan Topo'>
+                    <LayersControl.BaseLayer name='魯地圖 Taiwan Topo'>
                         <TileLayer
                             attribution='&copy; <a href="https://rudy.basecamp.tw/taiwan_topo.html">Rudy Taiwan TOPO</a> | &copy; <a href="https://twmap.happyman.idv.tw/map/">地圖產生器</a>'
                             // url='https://tile.happyman.idv.tw/mp/wmts/rudy/gm_grid/{z}/{x}/{y}.png'
@@ -156,7 +145,7 @@ const leafletMap = () => {
                     />
                 ))}
                 <PrintComponent />
-                <MapScreenshoter /> 
+                <MapScreenshoter />
             </MapContainer>
         </div >
     )
