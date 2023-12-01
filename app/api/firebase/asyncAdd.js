@@ -12,7 +12,8 @@ const asyncAddData = async (dataToSave) => {
             shareTrip: dataToSave.shareTrip,
             total: dataToSave.total,
             route: dataToSave.locations,
-            recordTime: serverTimestamp()
+            recordTime: serverTimestamp(),
+            img:dataToSave.img,
         });
         return docOld;
     } else {
@@ -23,7 +24,9 @@ const asyncAddData = async (dataToSave) => {
             shareTrip: dataToSave.shareTrip,
             total: dataToSave.total,
             route: dataToSave.locations,
-            recordTime: serverTimestamp()
+            recordTime: serverTimestamp(),
+            img:dataToSave.img,
+
         })
         return docRef;
     }

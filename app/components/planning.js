@@ -12,7 +12,7 @@ import { selectorCurrentUser } from '../slice/authSlice';
 // import { usePrintFirebase } from '../components/printToFirebase';
 // import { useMap } from 'react-leaflet'
 // import { getMapSnapshotFunction } from '../slice/planningSlice';
-// import { HandlePrint } from '../components/baseMap'
+import { HandlePrint } from '../components/baseMap'
 
 // 函數：添加時間（小時和分鐘）
 function addTime(startTime, hoursToAdd, minutesToAdd) {
@@ -33,10 +33,10 @@ function Route() {
     const [shareTrip, setShareTrip] = useState(false);
     // const captureMapSnapshot = useSelector(getMapSnapshotFunction);
 
-    // const addNewImg = useSelector((state) => {
-    //     console.log(state.planning)
-    //     return state.planning.img
-    // })
+    const addNewImg = useSelector((state) => {
+        console.log(state.planning)
+        return state.planning.img
+    })
 
 
 
@@ -438,11 +438,8 @@ function Route() {
     const onSubmit = async (event) => {
         event.preventDefault();
 
-
-
         dispatch(addimgState('True'))
-        const transformedData = transformDataForFirestore(addNewLocation);
-        const totalData = calculateTotal(addNewLocation);
+        
 
         if (!routeName.trim()) {
             Swal.fire({
@@ -460,20 +457,31 @@ function Route() {
             return; // 阻止提交
         }
 
-        // if (addNewImg) {
+
+    }
+
+    // planning.js
+    useEffect(() => {
+        const transformedData = transformDataForFirestore(addNewLocation);
+        const totalData = calculateTotal(addNewLocation);
+        
+        const saveToFirebase = async () => {
+            if (!addNewImg) return;
+
+            const dataToSave = {
+                auth: currentUser.uid,
+                userName: currentUser.displayName,
+                id: addNewPlanning.id,
+                routeName: routeName,
+                shareTrip: shareTrip,
+                total: totalData,
+                locations: transformedData,
+                img: addNewImg  // 从 Redux 获取最新的截图数据
+            };
+
             try {
-                const dataToSave = {
-                    auth: currentUser.uid,
-                    userName: currentUser.displayName,
-                    id: addNewPlanning.id,
-                    routeName: routeName,
-                    shareTrip: shareTrip,
-                    total: totalData,
-                    locations: transformedData,
-                    // img: addNewImg
-                }
                 const docRef = await asyncAddData(dataToSave);
-                dispatch(addimgState('False'))
+                dispatch(addimgState('False'));
                 Swal.fire({
                     title: '成功',
                     text: `儲存成功`,
@@ -481,19 +489,16 @@ function Route() {
                     timer: 2000,
                     timerProgressBar: true,
                     allowOutsideClick: true,
-                    showConfirmButton: false, // 不显示确认按钮
+                    showConfirmButton: false
                 });
-                console.log("Document written with ID: ", docRef.id)
-
+                console.log("Document written with ID: ", docRef.id);
             } catch (e) {
                 console.error("添加文檔時出錯：", e);
             }
-        // }
+        };
 
-
-
-
-    }
+        saveToFirebase();
+    }, [addNewImg]);
 
 
     // onSubmit={handleSubmit(onSubmit)}

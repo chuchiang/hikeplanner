@@ -35,8 +35,23 @@ body {
     rgb(var(--background-start-rgb));
 } */
 
+leaflet-tile {
+  display: block!important; 
+  padding: 0!important;
+  border-spacing: 0!important; /* 这些是常规的CSS属性，可能没有对应的Tailwind类 */
+  border-collapse: collapse!important;
+  margin: 0 !important;
+  border: none !important;
+}
 
 
+leaflet-tile-container {
+  background-image: none !important;
+}
+
+img{
+  display: block!important;
+}
 
 input {
   @apply outline-none px-2 py-1 bg-white rounded w-40; 
@@ -71,6 +86,12 @@ button {
   .bg-739A65{
     background-color: #739A65;
   }
+  .bg-e9edc9{
+    background-color: #e9edc9;
+  }
+  .bg-84a98c{
+    background-color: #84a98c;
+  }
   .bg-5B6E60{
     background-color: #5B6E60;
   }
@@ -84,8 +105,14 @@ button {
   .w-1200 {
     width: 1200px;
   }
-  .w-800 {
+  .w-600 {
+    width: 600px;
+  }
+  .w-800{
     width: 800px;
+  }
+  .w-500{
+    width: 500px;
   }
   .w-380 {
     width: 360px;
@@ -96,6 +123,8 @@ button {
   .custom-button:focus {
     box-shadow: none !important;
   }
+  
+  
   
   
 }

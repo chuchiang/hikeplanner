@@ -12,58 +12,52 @@ import { geoSearchAdd, clearSearchLocations } from '../slice/mapSlice';
 import { PrintComponent } from '../components/printMap'
 import { useMap } from 'react-leaflet';
 import { addimg, addimgState } from '../slice/planningSlice';
+import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
+import L from 'leaflet';
+import '../globals.css'
 
 
 
-import dynamic from 'next/dynamic';
 
-// const EasyPrint = dynamic(() => import('leaflet-easyprint'), { ssr: false });
+const MapScreenshoter = () => {
+    const map = useMap();
+    const dispatch = useDispatch();
+    const imgState = useSelector((state) => state.planning.imgState);
 
-// const HandlePrint = () => {
-//     const map = useMap();
-//     const dispatch = useDispatch();
+    useEffect(() => {
+        if (!map) return;
 
-//     const addimgState = useSelector((state) => {
-//         console.log(state.planning);
-//         return state.planning.imgState;
-//     });
+        // 使用whenCreated回调获取地图实例
+        const screenshoter = new SimpleMapScreenshoter({
+            hideElementsWithSelectors: [".leaflet-control-container", ".leaflet-dont-include-pane", "#snapshot-button"],
+            hidden: true,
+            mimeType: 'image/jpeg',
+        }).addTo(map);
 
-//     useEffect(() => {
-//         if (addimgState === 'True') {
-//             if (EasyPrint) {
-//                 const printer = L.easyPrint({
-//                     sizeModes: ['Current'],
-//                     hidden: true,
-//                     exportOnly: true
-//                 }).addTo(map);
-//                 console.log(printer.printMap);
+        const captureScreenshot = async () => {
+            try {
+                const dataURL = await screenshoter.takeScreen('image');
+                dispatch(addimg(dataURL)); // 将 base64 图像数据发送到 Redux
+            } catch (error) {
+                console.error("截图过程中发生错误", error);
+            }
+        };
 
-//                 printer.printMap('CurrentSize', 'MyMap', (ImageData) => {
-//                     // 轉換 ImageData 為 Base64
-//                     console.log(ImageData);
-//                     const image = new Image();
-//                     image.onload = () => {
-//                         const canvas = document.createElement('canvas');
-//                         canvas.width = image.width;
-//                         canvas.height = image.height;
-//                         const ctx = canvas.getContext('2d');
-//                         ctx.drawImage(image, 0, 0);
-//                         const base64String = canvas.toDataURL();
+        if (imgState === 'True') {
+            // 监听一次地图的'load'事件
+            map.once('load', captureScreenshot);
+            // 如果地图已经加载（例如，用户在地图上进行了交互），直接截图
+            if (map._loaded) {
+                captureScreenshot();
+            }
+        }
 
-//                         // 存儲 Base64 字符串到 Redux
-//                         dispatch(addimg(base64String));
-//                         console.log(base64String);
+    
 
-//                         if (callback && typeof callback === 'function') {
-//                             callback(); // 在快照完成後調用回調函數
-//                         }
-//                     };
-//                     image.src = ImageData;
-//                 });
-//             }
-//         }
-//     }, [addimgState]);
-// };
+    }, [map, imgState, dispatch]);
+
+    return null;
+};
 
 
 
@@ -132,13 +126,13 @@ const leafletMap = () => {
 
                 />
                 <LayersControl position='topright'>
-                    <LayersControl.BaseLayer checked name="開放街圖">
+                    <LayersControl.BaseLayer  name="開放街圖">
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                     </LayersControl.BaseLayer>
-                    <LayersControl.BaseLayer checked name='魯地圖 Taiwan Topo'>
+                    <LayersControl.BaseLayer  name='魯地圖 Taiwan Topo'>
                         <TileLayer
                             attribution='&copy; <a href="https://rudy.basecamp.tw/taiwan_topo.html">Rudy Taiwan TOPO</a> | &copy; <a href="https://twmap.happyman.idv.tw/map/">地圖產生器</a>'
                             // url='https://tile.happyman.idv.tw/mp/wmts/rudy/gm_grid/{z}/{x}/{y}.png'
@@ -162,13 +156,11 @@ const leafletMap = () => {
                     />
                 ))}
                 <PrintComponent />
-                {/* <HandlePrint /> */}
+                <MapScreenshoter /> 
             </MapContainer>
         </div >
     )
 }
 
 export default leafletMap
-
-
 

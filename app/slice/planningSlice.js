@@ -5,10 +5,8 @@ export const planningSlice = createSlice({
     initialState: {//初始
         id: '',
         routeName: '',
-        snapshot: null,
-        captureSnapshotFunction: null,
-        img: null,
-        imgState: null,
+        img: "",
+        imgState: "",
         days: [
             {
                 date: new Date().toISOString().split('T')[0],
@@ -185,19 +183,9 @@ export const planningSlice = createSlice({
             state.days = newData.days;
             state.routeName = newData.routeName;
         },
-
-        saveMapSnapshot: (state, action) => {
-            console.log(action.payload)
-            state.snapshot = action.payload;
-        },
-        saveMapSnapshotFunction: (state, action) => {
-            console.log(action.payload)
-            state.captureSnapshotFunction = action.payload;
-        },
-
         addimg: (state, action) => {
-            console.log(action, payload)
-            state.img = action.payload;
+            console.log(action.payload)
+            state.img = action.payload; // 存儲 base64 圖像數據        
         },
 
         addimgState: (state, action) => {
@@ -213,9 +201,6 @@ export const planningSlice = createSlice({
 //定義的REDUCERS可以使用ACTION匯出(具名匯出)
 //會帶入REDUCER 定義的名稱
 export const { addimgState,addimg, addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, addData, saveMapSnapshot, saveMapSnapshotFunction } = planningSlice.actions;
-
-export const getMapSnapshot = state => state.planning.snapshot;
-export const getMapSnapshotFunction = state => state.planning.captureSnapshotFunction;
 
 
 export default planningSlice.reducer;
