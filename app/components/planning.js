@@ -5,14 +5,9 @@ import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
 import { addimg,addimgState, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName } from '../slice/planningSlice'
 import ExportGpx from './exportGPX';
-import asyncAddData from '../api/firebase/asyncAdd';
+import {asyncAddData} from '../api/firebase/asyncAdd';
 import { selectorCurrentUser } from '../slice/authSlice';
-// import MapContext from '../context/mapContext';
-// import { useContext } from 'react';
-// import { usePrintFirebase } from '../components/printToFirebase';
-// import { useMap } from 'react-leaflet'
-// import { getMapSnapshotFunction } from '../slice/planningSlice';
-// import { HandlePrint } from '../components/baseMap'
+
 
 // 函數：添加時間（小時和分鐘）
 function addTime(startTime, hoursToAdd, minutesToAdd) {
@@ -30,8 +25,11 @@ function Route() {
     const [isLoading, setIsLoading] = useState(true);
     const [deletedIndex, setDeletedIndex] = useState(null);
     const [routeName, setRouteName] = useState('');
-    const [shareTrip, setShareTrip] = useState(false);
+    // const [shareTrip, setShareTrip] = useState(false);
     // const captureMapSnapshot = useSelector(getMapSnapshotFunction);
+
+
+    
 
     const addNewImg = useSelector((state) => {
         console.log(state.planning)
@@ -374,10 +372,10 @@ function Route() {
         dispatch(addRouteName(e.target.value))
     }
 
-    // 是否同意分享行程
-    const handleShareTripChange = (e) => {
-        setShareTrip(e.target.checked)
-    }
+    // // 是否同意分享行程
+    // const handleShareTripChange = (e) => {
+    //     setShareTrip(e.target.checked)
+    // }
 
     //資料轉換
     const transformDataForFirestore = (data) => {
@@ -472,7 +470,7 @@ function Route() {
                 userName: currentUser.displayName,
                 id: addNewPlanning.id,
                 routeName: routeName,
-                shareTrip: shareTrip,
+                shareTrip: false,
                 total: totalData,
                 locations: transformedData,
                 img: addNewImg  // 从 Redux 获取最新的截图数据
@@ -587,8 +585,8 @@ function Route() {
                 <div className='flex justify-between mt-3 items-center'>
                     <ExportGpx />
                     <button className='bg-005264 w-32 text-white' type="submit ">儲存</button>
-                    <p>分享行程</p>
-                    <input className='w-8' type="checkbox" name="myCheckbox" onChange={handleShareTripChange} />
+                    {/* <p>分享行程</p> */}
+                    {/* <input className='w-8' type="checkbox" name="myCheckbox" onChange={handleShareTripChange} /> */}
                 </div>
             </form>
             {/* <button type="button" onClick={() => handlePrint(map)}>截圖地圖</button> */}

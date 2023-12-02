@@ -1,4 +1,4 @@
-import { getDocs, query, where } from 'firebase/firestore';
+import { getDocs, query, where,orderBy } from 'firebase/firestore';
 import { hikeDocRef } from './firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 // import { UseSelector } from 'react-redux';
@@ -15,7 +15,8 @@ export const asyncGetMyData = async () => {
     if (user) {
         // 使用者已登入
         const uid = user.uid; // 取得當前使用者的 uid
-        const authData = query(hikeDocRef, where("auth", "==", uid)) //query(集合的參考,查詢條件)，查詢 auth 等於 uid 的文件
+        const authData = query(hikeDocRef, where("auth", "==", uid),where("recordTime", "!=", null), // 檢查recordTime不為空
+        orderBy("recordTime", "desc")); // 按recordTime降序排序) //query(集合的參考,查詢條件)，查詢 auth 等於 uid 的文件
 
         const querySnapshot = await getDocs(authData);
         const data = [];
@@ -38,8 +39,27 @@ export const asyncGetMyData = async () => {
 
 //取得可分享的路線
 export const asyncGetShareData = async () => {
+    const shareData = query(hikeDocRef,
+        where("shareTrip", "==", true),
+        where("recordTime", "!=", null), // 檢查recordTime不為空
+        orderBy("recordTime", "desc")); // 按recordTime降序排序
+    const querySnapshotShare = await getDocs(shareData);
+    console.log(querySnapshotShare);
+    const data = []
+    querySnapshotShare.forEach((doc) => {
+        const sharePlan = doc.data();
+        console.log(sharePlan)
+        data.push(sharePlan);
+    })
+    return data
+}
 
-    const shareData = query(hikeDocRef, where("shareTrip", "==", true))
+
+//取得搜尋的路線
+export const asyncGetSearchData = async (searchTerm) => {
+
+    const shareData = query(hikeDocRef, where("shareTrip", "==", true), 
+    where("routeName", "==",searchTerm));
     const querySnapshotShare = await getDocs(shareData);
     console.log(querySnapshotShare);
     const data = []

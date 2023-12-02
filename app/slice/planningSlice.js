@@ -183,16 +183,32 @@ export const planningSlice = createSlice({
             state.days = newData.days;
             state.routeName = newData.routeName;
         },
+
+        //增加照片
         addimg: (state, action) => {
             console.log(action.payload)
             state.img = action.payload; // 存儲 base64 圖像數據        
         },
-
+        //增加照片
         addimgState: (state, action) => {
             console.log(action.payload)
             state.imgState = action.payload;
-        }
+        },
 
+        //清空redux
+        clearStateAction:(state)=>{
+            state.id = '';
+            state.routeName = '';
+            state.img = '';
+            state.imgState = '';
+            state.days = [
+                {
+                    date: new Date().toISOString().split('T')[0],
+                    time: "08:00",
+                    locations: []
+                }
+            ];
+        },
 
     }
 });
@@ -200,7 +216,7 @@ export const planningSlice = createSlice({
 
 //定義的REDUCERS可以使用ACTION匯出(具名匯出)
 //會帶入REDUCER 定義的名稱
-export const { addimgState,addimg, addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, addData } = planningSlice.actions;
+export const { clearStateAction,addimgState,addimg, addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, addData } = planningSlice.actions;
 
 
 export default planningSlice.reducer;

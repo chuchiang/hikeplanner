@@ -93,8 +93,9 @@ button {
     background-color: #739A65;
   }
   .bg-e9edc9{
-    background-color: #e9edc9;
+    background-color: #eff6e0;
   }
+ 
   .bg-84a98c{
     background-color: #84a98c;
   }
@@ -106,6 +107,17 @@ button {
   }
   .bg-6697A2{
     background-color: #6697A2;
+  }
+
+
+  .bg-646564{
+    background-color:#646564
+  }
+  .bg-90a955{
+    background-color: #90a955;
+  }
+  .co-90a955{
+    color: #90a955;
   }
  
   .w-1200 {
@@ -129,6 +141,11 @@ button {
   .custom-button:focus {
     box-shadow: none !important;
   }
+  .border-co-005264{
+    border-color: #005264;
+  }
+
+  
   
   
   

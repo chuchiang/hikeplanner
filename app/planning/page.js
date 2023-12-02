@@ -10,12 +10,15 @@ import { store } from '../store';//剛剛的store 要引入
 import { Provider } from 'react-redux';//Provider 要引入
 import ElevationChart from '../components/lineChart';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectorCurrentUser } from '../slice/authSlice';
 import LoginForm from '../components/login';
 import RegisterForm from '../components/register'
 import TotalDorection from '../components/totalDirection'
 import Head from 'next/head';
+import { clearStateAction } from '../slice/planningSlice';
+import { usePathname, useSearchParams } from 'next/navigation'
+
 
 const DynamicMap = dynamic(() => import('../components/baseMap'), {
   ssr: false
@@ -40,6 +43,8 @@ export default function Home() {
   const currentUser = useSelector(selectorCurrentUser);
   const [showLogin, setShowLogin] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true); // 新增用於追踪登入或註冊模式的狀態
+  const dispatch = useDispatch();
+  const pathname = usePathname();
 
   const handleLoginClick = () => {
     setShowLogin(true);
@@ -60,30 +65,44 @@ export default function Home() {
     }
   }, [currentUser]);
 
-  if (showLogin) {
-    return (showLogin && (
-      isLoginMode ?
-        <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
-        <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
-    ));
-  }
+  console.log(pathname);
+  // 觸發清空 Redux 狀態的 action
+  useEffect(() => {
+    // 檢查是否離開了特定頁面
+    if (pathname !== '/planning') {
+      // 如果離開了特定頁面，則清空 Redux 狀態
+      dispatch(clearStateAction())
+    }
+  }, [pathname, dispatch])
 
 
-  return (
-    // <main className="flex bg-white min-h-screen flex-col items-center justify-between p-24 ">
-    // </main>
-    <>
-      <Head>
-        <script src="/leaflet-image.js"></script>
-      </Head>
-      <Provider store={store}>
-        <div className='flex justify-center mb-10'>
-          <Route />
-          <RouteMap />
-        </div>
-        {/* <ElevationChart /> */}
-      </Provider>
-    </>
-  )
+
+
+if (showLogin) {
+  return (showLogin && (
+    isLoginMode ?
+      <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
+      <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
+  ));
+}
+
+
+
+return (
+  // <main className="flex bg-white min-h-screen flex-col items-center justify-between p-24 ">
+  // </main>
+  <>
+    <Head>
+      <script src="/leaflet-image.js"></script>
+    </Head>
+    <Provider store={store}>
+      <div className='flex justify-center mb-10'>
+        <Route />
+        <RouteMap />
+      </div>
+      {/* <ElevationChart /> */}
+    </Provider>
+  </>
+)
 
 }

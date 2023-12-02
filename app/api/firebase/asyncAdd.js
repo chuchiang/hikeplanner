@@ -1,7 +1,7 @@
-import { addDoc, serverTimestamp, doc,setDoc } from 'firebase/firestore';
+import { addDoc, serverTimestamp, doc,setDoc,updateDoc  } from 'firebase/firestore';
 import { hikeDocRef } from '../firebase/firebase';
 
-const asyncAddData = async (dataToSave) => {
+export const asyncAddData = async (dataToSave) => {
     if (dataToSave.id) {
         // 尋找同等id的data
         const docOld = doc(hikeDocRef, dataToSave.id);
@@ -32,4 +32,12 @@ const asyncAddData = async (dataToSave) => {
     }
 }
 
-export default asyncAddData;
+export const asyncUpdateShareTripStatus = async (id,shareTripStatus)=>{
+    if(id){
+        const docChange = doc(hikeDocRef,id);
+        await updateDoc (docChange,{
+            shareTrip: shareTripStatus,
+        })
+    }
+    return docChange
+}
