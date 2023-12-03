@@ -8,7 +8,6 @@ import Route from "../components/planning"
 import '../globals.css'
 import { store } from '../store';//剛剛的store 要引入
 import { Provider } from 'react-redux';//Provider 要引入
-import ElevationChart from '../components/lineChart';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectorCurrentUser } from '../slice/authSlice';
@@ -18,6 +17,7 @@ import TotalDorection from '../components/totalDirection'
 import Head from 'next/head';
 import { clearStateAction } from '../slice/planningSlice';
 import { usePathname, useSearchParams } from 'next/navigation'
+import ElevationChart from '../components/lineChart';
 
 
 const DynamicMap = dynamic(() => import('../components/baseMap'), {
@@ -100,8 +100,10 @@ return (
         <Route />
         <RouteMap />
       </div>
-      {/* <ElevationChart /> */}
+      <ElevationChart />
+
     </Provider>
+    
   </>
 )
 

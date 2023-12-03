@@ -1,5 +1,6 @@
 import React from'react';
 import { useSelector } from 'react-redux';
+// import ElevationChart from '../components/lineChart';
 
 
 
@@ -47,7 +48,8 @@ const TotalDorection = ()=>{
             <li className='border-r-2'></li>
             <li className='co-646564 text-base'>總下降高度：<br/>{total.descent}m</li>
           </ul>
-          <button className='bg-5B6E60 text-white w-28  '>海拔剖面圖</button>
+          {/* <ElevationChart /> */}
+
         </div>
     )
 }

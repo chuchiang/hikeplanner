@@ -15,14 +15,43 @@ import { addimg, addimgState } from '../slice/planningSlice';
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import L from 'leaflet';
 import '../globals.css'
+import { addCoordinates, clearCoordinates } from '../slice/coordinatesSlice'
 
+const CirclieHover = () => {
+    const map = useMap();
+    const dispatch = useDispatch();
+    const addCoordinatesChart = useSelector((state) => {
+        console.log(state.coordinates)
+        return state.coordinates
+    })
+    useEffect(() => {
+        let circleMarker;
 
+        // 确保 addCoordinatesChart 包含坐标信息
+        if (addCoordinatesChart && addCoordinatesChart.coordinates) {
+            const { lat, lng } = addCoordinatesChart.coordinates;
+            circleMarker = L.circleMarker([lat, lng], {
+                color: 'white',
+                fillColor: 'black',
+                fillOpacity: 1, 
+                radius: 7
+            }).addTo(map);
+        }
 
+        // 组件卸载或坐标更新时移除圆点
+        return () => {
+            if (circleMarker) {
+                circleMarker.remove();
+            }
+        };
+    }, [addCoordinatesChart, map]);
+}
 
 const MapScreenshoter = () => {
     const map = useMap();
     const dispatch = useDispatch();
     const imgState = useSelector((state) => state.planning.imgState);
+
 
     useEffect(() => {
         if (!map) return;
@@ -66,6 +95,9 @@ const leafletMap = () => {
     const accessToken = 'pk.eyJ1IjoibHVsdWNoZW5nIiwiYSI6ImNsb3Bja3Z6YzA0cDMya28xYjJvOXE4bncifQ.RWepwc59NHV8-OnF5-C7pQ'
     const mapboxUsername = 'lulucheng'
     const mapboxId = 'clopfkjxr003s01pqhazl2dn9';
+
+
+
 
     //最短路徑資料取得
     const addPath = useSelector((state) => {
@@ -146,6 +178,7 @@ const leafletMap = () => {
                 ))}
                 <PrintComponent />
                 <MapScreenshoter />
+                <CirclieHover />
             </MapContainer>
         </div >
     )

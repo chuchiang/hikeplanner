@@ -1,554 +1,297 @@
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-
+import { useSelector } from 'react-redux';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
-
-const data = [
-    {
-        "date": "2023-11-24",
-        "time": "08:00",
-        "locations": [
-            {
-                "id": 2,
-                "lat": 23.296067594151886,
-                "lng": 121.02905273088255,
-                "name": "一等三角點",
-                "region": "台東縣",
-                "direction": {
-                    "path": [
-                        [
-                            121.015583,
-                            23.292826,
-                            3261.1
-                        ],
-                        [
-                            121.015744,
-                            23.292869,
-                            3260.8
-                        ],
-                        [
-                            121.015957,
-                            23.292972,
-                            3260.8
-                        ],
-                        [
-                            121.016257,
-                            23.293244,
-                            3261.4
-                        ],
-                        [
-                            121.016592,
-                            23.29316,
-                            3262.3
-                        ],
-                        [
-                            121.016993,
-                            23.29302,
-                            3263.4
-                        ],
-                        [
-                            121.017472,
-                            23.29308,
-                            3264.6
-                        ],
-                        [
-                            121.017842,
-                            23.293212,
-                            3266.4
-                        ],
-                        [
-                            121.01816,
-                            23.293347,
-                            3268
-                        ],
-                        [
-                            121.018477,
-                            23.29326,
-                            3270.2
-                        ],
-                        [
-                            121.018843,
-                            23.293236,
-                            3272.5
-                        ],
-                        [
-                            121.0191,
-                            23.293311,
-                            3274.5
-                        ],
-                        [
-                            121.019244,
-                            23.293459,
-                            3276.7
-                        ],
-                        [
-                            121.019496,
-                            23.293551,
-                            3279.1
-                        ],
-                        [
-                            121.019653,
-                            23.293771,
-                            3281.9
-                        ],
-                        [
-                            121.02028,
-                            23.293835,
-                            3293.1
-                        ],
-                        [
-                            121.021081,
-                            23.294219,
-                            3315.6
-                        ],
-                        [
-                            121.02142,
-                            23.294163,
-                            3323.4
-                        ],
-                        [
-                            121.021782,
-                            23.294179,
-                            3331.4
-                        ],
-                        [
-                            121.022079,
-                            23.294085,
-                            3339
-                        ],
-                        [
-                            121.022887,
-                            23.294243,
-                            3361.3
-                        ],
-                        [
-                            121.02309,
-                            23.294164,
-                            3366.9
-                        ],
-                        [
-                            121.023312,
-                            23.294121,
-                            3372.1
-                        ],
-                        [
-                            121.023497,
-                            23.294139,
-                            3374.7
-                        ],
-                        [
-                            121.023636,
-                            23.294187,
-                            3377.5
-                        ],
-                        [
-                            121.024364,
-                            23.293937,
-                            3392.7
-                        ],
-                        [
-                            121.024655,
-                            23.293887,
-                            3397.3
-                        ],
-                        [
-                            121.02499,
-                            23.293881,
-                            3400.5
-                        ],
-                        [
-                            121.025606,
-                            23.294119,
-                            3405
-                        ],
-                        [
-                            121.025972,
-                            23.294329,
-                            3407.1
-                        ],
-                        [
-                            121.026266,
-                            23.294534,
-                            3408.1
-                        ],
-                        [
-                            121.026377,
-                            23.294637,
-                            3408.2
-                        ],
-                        [
-                            121.027036,
-                            23.295144,
-                            3404.6
-                        ],
-                        [
-                            121.027848,
-                            23.295564,
-                            3391.1
-                        ],
-                        [
-                            121.028859,
-                            23.295576,
-                            3378.7
-                        ],
-                        [
-                            121.029146,
-                            23.295627,
-                            3378.1
-                        ]
-                    ],
-                    "kilometers": "1.5",
-                    "duration": "0.80",
-                    "ascent": 147,
-                    "descent": 30,
-                    "hours": 0,
-                    "minutes": 48
-                },
-                "isLoading": false
-            },
-            {
-                "id": 2,
-                "lat": 23.291495189120308,
-                "lng": 121.01600646623412,
-                "name": "迎賓樹",
-                "region": "台東縣",
-                "direction": {
-                    "path": [
-                        [
-                            121.002261,
-                            23.287909,
-                            3350
-                        ],
-                        [
-                            121.002405,
-                            23.288125,
-                            3350
-                        ],
-                        [
-                            121.002714,
-                            23.288405,
-                            3349.7
-                        ],
-                        [
-                            121.002918,
-                            23.288553,
-                            3349.6
-                        ],
-                        [
-                            121.003123,
-                            23.288885,
-                            3349.9
-                        ],
-                        [
-                            121.003214,
-                            23.288965,
-                            3350.1
-                        ],
-                        [
-                            121.003397,
-                            23.289241,
-                            3351
-                        ],
-                        [
-                            121.003585,
-                            23.289329,
-                            3351.6
-                        ],
-                        [
-                            121.003676,
-                            23.289293,
-                            3351.9
-                        ],
-                        [
-                            121.004116,
-                            23.289445,
-                            3354.1
-                        ],
-                        [
-                            121.004442,
-                            23.289661,
-                            3356.6
-                        ],
-                        [
-                            121.004682,
-                            23.289857,
-                            3358.6
-                        ],
-                        [
-                            121.004825,
-                            23.289925,
-                            3359.2
-                        ],
-                        [
-                            121.005465,
-                            23.290644,
-                            3364.9
-                        ],
-                        [
-                            121.0058,
-                            23.290952,
-                            3366.6
-                        ],
-                        [
-                            121.006075,
-                            23.291128,
-                            3367.7
-                        ],
-                        [
-                            121.006323,
-                            23.29132,
-                            3368.7
-                        ],
-                        [
-                            121.006762,
-                            23.29162,
-                            3369.3
-                        ],
-                        [
-                            121.007093,
-                            23.291548,
-                            3369.3
-                        ],
-                        [
-                            121.007276,
-                            23.2916,
-                            3369.3
-                        ],
-                        [
-                            121.007481,
-                            23.291552,
-                            3369.5
-                        ],
-                        [
-                            121.007681,
-                            23.29148,
-                            3370
-                        ],
-                        [
-                            121.008064,
-                            23.29158,
-                            3371.4
-                        ],
-                        [
-                            121.008395,
-                            23.291748,
-                            3372.7
-                        ],
-                        [
-                            121.008887,
-                            23.291776,
-                            3375.7
-                        ],
-                        [
-                            121.008982,
-                            23.291812,
-                            3376.7
-                        ],
-                        [
-                            121.009575,
-                            23.29204,
-                            3381.1
-                        ],
-                        [
-                            121.009797,
-                            23.292288,
-                            3381.6
-                        ],
-                        [
-                            121.01008,
-                            23.292388,
-                            3381.5
-                        ],
-                        [
-                            121.010167,
-                            23.292464,
-                            3381.2
-                        ],
-                        [
-                            121.01062,
-                            23.292688,
-                            3378.3
-                        ],
-                        [
-                            121.010794,
-                            23.292896,
-                            3376.1
-                        ],
-                        [
-                            121.011107,
-                            23.292848,
-                            3372.5
-                        ],
-                        [
-                            121.011529,
-                            23.29294,
-                            3367
-                        ],
-                        [
-                            121.011695,
-                            23.292876,
-                            3365.3
-                        ],
-                        [
-                            121.012143,
-                            23.292964,
-                            3357.4
-                        ],
-                        [
-                            121.012309,
-                            23.292896,
-                            3355
-                        ],
-                        [
-                            121.012809,
-                            23.292956,
-                            3342.4
-                        ],
-                        [
-                            121.013044,
-                            23.292836,
-                            3337
-                        ],
-                        [
-                            121.013272,
-                            23.292903,
-                            3331.1
-                        ],
-                        [
-                            121.013536,
-                            23.292932,
-                            3325
-                        ],
-                        [
-                            121.013756,
-                            23.293,
-                            3318.6
-                        ],
-                        [
-                            121.014092,
-                            23.29308,
-                            3309.2
-                        ],
-                        [
-                            121.014246,
-                            23.293045,
-                            3306.2
-                        ],
-                        [
-                            121.014442,
-                            23.292928,
-                            3300.2
-                        ],
-                        [
-                            121.015176,
-                            23.292807,
-                            3282.3
-                        ],
-                        [
-                            121.01553,
-                            23.292812,
-                            3275.8
-                        ],
-                        [
-                            121.015583,
-                            23.292826,
-                            3273.7
-                        ]
-                    ],
-                    "kilometers": "1.6",
-                    "duration": "0.43",
-                    "ascent": 32,
-                    "descent": 108,
-                    "hours": 0,
-                    "minutes": 26
-                },
-                "isLoading": false
-            },
-            {
-                "id": 2,
-                "lat": 23.287237981153936,
-                "lng": 121.0033035243396,
-                "name": "向陽山北峰",
-                "region": "台東縣"
-            }
-        ]
-    }];
-
-function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-    let R = 6371;//地球半徑
-    let dLat = deg2rad(lat2 - lat1);
-    let dLon = deg2rad(lon2 - lon1);
-    let a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c; // 距離，單位公里
-    return d;
-}
+import { useState } from 'react';
+import '../globals.css'
+import { addCoordinates ,clearCoordinates} from '../slice/coordinatesSlice';
+import{useDispatch}from'react-redux';
 
 
-function deg2rad(deg) {
-    return deg * (Math.PI / 180)
-}
+//hover 線條
+const verticalLinePlugin = {
+    id: 'verticalLinePlugin',
+    afterDatasetsDraw: function (chart, args, options) {
+        const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
+        // if (chart.tooltip._active && chart.tooltip._active.length) {
+        if (chart.tooltip && chart.tooltip._active && chart.tooltip._active.length) {
+            const activePoint = chart.tooltip._active[0];
+            const xCoord = activePoint.element.x;
 
-
-let distances = [];
-let elevations = [];
-let totalDistance = 0;
-
-data.forEach(day => {
-    day.locations.forEach(location => {
-      if (location.direction && location.direction.path) {
-        location.direction.path.forEach((point, index) => {
-          if (index > 0) {
-            const prevPoint = location.direction.path[index - 1];
-            totalDistance += getDistanceFromLatLonInKm(prevPoint[1], prevPoint[0], point[1], point[0]);
-          }
-          distances.push(totalDistance);
-          elevations.push(point[2]); // 使用数组的第三个元素作为海拔
-        });
-      }
-    });
-  });
-
-
-
-
-
-const chartData = {
-    labels: distances,
-    datasets: [{
-        label: '海拔 (m)',
-        data: elevations,
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-    }]
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(xCoord, top);
+            ctx.lineTo(xCoord, bottom);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)'; // 修改线条颜色和透明度
+            ctx.stroke();
+            ctx.restore();
+        }
+    }
 };
 
-const options = {
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: '海拔 (m)'
-        }
-      },
-      x: {
-        title: {
-          display: true,
-          text: '距离 (km)'
-        }
-      }
+ChartJS.register(verticalLinePlugin);
+
+
+//外框
+const customBorderPlugin = {
+    id: 'customBorderPlugin',
+    afterDraw: function(chart, args, options) {
+        const ctx = chart.ctx;
+        const chartArea = chart.chartArea;
+
+        // 设置边框的样式
+        ctx.save();
+        ctx.strokeStyle = 'gray'; // 可以设置为任何颜色
+        ctx.lineWidth = 1; // 设置边框的宽度
+
+        // 绘制矩形边框
+        ctx.strokeRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+        ctx.restore();
     }
-  };
+};
+ChartJS.register(customBorderPlugin);
+
 
 const ElevationChart = () => {
-    return <div className='p-4'>
-        <Line data={chartData} options={options}></Line>
-    </div>
+
+    const dispatch = useDispatch()
+
+    // 使用useState管理图表数据
+    const [chartData, setChartData] = useState({
+        labels: [],
+        datasets: [{
+            label: '海拔 (m)',
+            data: [],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    });
+
+    const handleMouseOut = () => {
+        dispatch(clearCoordinates()); // 清空 Redux 中的坐标
+    };
+
+
+
+
+    const data = useSelector((state) => {
+        console.log(state.planning)
+        return state.planning.days
+    });
+
+    let [totalDistance, setTotalDistance] = useState(0);
+
+    const handleClick = () => {
+
+        // 在这里先声明并初始化distances和elevations数组
+        let distances = [0]; // 起始距离为0
+        let elevations = []; // 海拔数组
+        let lastDistance = 0; // 上一段的最后距离
+
+        // 遍历数据以填充距离和海拔数组
+        console.log(data)
+
+
+
+        data.forEach(day => {
+            day.locations.forEach(location => {
+                if (location.direction && location.direction.path) {
+                    // 计算段距离
+                    const segmentDistances = calculateDistances(location.direction.path);
+
+                    // 将新计算的距离累加到总距离数组中
+                    distances = distances.concat(segmentDistances.slice(1).map(d => d + lastDistance));
+
+                    // 更新最后一个距离
+                    lastDistance = distances[distances.length - 1];
+
+                    // 合并海拔数据到总海拔数组中
+                    elevations = elevations.concat(location.direction.path.map(point => point[2]));
+                }
+            });
+        });
+
+        // 使用计算好的distances和elevations来更新图表数据
+        setChartData({
+            labels: distances.map(distance => distance.toFixed(1)),
+            datasets: [{
+                label: '海拔 (m)',
+                data: elevations,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        });
+        console.log(chartData)
+    }
+
+
+
+    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+        let R = 6371;//地球半徑
+        let dLat = deg2rad(lat2 - lat1);
+        let dLon = deg2rad(lon2 - lon1);
+        let a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c; // 距離，單位公里
+        return d;
+    }
+
+
+    function deg2rad(deg) {
+        return deg * (Math.PI / 180)
+    }
+
+
+    function calculateDistances(path) {
+        let distances = [0];
+
+
+        for (let i = 1; i < path.length; i++) {
+            const prevPoint = path[i - 1];
+            const point = path[i];
+            const distance = getDistanceFromLatLonInKm(prevPoint[1], prevPoint[0], point[1], point[0]);
+            distances.push(distances[distances.length - 1] + distance);
+            // last = (distances[distances.length - 1])
+            // console.log(distances)
+            // console.log(last)
+        }
+        return distances.map(distance => parseFloat(distance.toFixed(1))); // 保留一位小数
+    }
+
+
+
+    const options = {
+        scales: {
+            y: {
+                grid: {
+                    drawBorder: true, // 确保绘制边框
+                },
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: '海拔 (m)'
+                },
+                padding: {
+                    top: 10,
+                    bottom: 10
+                }
+            },
+            x: {
+                grid: {
+                    drawBorder: true, // 确保绘制边框
+                },
+                title: {
+                    display: true,
+                    text: '公里 (km)'
+                },
+
+                padding: {
+                    right: 10,
+                    left: 10
+                },
+                ticks: {
+                    maxTicksLimit: 20, // 限制最大标签数量为20
+                }
+            }
+        },
+
+        layout: {
+            padding: {
+                right: 20 // 在右侧添加额外的空间
+            }
+        },
+        plugins: {
+            tooltip: {
+                // 自定义提示信息
+                mode: 'index',
+                intersect: false,
+                callbacks: {
+                    label: function (context) {
+                        let index = context.dataIndex;
+                        const elevation = context.dataset.data[index]; // 获取海拔值  6
+
+                        let locationIndex = 0;
+                        let day = 0;
+                        try {
+
+                            let dayFound = false;
+                            for (let d = 0; d < data.length; d++) {// day
+                                // let dayLength = data.length - 1;
+                                if (dayFound) {
+                                    break;
+                                }
+                                for (let i = 0; i < data[d].locations.length - 1; i++) { // 
+                                    let locatinoPathLength = data[d].locations[i].direction.path.length - 1;
+                                    // let locaationFirstPathLength = data[d].locations[0].direction.path.length;
+
+                                    if (i === 0) {
+                                        if ((index - locatinoPathLength) <= 0) {
+                                            dayFound = true;
+                                            locationIndex = i;
+                                            day = d;
+                                            break;
+                                        } else {
+                                            index -= locatinoPathLength;
+                                            continue;
+                                        }
+                                    }
+                                    if (index - locatinoPathLength <= 0) {
+                                        dayFound = true;
+                                        locationIndex = i;
+                                        day = d;
+                                        break;
+                                    }
+                                    else {
+                                        index -= locatinoPathLength;
+                                    }
+
+                                }
+                            }
+
+
+                        } catch (error) {
+                            console.log(error);
+                        }
+                        const latLng = data[day].locations[locationIndex].direction.path[index]; // 获取经纬度
+
+
+                        const lat = latLng[1].toFixed(6); // 保留六位小数
+                        const lng = latLng[0].toFixed(6); // 保留六位小数
+
+                        dispatch(addCoordinates({'lng':lng,'lat':lat}))
+
+                        return `context.dataIndex:${context.dataIndex}, index${index}, 經度: ${lng}, 緯度: ${lat}, 公里: ${context.label} km, 海拔: ${elevation} m`;
+                    }
+                }
+            },
+            verticalLinePlugin: {}
+
+        },
+        elements: {
+            line: {
+                tension: 0.1 // 设置曲线的弯曲程度
+            },
+            point: {
+                radius: 0 // 设置点的大小为0，以隐藏它们
+            }
+        }
+    };
+
+
+
+
+
+    return <div className='p-4 '>
+        < button className='bg-5B6E60 text-white w-28 ' onClick={handleClick} > 海拔剖面圖</button>
+
+        <Line className='w-auto' data={chartData} options={options} onMouseOut={handleMouseOut}></Line>
+    </div >
 }
 
 export default ElevationChart;
