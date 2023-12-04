@@ -11,11 +11,13 @@ import { Provider } from 'react-redux';//Provider 要引入
 import { auth } from "./api/firebase/firebase"; // 確保這裡是正確的導入
 
 import LogOut from './components/logout'
+import { useRouter } from 'next/navigation';
 
-function Header({ onLoginClick }) {
+function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
 
   const currentUser = useSelector(selectorCurrentUser);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -34,7 +36,19 @@ function Header({ onLoginClick }) {
 
     // 清理監聽器
     return () => unsubscribe();
-  }, [dispatch]);
+  }, [dispatch, router]);
+
+  const handlePlanningClick = (e) => {
+    if (!currentUser) {
+      e.preventDefault(); // 阻止鏈接默認行為
+      router.push('/')
+      setShowLogin(true); // 顯示登入表單
+      setIsLoginMode(true); // 設置為登入模式
+    } else {
+      router.push('/planning')
+    }
+
+  };
 
 
   return (
@@ -47,7 +61,7 @@ function Header({ onLoginClick }) {
           </div>
         </Link>
         <div className='flex space-x-4 items-center'>
-          <Link href='/planning' className='co-5B6E60 font-medium'>規劃助手</Link>
+          <Link href='/planning' className='co-5B6E60 font-medium' onClick={handlePlanningClick}>規劃助手</Link>
           <Link href='/share' className='co-5B6E60 font-medium'>行程分享</Link>
           {currentUser ? (
             <>
@@ -70,7 +84,6 @@ export default function RootLayout({ children }) {
   const [showLogin, setShowLogin] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true); // 新增用於追踪登入或註冊模式的狀態
 
-
   const handleLoginClick = () => {
     setShowLogin(true);
     setIsLoginMode(true); // 點擊登入時，設置為登入模式
@@ -82,14 +95,11 @@ export default function RootLayout({ children }) {
   };
 
 
-
-
-
   return (
     <html lang="en">
       <body>
         <Provider store={store}>
-          <Header onLoginClick={handleLoginClick} />
+          <Header onLoginClick={handleLoginClick} setShowLogin={setShowLogin} setIsLoginMode={setIsLoginMode} />
           {children}
           {/* 登入覆蓋整個頁面*/}
           {showLogin && (

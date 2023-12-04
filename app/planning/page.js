@@ -17,7 +17,7 @@ import Head from 'next/head';
 import { clearStateAction } from '../slice/planningSlice';
 import { usePathname, useSearchParams } from 'next/navigation'
 import ElevationChart from '../components/lineChart';
-
+import { useRouter } from 'next/navigation';
 
 const DynamicMap = dynamic(() => import('../components/baseMap'), {
   ssr: false
@@ -44,46 +44,47 @@ export default function Home() {
   const [isLoginMode, setIsLoginMode] = useState(true); // 新增用於追踪登入或註冊模式的狀態
   const dispatch = useDispatch();
   const pathname = usePathname();
+  const router = useRouter();
 
-  const handleLoginClick = () => {
-    setShowLogin(true);
-    setIsLoginMode(true); // 點擊登入時，設置為登入模式
-  };
 
-  const handleRegisterClick = () => {
-    setShowLogin(true);
-    setIsLoginMode(false); // 點擊註冊時，設置為註冊模式
-  };
 
   useEffect(() => {
     // 如果沒有用戶登入，顯示登入表單
     if (!currentUser) {
-      setShowLogin(true);
-    } else {
-      setShowLogin(false);
+      router.push('/'); // 重定向到首頁
     }
-  }, [currentUser]);
+  }, [currentUser, router]);
 
-  console.log(pathname);
-  // 觸發清空 Redux 狀態的 action
-  useEffect(() => {
-    // 檢查是否離開了特定頁面
-    if (pathname !== '/planning') {
-      // 如果離開了特定頁面，則清空 Redux 狀態
-      dispatch(clearStateAction())
-    }
-  }, [pathname, dispatch])
+  // const handleLoginClick = () => {
+  //   setShowLogin(true);
+  //   setIsLoginMode(true); // 點擊登入時，設置為登入模式
+  // };
+
+  // const handleRegisterClick = () => {
+  //   setShowLogin(true);
+  //   setIsLoginMode(false); // 點擊註冊時，設置為註冊模式
+  // };
+  
+  // console.log(pathname);
+  // // 觸發清空 Redux 狀態的 action
+  // useEffect(() => {
+  //   // 檢查是否離開了特定頁面
+  //   if (pathname !== '/planning') {
+  //     // 如果離開了特定頁面，則清空 Redux 狀態
+  //     dispatch(clearStateAction())
+  //   }
+  // }, [pathname, dispatch])
 
 
 
 
-if (showLogin) {
-  return (showLogin && (
-    isLoginMode ?
-      <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
-      <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
-  ));
-}
+// if (showLogin) {
+//   return (showLogin && (
+//     isLoginMode ?
+//       <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
+//       <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
+//   ));
+// }
 
 
 

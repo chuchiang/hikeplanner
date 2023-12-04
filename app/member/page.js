@@ -9,40 +9,22 @@ import { useSelector } from 'react-redux';
 import { selectorCurrentUser } from '../slice/authSlice';
 import LoginForm from '../components/login';
 import MyPlanner from '../components/myPlan';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
     //判斷登入
     const currentUser = useSelector(selectorCurrentUser);
-    const [showLogin, setShowLogin] = useState(false);
-    const [isLoginMode, setIsLoginMode] = useState(true); // 新增用於追踪登入或註冊模式的狀態
+    const router = useRouter();
 
-    const handleLoginClick = () => {
-        setShowLogin(true);
-        setIsLoginMode(true); // 點擊登入時，設置為登入模式
-    };
 
-    const handleRegisterClick = () => {
-        setShowLogin(true);
-        setIsLoginMode(false); // 點擊註冊時，設置為註冊模式
-    };
 
     useEffect(() => {
-        // 如果沒有用戶登入，顯示登入表單
-        if (!currentUser) {
-            setShowLogin(true);
-        } else {
-            setShowLogin(false);
-        }
-    }, [currentUser]);
-
-    if (showLogin) {
-        return (showLogin && (
-            isLoginMode ?
-                <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
-                <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
-        ));
-    }
+      // 如果沒有用戶登入，顯示登入表單
+      if (!currentUser) {
+        router.push('/'); // 重定向到首頁
+      }
+    }, [currentUser, router]);
 
 
 

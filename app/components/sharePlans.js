@@ -2,10 +2,11 @@ import '../globals.css'
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'
-import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+import { useDispatch ,useSelector} from 'react-redux';
 import { addData } from '../slice/planningSlice'
 import { asyncGetShareData, asyncGetSearchData } from '../api/firebase/asyncGet'
+import { selectorCurrentUser } from '../slice/authSlice'
 
 const SharePlan = () => {
 
@@ -13,6 +14,8 @@ const SharePlan = () => {
     const dispatch = useDispatch();
     const [sharePlan, setSharePlan] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const currentUser = useSelector(selectorCurrentUser);
+
 
 
     // useEffect 用來在元件載入後取得 Firebase 中的資料
@@ -41,8 +44,6 @@ const SharePlan = () => {
             console.error('error fetching data', error);
         }
     }
-
-
 
     //轉換時間戳
     function convertTimestampToDate(timestamp) {
@@ -82,14 +83,28 @@ const SharePlan = () => {
 
     //轉跳planning 頁面
     const handleUseRouteClick = (item) => {
-        console.log(item)
-        const reduxData = transformFirebaseDataToRedux(item);
-        console.log(reduxData)
-        dispatch(addData(reduxData))
-        router.push('/planning');
+        if (!currentUser) {
+            Swal.fire({
+                title: '請先登入',
+                text: '登入後才可規劃',
+                icon: 'info',
+                confirmButtonText: '好的',
+                confirmButtonColor: '#5B6E60',
+                customClass: {
+                    confirmButton: 'custom-button',
+                    title: 'text-2xl',
+                    text: 'text-base'
+                },
+            });
+        } else {
+            console.log(item)
+            const reduxData = transformFirebaseDataToRedux(item);
+            console.log(reduxData)
+            dispatch(addData(reduxData))
+            router.push('/planning');
+        }
+
     }
-
-
 
 
 
