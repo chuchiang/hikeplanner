@@ -71,9 +71,9 @@ leaflet-tile {
   width: 20px;
 }
 
-.leaflet-control-geosearch{
+/* .leaflet-control-geosearch{
   top: -20px;
-}
+} */
 
 
 leaflet-tile-container {
