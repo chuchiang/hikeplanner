@@ -18,9 +18,11 @@ import { clearStateAction } from '../slice/planningSlice';
 import { usePathname, useSearchParams } from 'next/navigation'
 import ElevationChart from '../components/lineChart';
 import { useRouter } from 'next/navigation';
+import Loading from '../components/login'; // 確保路徑正確
 
 const DynamicMap = dynamic(() => import('../components/baseMap'), {
-  ssr: false
+  ssr: false,
+  // loading: () => <Loading />
 });
 
 

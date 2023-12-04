@@ -7,6 +7,7 @@ import { addimg,addimgState, updataLocationDirection, deleteLocation, addDay, ch
 import ExportGpx from './exportGPX';
 import {asyncAddData} from '../api/firebase/asyncAdd';
 import { selectorCurrentUser } from '../slice/authSlice';
+import Loading from '../components/loading'; // 確保路徑正確
 
 
 // 函數：添加時間（小時和分鐘）
@@ -25,6 +26,7 @@ function Route() {
     const [isLoading, setIsLoading] = useState(true);
     const [deletedIndex, setDeletedIndex] = useState(null);
     const [routeName, setRouteName] = useState('');
+
     // const [shareTrip, setShareTrip] = useState(false);
     // const captureMapSnapshot = useSelector(getMapSnapshotFunction);
 

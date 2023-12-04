@@ -3,10 +3,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-import { useDispatch ,useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addData } from '../slice/planningSlice'
 import { asyncGetShareData, asyncGetSearchData } from '../api/firebase/asyncGet'
 import { selectorCurrentUser } from '../slice/authSlice'
+import Loading from '../components/loading'; // 確保路徑正確
 
 const SharePlan = () => {
 
@@ -15,12 +16,13 @@ const SharePlan = () => {
     const [sharePlan, setSharePlan] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const currentUser = useSelector(selectorCurrentUser);
-
+    const [isLoading, setIsLoading] = useState(true);
 
 
     // useEffect 用來在元件載入後取得 Firebase 中的資料
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true); // 開始加載數據
             try {
                 const getData = await asyncGetShareData();
                 console.log(getData);
@@ -28,9 +30,14 @@ const SharePlan = () => {
             } catch (error) {
                 console.error('error fetching data', error);
             }
+            setIsLoading(false); // 數據加載完成
         };
         fetchData();
     }, []);
+
+    // if (isLoading) {
+    //     return <Loading />;
+    // }
 
     //點擊觸發搜尋
     const handleSearch = async () => {
@@ -117,41 +124,46 @@ const SharePlan = () => {
                     <input className='rounded-xl w-600' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></input><button onClick={handleSearch}><img src='/search.png' className='w-6'></img></button>
                 </div>
             </div>
-            {sharePlan && sharePlan.length > 0 ? (
-                sharePlan.map((item, index) => {
-                    const readableDate = convertTimestampToDate(item.recordTime)?.toLocaleString();
-                    return (
-                        <div key={index} className='flex'>
-                            <img src={item.img} className='w-52 h-auto rounded-l-xl'></img>
-                            <div className=' bg-E7EDD8  rounded-r-xl p-5 w-600 relative'>
-                                <h3 className='co-005264 font-bold text-xl mb-4'>{item.routeName}</h3>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td className='  pr-8 pb-3'><div className='flex'><img src='/plan/direction.png' className='w-6 co-5B6E60 mr-2' />距離：{item.total.kilometers}km</div></td>
-                                            <td className='  pb-3'><div className='flex'><img src='/plan/time.png' className='w-6 co-5B6E60 mr-2' /><p>預估時間：{item.total.hours}h {item.total.minutes}min</p></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td className=' pb-5'><div className='flex'><img src='/plan/trend.png' className='w-6 mr-2' /><p>上升：{item.total.ascent}m</p></div></td>
-                                            <td className=' pb-5'><div className='flex'><img src='/plan/chart-down.png' className='w-6 mr-2' /><p>下降：{item.total.descent}m</p></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td className=''><div className='flex'><img src='/member.png' className='w-6 mr-2' /><p>{item.userName}</p></div></td>
-                                            <td className='co-646564 mr-2'><p>更新時間：{readableDate}</p></td>
+            {isLoading ? (
+                <Loading />
+            ) : (
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <button className=' absolute right-5 bottom-5 bg-507780 hover:bg-43646B shadow-md hover:shadow-xl text-white hover:bg-5B6E60' onClick={() => handleUseRouteClick(item)}>規劃此路線</button>
+                sharePlan && sharePlan.length > 0 ? (
+                    sharePlan.map((item, index) => {
+                        const readableDate = convertTimestampToDate(item.recordTime)?.toLocaleString();
+                        return (
+                            <div key={index} className='flex'>
+                                <img src={item.img} className='w-52 h-auto rounded-l-xl'></img>
+                                <div className=' bg-E7EDD8  rounded-r-xl p-5 w-600 relative'>
+                                    <h3 className='co-005264 font-bold text-xl mb-4'>{item.routeName}</h3>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td className='  pr-8 pb-3'><div className='flex'><img src='/plan/direction.png' className='w-6 co-5B6E60 mr-2' />距離：{item.total.kilometers}km</div></td>
+                                                <td className='  pb-3'><div className='flex'><img src='/plan/time.png' className='w-6 co-5B6E60 mr-2' /><p>預估時間：{item.total.hours}h {item.total.minutes}min</p></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td className=' pb-5'><div className='flex'><img src='/plan/trend.png' className='w-6 mr-2' /><p>上升：{item.total.ascent}m</p></div></td>
+                                                <td className=' pb-5'><div className='flex'><img src='/plan/chart-down.png' className='w-6 mr-2' /><p>下降：{item.total.descent}m</p></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td className=''><div className='flex'><img src='/member.png' className='w-6 mr-2' /><p>{item.userName}</p></div></td>
+                                                <td className='co-646564 mr-2'><p>更新時間：{readableDate}</p></td>
 
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button className=' absolute right-5 bottom-5 bg-507780 hover:bg-43646B shadow-md hover:shadow-xl text-white hover:bg-5B6E60' onClick={() => handleUseRouteClick(item)}>規劃此路線</button>
+
+
+                                </div>
 
                             </div>
+                        )
+                    })
 
-                        </div>
-                    )
-                })
-
-            ) : <div className='co-005264 mt-5 font-medium'>沒有可分享的路線</div>}
+                ) : <div className='co-005264 mt-5 font-medium'>沒有可分享的路線</div>)
+            }
         </div>
 
     )
