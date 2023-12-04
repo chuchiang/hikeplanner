@@ -1,79 +1,54 @@
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { useSelector } from 'react-redux';
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
-import { useState } from 'react';
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+import { useState, useEffect } from 'react';
 import '../globals.css'
-import { addCoordinates ,clearCoordinates} from '../slice/coordinatesSlice';
-import{useDispatch}from'react-redux';
-
-
-//hover 線條
-const verticalLinePlugin = {
-    id: 'verticalLinePlugin',
-    afterDatasetsDraw: function (chart, args, options) {
-        const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
-        // if (chart.tooltip._active && chart.tooltip._active.length) {
-        if (chart.tooltip && chart.tooltip._active && chart.tooltip._active.length) {
-            const activePoint = chart.tooltip._active[0];
-            const xCoord = activePoint.element.x;
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(xCoord, top);
-            ctx.lineTo(xCoord, bottom);
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)'; // 修改线条颜色和透明度
-            ctx.stroke();
-            ctx.restore();
-        }
-    }
-};
-
-ChartJS.register(verticalLinePlugin);
-
-
-//外框
-const customBorderPlugin = {
-    id: 'customBorderPlugin',
-    afterDraw: function(chart, args, options) {
-        const ctx = chart.ctx;
-        const chartArea = chart.chartArea;
-
-        // 设置边框的样式
-        ctx.save();
-        ctx.strokeStyle = 'gray'; // 可以设置为任何颜色
-        ctx.lineWidth = 1; // 设置边框的宽度
-
-        // 绘制矩形边框
-        ctx.strokeRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
-        ctx.restore();
-    }
-};
-ChartJS.register(customBorderPlugin);
+import { addCoordinates, clearCoordinates } from '../slice/coordinatesSlice';
+import { useDispatch } from 'react-redux';
+import { verticalLinePlugin } from '../lib/chartVerticalLine'
+import { customBorderPlugin } from '../lib/chartBorder'
+ChartJS.register(verticalLinePlugin);//hover 線條
+ChartJS.register(customBorderPlugin);//外框
 
 
 const ElevationChart = () => {
 
     const dispatch = useDispatch()
+    const [showChart, setShowChart] = useState(false);
 
-    // 使用useState管理图表数据
+    // 使用useState管理圖表數據
     const [chartData, setChartData] = useState({
         labels: [],
         datasets: [{
             label: '海拔 (m)',
             data: [],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
+            fill: true,
+            borderColor: 'rgb(158,104,106)',
+            backgroundColor: 'rgb(176,144,146,0.5)', 
             tension: 0.1
         }]
     });
 
     const handleMouseOut = () => {
-        dispatch(clearCoordinates()); // 清空 Redux 中的坐标
+        dispatch(clearCoordinates()); 
     };
 
 
+    useEffect(() => {
+        const handleGlobalClick = (event) => {
+            // 檢查點擊事件是否在圖表或按鈕外部
+            if (showChart && !event.target.closest('.chart-container, .chart-button')) {
+                setShowChart(false);
+            }
+        };
+        // 全局點擊事件監聽器
+        document.addEventListener('click', handleGlobalClick);
+        // 清除監聽器
+        return () => {
+            document.removeEventListener('click', handleGlobalClick);
+        };
+    }, [showChart]);
 
 
     const data = useSelector((state) => {
@@ -81,46 +56,39 @@ const ElevationChart = () => {
         return state.planning.days
     });
 
-    let [totalDistance, setTotalDistance] = useState(0);
 
     const handleClick = () => {
+        //顯示chart
+        setShowChart(!showChart);
 
-        // 在这里先声明并初始化distances和elevations数组
-        let distances = [0]; // 起始距离为0
-        let elevations = []; // 海拔数组
-        let lastDistance = 0; // 上一段的最后距离
-
-        // 遍历数据以填充距离和海拔数组
-        console.log(data)
-
+        let distances = [0]; 
+        let elevations = []; 
+        let lastDistance = 0; 
 
 
         data.forEach(day => {
             day.locations.forEach(location => {
                 if (location.direction && location.direction.path) {
-                    // 计算段距离
+                    // 計算段距離
                     const segmentDistances = calculateDistances(location.direction.path);
-
-                    // 将新计算的距离累加到总距离数组中
+                    // 新計算距離累加到之前的距離
                     distances = distances.concat(segmentDistances.slice(1).map(d => d + lastDistance));
-
-                    // 更新最后一个距离
+                    // 更新最後距離
                     lastDistance = distances[distances.length - 1];
-
-                    // 合并海拔数据到总海拔数组中
                     elevations = elevations.concat(location.direction.path.map(point => point[2]));
                 }
             });
         });
 
-        // 使用计算好的distances和elevations来更新图表数据
+        // 使用計算好的distances和elevations更新圖表數據
         setChartData({
             labels: distances.map(distance => distance.toFixed(1)),
             datasets: [{
-                label: '海拔 (m)',
+                display: '海拔 (m)',
                 data: elevations,
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
+                fill: true,
+                borderColor: 'rgb(158,104,106)',
+                backgroundColor: 'rgb(176,144,146,0.5)', // 設置線內顏色
                 tension: 0.1
             }]
         });
@@ -150,86 +118,80 @@ const ElevationChart = () => {
 
     function calculateDistances(path) {
         let distances = [0];
-
-
         for (let i = 1; i < path.length; i++) {
             const prevPoint = path[i - 1];
             const point = path[i];
             const distance = getDistanceFromLatLonInKm(prevPoint[1], prevPoint[0], point[1], point[0]);
             distances.push(distances[distances.length - 1] + distance);
-            // last = (distances[distances.length - 1])
-            // console.log(distances)
-            // console.log(last)
         }
-        return distances.map(distance => parseFloat(distance.toFixed(1))); // 保留一位小数
+        return distances.map(distance => parseFloat(distance.toFixed(1)));
     }
 
-
-
     const options = {
+        maintainAspectRatio: false,
         scales: {
             y: {
                 grid: {
-                    drawBorder: true, // 确保绘制边框
+                    drawBorder: true, 
                 },
                 beginAtZero: true,
                 title: {
                     display: true,
                     text: '海拔 (m)'
                 },
-                padding: {
-                    top: 10,
-                    bottom: 10
-                }
+
             },
             x: {
                 grid: {
-                    drawBorder: true, // 确保绘制边框
+                    drawBorder: true, 
                 },
                 title: {
                     display: true,
-                    text: '公里 (km)'
+                    text: '距離 (km)'
                 },
 
                 padding: {
                     right: 10,
                     left: 10
                 },
+                // 限制顯示20
                 ticks: {
-                    maxTicksLimit: 20, // 限制最大标签数量为20
+                    maxTicksLimit: 20, 
                 }
             }
         },
 
         layout: {
             padding: {
-                right: 20 // 在右侧添加额外的空间
+                right: 5 
             }
         },
         plugins: {
+            //提示隱藏
+            legend: {
+                display: false, 
+            },
+            //自訂義tooltip
             tooltip: {
-                // 自定义提示信息
                 mode: 'index',
                 intersect: false,
                 callbacks: {
                     label: function (context) {
                         let index = context.dataIndex;
-                        const elevation = context.dataset.data[index]; // 获取海拔值  6
-
+                        const elevation = context.dataset.data[index]; 
                         let locationIndex = 0;
                         let day = 0;
                         try {
 
                             let dayFound = false;
-                            for (let d = 0; d < data.length; d++) {// day
-                                // let dayLength = data.length - 1;
+                            // 計算獲取哪天
+                            for (let d = 0; d < data.length; d++) {
                                 if (dayFound) {
                                     break;
                                 }
-                                for (let i = 0; i < data[d].locations.length - 1; i++) { // 
+                                // 計算獲取哪天的location
+                                for (let i = 0; i < data[d].locations.length - 1; i++) { 
                                     let locatinoPathLength = data[d].locations[i].direction.path.length - 1;
-                                    // let locaationFirstPathLength = data[d].locations[0].direction.path.length;
-
                                     if (i === 0) {
                                         if ((index - locatinoPathLength) <= 0) {
                                             dayFound = true;
@@ -250,23 +212,20 @@ const ElevationChart = () => {
                                     else {
                                         index -= locatinoPathLength;
                                     }
-
                                 }
                             }
-
-
                         } catch (error) {
                             console.log(error);
                         }
-                        const latLng = data[day].locations[locationIndex].direction.path[index]; // 获取经纬度
-
-
+                        const latLng = data[day].locations[locationIndex].direction.path[index]; 
                         const lat = latLng[1].toFixed(6); // 保留六位小数
                         const lng = latLng[0].toFixed(6); // 保留六位小数
 
-                        dispatch(addCoordinates({'lng':lng,'lat':lat}))
+                        dispatch(addCoordinates({ 'lng': lng, 'lat': lat }))
 
-                        return `context.dataIndex:${context.dataIndex}, index${index}, 經度: ${lng}, 緯度: ${lat}, 公里: ${context.label} km, 海拔: ${elevation} m`;
+                        return ` 經度: ${lng}, 緯度: ${lat}, 公里: ${context.label} km, 海拔: ${elevation} m`;
+                        // return `context.dataIndex:${context.dataIndex}, index${index}, 經度: ${lng}, 緯度: ${lat}, 公里: ${context.label} km, 海拔: ${elevation} m`;
+
                     }
                 }
             },
@@ -275,22 +234,67 @@ const ElevationChart = () => {
         },
         elements: {
             line: {
-                tension: 0.1 // 设置曲线的弯曲程度
+                tension: 0.1 // 取線灣曲程度
             },
             point: {
-                radius: 0 // 设置点的大小为0，以隐藏它们
+                radius: 0 // 點隱藏
             }
         }
     };
 
 
+    //total 距離時間
+    const directionData = useSelector((state) => {
+        return state.planning.days
+    })
+
+    const total = {
+        kilometers: 0.0,
+        hours: 0,
+        minutes: 0,
+        ascent: 0,
+        descent: 0
+    }
+
+    directionData.forEach(day => {
+        day.locations.forEach(location => {
+            if (location.direction) {
+                console.log(location.direction.kilometers)
+                total.kilometers = parseFloat((total.kilometers + parseFloat(location.direction.kilometers)).toFixed(1));
+                total.ascent += location.direction.ascent;
+                total.descent += location.direction.descent;
+                total.hours += location.direction.hours;
+                total.minutes += location.direction.minutes;
+
+                while (total.minutes >= 60) {
+                    total.hours += 1,
+                        total.minutes -= 60
+                }
+            }
+        })
+    });
 
 
 
-    return <div className='p-4 '>
-        < button className='bg-5B6E60 text-white w-28 ' onClick={handleClick} > 海拔剖面圖</button>
 
-        <Line className='w-auto' data={chartData} options={options} onMouseOut={handleMouseOut}></Line>
+
+    return <div className='absolute z-1000 bottom-0  w-800'>
+        {showChart && (
+            <div className='h-50 bg-white chart-container'>
+                <Line className='' data={chartData} options={options} onMouseOut={handleMouseOut}></Line>
+            </div>)}
+        <div className='flex justify-between items-end'>
+            <ul className='flex space-x-2 '>
+                <li className='co-646564 text-base'>總距離：<br />{total.kilometers}km</li>
+                <li className='border-r-2 text-base'></li>
+                <li className='co-646564 text-base'>總預估時間：<br />{total.hours}h{total.minutes}min</li>
+                <li className='border-r-2'></li>
+                <li className='co-646564 text-base'>總爬升高度：<br />{total.ascent}m</li>
+                <li className='border-r-2'></li>
+                <li className='co-646564 text-base'>總下降高度：<br />{total.descent}m</li>
+            </ul>
+            < button className='bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl text-white w-28 chart-button' onClick={handleClick} > 海拔剖面圖</button>
+        </div>
     </div >
 }
 

@@ -50,7 +50,7 @@ const ExportGpx = () => {
 
     return (
         <>
-            <button className='bg-6697A2 w-32 text-white' onClick={handleDownloadGPX} type="button" >匯出 GPX</button>
+            <button className='bg-5A748F w-32 text-white hover:bg-4A6075 shadow-md hover:shadow-xl' onClick={handleDownloadGPX} type="button" >匯出 GPX</button>
         </>
     )
 }

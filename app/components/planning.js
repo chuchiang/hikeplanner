@@ -502,7 +502,7 @@ function Route() {
     return (
         <div className='flex flex-col mt-10 mr-5 w-380 '>
             <form onSubmit={onSubmit}>
-                <div className='bg-F5F2ED p-5 rounded h-72 overflow-y-scroll'>
+                <div className='bg-F5F2ED p-5 rounded h-72 overflow-y-scroll scrollbar'>
                     <div className='flex mb-5 justify-center'>
                         <div className='flex flex-col mb-2'>
                             <label className='co-434E4E font-medium '>路線名稱</label>
@@ -584,7 +584,7 @@ function Route() {
                 </div>
                 <div className='flex justify-between mt-3 items-center'>
                     <ExportGpx />
-                    <button className='bg-005264 w-32 text-white' type="submit ">儲存</button>
+                    <button className=' w-32 text-white bg-507780 hover:bg-43646B shadow-md hover:shadow-xl' type="submit ">儲存</button>
                     {/* <p>分享行程</p> */}
                     {/* <input className='w-8' type="checkbox" name="myCheckbox" onChange={handleShareTripChange} /> */}
                 </div>

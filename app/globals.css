@@ -38,7 +38,7 @@ body {
 leaflet-tile {
   display: block!important; 
   padding: 0!important;
-  border-spacing: 0!important; /* 这些是常规的CSS属性，可能没有对应的Tailwind类 */
+  border-spacing: 0!important; 
   border-collapse: collapse!important;
   margin: 0 !important;
   border: none !important;
@@ -50,6 +50,31 @@ leaflet-tile {
 .leaflet-marker-shadow {
     border: none !important;
 }
+
+.scrollbar{
+  &::-webkit-scrollbar{
+    width: 10px;
+    margin: 50px 130px;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #CED6D5;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 3px;
+    background-color: #BAB5A8;
+  }
+}
+
+.leaflet-control-layers-selector{
+  width: 20px;
+}
+
+.leaflet-control-geosearch{
+  top: -20px;
+}
+
 
 leaflet-tile-container {
   background-image: none !important;
@@ -92,8 +117,14 @@ button {
   .bg-739A65{
     background-color: #739A65;
   }
-  .bg-e9edc9{
-    background-color: #eff6e0;
+  .bg-E7EDD8{
+    background-color: #E7EDD8;
+  }
+  .bg-87706F{
+    background-color: #87706F;
+  }
+  .bg-997F7D{
+    background-color: #997F7D;
   }
  
   .bg-84a98c{
@@ -105,10 +136,22 @@ button {
   .bg-005264{
     background-color: #005264;
   }
-  .bg-6697A2{
-    background-color: #6697A2;
+  .bg-5A748F{
+    background-color: #5A748F;
+  }
+  .bg-4A6075{
+    background-color: #4A6075;
   }
 
+  .bg-507780{
+    background-color: #507780;
+  }
+  .bg-43646B{
+    background-color: #43646B;
+  }
+  .bg-6C8272{
+    background-color: #6C8272;
+  }
 
   .bg-646564{
     background-color:#646564
@@ -129,6 +172,7 @@ button {
   .w-800{
     width: 800px;
   }
+ 
   .w-500{
     width: 500px;
   }
@@ -144,7 +188,9 @@ button {
   .border-co-005264{
     border-color: #005264;
   }
-
+.z-1000{
+  z-index: 1000;
+}
   
   
   

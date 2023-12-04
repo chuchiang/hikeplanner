@@ -164,10 +164,8 @@ const MyPlanner = () => {
                                 </table>
 
                                 <div className='flex justify-between items-center mt-4 absolute right-5 bottom-5'>
-                                    {/* <div className='rounded border border-co-005264 mr-4 hover:bg-6697A2'><button className='co-005264 text-medium' onClick={() => handleUseRouteClick(item)}>規劃此路線</button></div>
-                                    <div className='rounded border border-co-005264 hover:bg-6697A2'><button id={item.id} className='co-005264 text-medium' onClick={() => handleDeleteRouteClick(item.id)}>刪除</button></div> */}
-                                    <div className='rounded border mr-4  bg-6697A2 hover:bg-005264  shadow-md hover:shadow-xl '><button className='text-white' onClick={() => handleUseRouteClick(item)}>規劃此路線</button></div>
-                                    <div className='rounded border bg-6697A2 hover:bg-005264 shadow-md hover:shadow-xl '><button id={item.id} className='text-white' onClick={() => handleDeleteRouteClick(item.id)}>刪除</button></div>
+                                    <div className='rounded border mr-4  bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl '><button className='text-white' onClick={() => handleUseRouteClick(item)}>規劃此路線</button></div>
+                                    <div className='rounded border bg-997F7D hover:bg-87706F  shadow-md hover:shadow-xl '><button id={item.id} className='text-white' onClick={() => handleDeleteRouteClick(item.id)}>刪除</button></div>
                                 </div>
                             </div>
                         </div>

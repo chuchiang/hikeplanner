@@ -13,7 +13,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectorCurrentUser } from '../slice/authSlice';
 import LoginForm from '../components/login';
 import RegisterForm from '../components/register'
-import TotalDorection from '../components/totalDirection'
 import Head from 'next/head';
 import { clearStateAction } from '../slice/planningSlice';
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -28,9 +27,9 @@ const DynamicMap = dynamic(() => import('../components/baseMap'), {
 function RouteMap() {
   return (
     <>
-      <div className='mt-10'>
+      <div className='mt-10 relative'>
         <DynamicMap />
-        <TotalDorection />
+        <ElevationChart />
       </div>
     </>
   )
@@ -100,7 +99,7 @@ return (
         <Route />
         <RouteMap />
       </div>
-      <ElevationChart />
+      {/* <ElevationChart /> */}
 
     </Provider>
     

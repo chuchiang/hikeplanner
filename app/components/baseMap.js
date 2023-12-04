@@ -33,7 +33,7 @@ const CirclieHover = () => {
             circleMarker = L.circleMarker([lat, lng], {
                 color: 'white',
                 fillColor: 'black',
-                fillOpacity: 1, 
+                fillOpacity: 1,
                 radius: 7
             }).addTo(map);
         }

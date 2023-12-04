@@ -96,7 +96,7 @@ const SharePlan = () => {
     return (
         <div className='flex flex-col items-center w-800 space-y-6'>
             <h3 className='co-005264 font-bold text-xl'>路線分享</h3>
-            <div className='bg-e9edc9 flex rounded-xl w-full p-3 items-center'>
+            <div className='bg-E7EDD8 flex rounded-xl w-full p-3 items-center'>
                 <p className='co-005264 font-bold mr-2'>請搜尋路線名稱：</p>
                 <div className='rounded-xl border-black flex items-center bg-white'>
                     <input className='rounded-xl w-600' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></input><button onClick={handleSearch}><img src='/search.png' className='w-6'></img></button>
@@ -108,7 +108,7 @@ const SharePlan = () => {
                     return (
                         <div key={index} className='flex'>
                             <img src={item.img} className='w-52 h-auto rounded-l-xl'></img>
-                            <div className=' bg-e9edc9  rounded-r-xl p-5 w-600 relative'>
+                            <div className=' bg-E7EDD8  rounded-r-xl p-5 w-600 relative'>
                                 <h3 className='co-005264 font-bold text-xl mb-4'>{item.routeName}</h3>
                                 <table>
                                     <tbody>
@@ -127,7 +127,7 @@ const SharePlan = () => {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button className=' absolute right-5 bottom-5 bg-739A65 hover:bg-005264 shadow-md hover:shadow-xl text-white hover:bg-5B6E60' onClick={() => handleUseRouteClick(item)}>規劃此路線</button>
+                                <button className=' absolute right-5 bottom-5 bg-507780 hover:bg-43646B shadow-md hover:shadow-xl text-white hover:bg-5B6E60' onClick={() => handleUseRouteClick(item)}>規劃此路線</button>
 
 
                             </div>
