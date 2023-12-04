@@ -61,16 +61,16 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
           </div>
         </Link>
         <div className='flex space-x-4 items-center'>
-          <Link href='/planning' className='co-5B6E60 font-medium' onClick={handlePlanningClick}>規劃助手</Link>
-          <Link href='/share' className='co-5B6E60 font-medium'>行程分享</Link>
+          <Link href='/planning' className='co-5B6E60 font-medium hover:font-bold' onClick={handlePlanningClick} ho>規劃助手</Link>
+          <Link href='/share' className='co-5B6E60 font-medium hover:font-bold'>行程分享</Link>
           {currentUser ? (
             <>
-              <Link href='/member' className='co-5B6E60 font-medium'>會員中心</Link>
+              <Link href='/member' className='co-5B6E60 font-medium hover:font-bold'>會員中心</Link>
               <LogOut />
             </>
           ) : (
             <div>
-              <button className='co-5B6E60 font-medium' onClick={onLoginClick}>登入與註冊</button>
+              <button className='co-5B6E60 font-medium hover:font-bold' onClick={onLoginClick}>登入與註冊</button>
             </div>
           )}
         </div>
