@@ -25,7 +25,6 @@ function addTime(startTime, hoursToAdd, minutesToAdd) {
 function Route() {
     const [isLoading, setIsLoading] = useState(true);
     const [deletedIndex, setDeletedIndex] = useState(null);
-    const [routeName, setRouteName] = useState('');
 
     // const [shareTrip, setShareTrip] = useState(false);
     // const captureMapSnapshot = useSelector(getMapSnapshotFunction);
@@ -51,10 +50,13 @@ function Route() {
         return state.planning.days
     })
 
+
     //取得 planning資料
     const addNewPlanning = useSelector((state) => {
         return state.planning
     })
+    const [routeName, setRouteName] = useState(addNewPlanning ? addNewPlanning.routeName : '');
+
 
     //取得 auth資料
     const currentUser = useSelector(selectorCurrentUser);
