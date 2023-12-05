@@ -6,12 +6,13 @@ import 'node_modules/leaflet-geosearch/dist/geosearch.css';
 
 
 //map搜尋功能
-const SearchControl = ({ provider, onResult, ...props }) => {
+const SearchControl = ({ provider, onResult, position = "topleft",...props }) => {
   const map = useMap();
 
   useEffect(() => {
     const searchControl = new GeoSearchControl({
       provider: provider,
+      position,
       ...props
     });
 
@@ -26,6 +27,7 @@ const SearchControl = ({ provider, onResult, ...props }) => {
     map.on('geosearch/showlocation', handleSearchResults);
 
     map.addControl(searchControl);
+
     return () => {
       map.removeControl(searchControl);
       // 移除事件監聽

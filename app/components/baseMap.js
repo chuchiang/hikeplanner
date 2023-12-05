@@ -104,11 +104,11 @@ const leafletMap = () => {
     })
 
     // 地圖畫面為已知景點第一格或初始值
-    const position = useSelector((state)=>{
+    const position = useSelector((state) => {
         console.log(state.planning.days)
         return state.planning.days[0].locations[0]
     })
-    const [coord, setCoord] = useState(position ? [position.lat,position.lng] : [23.248325497821178, 120.98989311938537]);
+    const [coord, setCoord] = useState(position ? [position.lat, position.lng] : [23.248325497821178, 120.98989311938537]);
 
 
     // 最短路徑資料整理
@@ -135,6 +135,7 @@ const leafletMap = () => {
     return (
         <div  >
             <MapContainer id='map' style={{ width: '800px', height: '720px' }} center={coord} zoom={13} scrollWheelZoom={false} >
+
                 <SearchControl
                     provider={prov}
                     showMarker={false}
@@ -182,8 +183,8 @@ const leafletMap = () => {
                         positions={segment.map(coord => [coord[1], coord[0]])}
                     />
                 ))}
-                <PrintComponent className='z-40'/>
-                <MapScreenshoter className='z-40'/>
+                <MapScreenshoter className='z-40' />
+                <PrintComponent className='z-40' />
                 <CirclieHover />
             </MapContainer>
         </div >

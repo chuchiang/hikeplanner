@@ -68,8 +68,8 @@ const ElevationChart = () => {
 
         data.forEach(day => {
             day.locations.forEach(location => {
-                if (location.direction && location.direction.path && location.direction.length > 0) {
-                    // if (location.direction && location.direction.path) {
+                // if (location.direction && location.direction.path && location.direction.length > 0) {
+                    if (location.direction && location.direction.path) {
                     // 計算段距離
                     const segmentDistances = calculateDistances(location.direction.path);
                     // 新計算距離累加到之前的距離
