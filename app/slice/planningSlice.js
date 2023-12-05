@@ -7,6 +7,7 @@ export const planningSlice = createSlice({
         routeName: '',
         img: "",
         imgState: "",
+        shareTrip:'',
         days: [
             {
                 date: new Date().toISOString().split('T')[0],
@@ -182,6 +183,7 @@ export const planningSlice = createSlice({
             state.id = newData.id;
             state.days = newData.days;
             state.routeName = newData.routeName;
+            state.shareTrip = newData.shareTrip;
         },
 
         //增加照片

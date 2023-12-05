@@ -36,12 +36,3 @@ export const PrintComponent = () => {
 };
 
 
-
-// export const handlePrint = (map ) => {
-//     const printer = L.easyPrint({
-//         sizeModes: ['Current'],
-//         hidden: true,
-//         exportOnly: true
-//     }).addTo(map);
-//     printer.printMap('CurrentSize', 'MyMap');
-// }

@@ -1,4 +1,4 @@
-import { getDocs, query, where,orderBy } from 'firebase/firestore';
+import { getDocs, query, where, orderBy } from 'firebase/firestore';
 import { hikeDocRef } from './firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 // import { UseSelector } from 'react-redux';
@@ -17,6 +17,7 @@ export const asyncGetMyData = async () => {
         const uid = user.uid; // 取得當前使用者的 uid
         const authData = query(hikeDocRef, where("auth", "==", uid),where("recordTime", "!=", null), // 檢查recordTime不為空
         orderBy("recordTime", "desc")); // 按recordTime降序排序) //query(集合的參考,查詢條件)，查詢 auth 等於 uid 的文件
+        // const authData = query(hikeDocRef, where("auth", "==", uid)); // 按recordTime降序排序) //query(集合的參考,查詢條件)，查詢 auth 等於 uid 的文件
 
         const querySnapshot = await getDocs(authData);
         const data = [];
@@ -58,8 +59,8 @@ export const asyncGetShareData = async () => {
 //取得搜尋的路線
 export const asyncGetSearchData = async (searchTerm) => {
 
-    const shareData = query(hikeDocRef, where("shareTrip", "==", true), 
-    where("routeName", "==",searchTerm));
+    const shareData = query(hikeDocRef, where("shareTrip", "==", true),
+        where("routeName", "==", searchTerm));
     const querySnapshotShare = await getDocs(shareData);
     console.log(querySnapshotShare);
     const data = []

@@ -18,18 +18,18 @@ import { clearStateAction } from '../slice/planningSlice';
 import { usePathname, useSearchParams } from 'next/navigation'
 import ElevationChart from '../components/lineChart';
 import { useRouter } from 'next/navigation';
-import Loading from '../components/login'; // 確保路徑正確
+import FullLoading from '../components/fullLoading'; // 確保路徑正確
 
 const DynamicMap = dynamic(() => import('../components/baseMap'), {
   ssr: false,
-  // loading: () => <Loading />
+  loading: () => <FullLoading />
 });
 
 
 function RouteMap() {
   return (
     <>
-      <div className='mt-10 relative'>
+      <div className='mt-10 relative bg-white w-800'>
         <DynamicMap />
         <ElevationChart />
       </div>
@@ -50,12 +50,7 @@ export default function Home() {
 
 
 
-  useEffect(() => {
-    // 如果沒有用戶登入，顯示登入表單
-    if (!currentUser) {
-      router.push('/'); // 重定向到首頁
-    }
-  }, [currentUser, router]);
+
 
   // const handleLoginClick = () => {
   //   setShowLogin(true);
@@ -94,9 +89,7 @@ return (
   // <main className="flex bg-white min-h-screen flex-col items-center justify-between p-24 ">
   // </main>
   <>
-    <Head>
-      <script src="/leaflet-image.js"></script>
-    </Head>
+    
     <Provider store={store}>
       <div className='flex justify-center mb-10'>
         <Route />

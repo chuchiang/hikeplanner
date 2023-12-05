@@ -35,14 +35,7 @@ body {
     rgb(var(--background-start-rgb));
 } */
 
-leaflet-tile {
-  display: block!important; 
-  padding: 0!important;
-  border-spacing: 0!important; 
-  border-collapse: collapse!important;
-  margin: 0 !important;
-  border: none !important;
-}
+
 
 /* 不要格線 */
 .leaflet-tile,
@@ -58,12 +51,12 @@ leaflet-tile {
     border-radius: 3px;
   }
   &::-webkit-scrollbar-track {
-    background-color: #CED6D5;
+    background-color: #F5F2ED;
     border-radius: 3px;
   }
   &::-webkit-scrollbar-thumb{
     border-radius: 3px;
-    background-color: #BAB5A8;
+    background-color: #DAD1C5;
   }
 }
 
@@ -190,6 +183,17 @@ button {
   }
 .z-1000{
   z-index: 1000;
+}
+.z-1100{
+  z-index: 1100;
+}
+
+.z-40{
+  z-index: 40;
+}
+.border-t-4A6075{
+  border-top-color: #4A6075;
+
 }
   
   

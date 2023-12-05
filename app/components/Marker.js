@@ -21,8 +21,6 @@ export const Markers = () => {
         return state.planning.days
     })
 
-
-
     //經緯度去搜尋地點名稱
     useEffect(() => {
         const fetchData = async () => {
@@ -50,10 +48,10 @@ export const Markers = () => {
             // 自訂圖例內容
             if (getsearchLocation.length > 0) {
                 div.innerHTML = `
-                <div class='w-64 h-28 bg-white p-2 rounded-lg'>
+                <div class='w-72 h-28 bg-white p-2 rounded-lg flex flex-col justify-center shadow-md font-sans'>
                     <div class='text-sm font-bold'>${attraction.name || '搜尋景點名稱...'} / ${attraction.region || '搜尋地點名稱...'}</div>
                     <div class='text-sm'>${getsearchLocation ? `經度:${getsearchLocation[0].lng}<br />緯度:${getsearchLocation[0].lat}` : ''}</div>
-                    <div>${attraction.name ? "<button class='text-sm co-434E4E border-2 p-1 mt-1' type='submit' onClick='handleAddMarker(event)'>新增</button>" : ''}</div >
+                    <div>${attraction.name ? "<button class='hover:bg-gray-300 border-gray-400 hover:shadow-xl border-2 p-1 mt-1 hover:' type='submit' onClick='handleAddMarker(event)'><p class='font-bold text-black flex items-center'><img src='/marker-icon.png' class='w-3 mr-1'/>新增</p></button>" : ''}</div >
                 </div >`
 
             }
@@ -128,7 +126,6 @@ export const Markers = () => {
                 <Marker position={[getsearchLocation[0].lat, getsearchLocation[0].lng]} interactive={false}>
                     <div
                         className=' bg-white rounded-lg'
-                        style={{ zIndex: 997 }}
                         ref={(ref) => ref && legend && legend.addTo(map)} // ref或取组件或 DOM 節點的直接引用，向div 新增圖例控件
                     />
                 </Marker>

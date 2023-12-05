@@ -17,6 +17,7 @@ import L from 'leaflet';
 import '../globals.css'
 import { addCoordinates, clearCoordinates } from '../slice/coordinatesSlice'
 
+
 const CirclieHover = () => {
     const map = useMap();
     const dispatch = useDispatch();
@@ -89,21 +90,26 @@ const MapScreenshoter = () => {
 };
 
 const leafletMap = () => {
-    const [coord, setCoord] = useState([23.248325497821178, 120.98989311938537])
+
     const dispatch = useDispatch();
     const prov = new OpenStreetMapProvider();
     const accessToken = 'pk.eyJ1IjoibHVsdWNoZW5nIiwiYSI6ImNsb3Bja3Z6YzA0cDMya28xYjJvOXE4bncifQ.RWepwc59NHV8-OnF5-C7pQ'
     const mapboxUsername = 'lulucheng'
     const mapboxId = 'clopfkjxr003s01pqhazl2dn9';
 
-
-
-
     //最短路徑資料取得
     const addPath = useSelector((state) => {
         console.log(state.planning.days)
         return state.planning.days
     })
+
+    // 地圖畫面為已知景點第一格或初始值
+    const position = useSelector((state)=>{
+        console.log(state.planning.days)
+        return state.planning.days[0].locations[0]
+    })
+    const [coord, setCoord] = useState(position ? [position.lat,position.lng] : [23.248325497821178, 120.98989311938537]);
+
 
     // 最短路徑資料整理
     const combinedPath = addPath.flatMap(day =>
@@ -176,8 +182,8 @@ const leafletMap = () => {
                         positions={segment.map(coord => [coord[1], coord[0]])}
                     />
                 ))}
-                <PrintComponent />
-                <MapScreenshoter />
+                <PrintComponent className='z-40'/>
+                <MapScreenshoter className='z-40'/>
                 <CirclieHover />
             </MapContainer>
         </div >

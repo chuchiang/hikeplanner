@@ -1,7 +1,6 @@
 "use client"
 import Link from 'next/link'
 import './globals.css'
-import LoginForm from './components/login'
 import RegisterForm from './components/register'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +8,7 @@ import { setUser, clearUser, selectorCurrentUser } from './slice/authSlice'
 import { store } from './store';//剛剛的store 要引入
 import { Provider } from 'react-redux';//Provider 要引入
 import { auth } from "./api/firebase/firebase"; // 確保這裡是正確的導入
+import LoginForm from './components/login'
 
 import LogOut from './components/logout'
 import { useRouter } from 'next/navigation';
@@ -61,8 +61,8 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
           </div>
         </Link>
         <div className='flex space-x-4 items-center'>
-          <Link href='/planning' className='co-5B6E60 font-medium hover:font-bold' onClick={handlePlanningClick} ho>規劃助手</Link>
-          <Link href='/share' className='co-5B6E60 font-medium hover:font-bold'>行程分享</Link>
+          <Link href='/planning' className='co-5B6E60 font-medium hover:font-bold'>開始規劃</Link>
+          <Link href='/share' className='co-5B6E60 font-medium hover:font-bold'>路線列表</Link>
           {currentUser ? (
             <>
               <Link href='/member' className='co-5B6E60 font-medium hover:font-bold'>會員中心</Link>

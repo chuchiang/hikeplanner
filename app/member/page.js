@@ -32,7 +32,7 @@ export default function Home() {
         <main className="flex bg-white min-h-screen flex-col items-center justify-between p-10 ">
             <Provider store={store}>
                 <div className='flex flex-col items-center space-y-5'>
-                    <h3 className='co-646564 font-bold text-xl'>您規劃的路線如下</h3>
+                    <h3 className='co-646564 font-bold text-xl'>Hi{currentUser.displayName}<br/>您規劃的路線如下</h3>
                     <MyPlanner />
                 </div>
             </Provider>

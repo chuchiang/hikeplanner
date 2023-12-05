@@ -84,32 +84,20 @@ const SharePlan = () => {
         return {
             id: data.id,
             routeName: data.routeName,
-            days: transformedDays
+            days: transformedDays,
+            shareTrip:false,
         }
     }
 
     //轉跳planning 頁面
     const handleUseRouteClick = (item) => {
-        if (!currentUser) {
-            Swal.fire({
-                title: '請先登入',
-                text: '登入後才可規劃',
-                icon: 'info',
-                confirmButtonText: '好的',
-                confirmButtonColor: '#5B6E60',
-                customClass: {
-                    confirmButton: 'custom-button',
-                    title: 'text-2xl',
-                    text: 'text-base'
-                },
-            });
-        } else {
+       
             console.log(item)
             const reduxData = transformFirebaseDataToRedux(item);
             console.log(reduxData)
             dispatch(addData(reduxData))
             router.push('/planning');
-        }
+        
 
     }
 

@@ -25,13 +25,13 @@ const ElevationChart = () => {
             data: [],
             fill: true,
             borderColor: 'rgb(158,104,106)',
-            backgroundColor: 'rgb(176,144,146,0.5)', 
+            backgroundColor: 'rgb(176,144,146,0.5)',
             tension: 0.1
         }]
     });
 
     const handleMouseOut = () => {
-        dispatch(clearCoordinates()); 
+        dispatch(clearCoordinates());
     };
 
 
@@ -61,14 +61,15 @@ const ElevationChart = () => {
         //顯示chart
         setShowChart(!showChart);
 
-        let distances = [0]; 
-        let elevations = []; 
-        let lastDistance = 0; 
+        let distances = [0];
+        let elevations = [];
+        let lastDistance = 0;
 
 
         data.forEach(day => {
             day.locations.forEach(location => {
-                if (location.direction && location.direction.path) {
+                if (location.direction && location.direction.path && location.direction.length > 0) {
+                    // if (location.direction && location.direction.path) {
                     // 計算段距離
                     const segmentDistances = calculateDistances(location.direction.path);
                     // 新計算距離累加到之前的距離
@@ -132,7 +133,7 @@ const ElevationChart = () => {
         scales: {
             y: {
                 grid: {
-                    drawBorder: true, 
+                    drawBorder: true,
                 },
                 beginAtZero: true,
                 title: {
@@ -143,7 +144,7 @@ const ElevationChart = () => {
             },
             x: {
                 grid: {
-                    drawBorder: true, 
+                    drawBorder: true,
                 },
                 title: {
                     display: true,
@@ -156,20 +157,20 @@ const ElevationChart = () => {
                 },
                 // 限制顯示20
                 ticks: {
-                    maxTicksLimit: 20, 
+                    maxTicksLimit: 20,
                 }
             }
         },
 
         layout: {
             padding: {
-                right: 5 
+                right: 5
             }
         },
         plugins: {
             //提示隱藏
             legend: {
-                display: false, 
+                display: false,
             },
             //自訂義tooltip
             tooltip: {
@@ -178,7 +179,7 @@ const ElevationChart = () => {
                 callbacks: {
                     label: function (context) {
                         let index = context.dataIndex;
-                        const elevation = context.dataset.data[index]; 
+                        const elevation = context.dataset.data[index];
                         let locationIndex = 0;
                         let day = 0;
                         try {
@@ -190,7 +191,7 @@ const ElevationChart = () => {
                                     break;
                                 }
                                 // 計算獲取哪天的location
-                                for (let i = 0; i < data[d].locations.length - 1; i++) { 
+                                for (let i = 0; i < data[d].locations.length - 1; i++) {
                                     let locatinoPathLength = data[d].locations[i].direction.path.length - 1;
                                     if (i === 0) {
                                         if ((index - locatinoPathLength) <= 0) {
@@ -217,7 +218,7 @@ const ElevationChart = () => {
                         } catch (error) {
                             console.log(error);
                         }
-                        const latLng = data[day].locations[locationIndex].direction.path[index]; 
+                        const latLng = data[day].locations[locationIndex].direction.path[index];
                         const lat = latLng[1].toFixed(6); // 保留六位小数
                         const lng = latLng[0].toFixed(6); // 保留六位小数
 
@@ -293,7 +294,7 @@ const ElevationChart = () => {
                 <li className='border-r-2'></li>
                 <li className='co-646564 text-base'>總下降高度：<br />{total.descent}m</li>
             </ul>
-            < button className='bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl text-white w-28 chart-button' onClick={handleClick} > 海拔剖面圖</button>
+            < button className='bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl text-white w-30 chart-button flex items-center' onClick={handleClick} >{showChart ? (<img src='/down.png' className='mr-1'></img>):(<img src='/up.png' className='mr-1' ></img>)}海拔剖面圖</button>
         </div>
     </div >
 }

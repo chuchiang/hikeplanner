@@ -15,7 +15,6 @@ const MyPlanner = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [myPlan, setMyPlan] = useState([]);
-
     const [isEnabled, setIsEnabled] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -26,21 +25,16 @@ const MyPlanner = () => {
 
     // 改變分享狀態
     const toogleSwitch = async (item, index) => {
-
         const updatedItem = { ...item, shareTrip: !item.shareTrip };
-
         setMyPlan(currentPlans => {
             return currentPlans.map((plan, idx) => idx === index ? updatedItem : plan);
         });
-
         try {
             await asyncUpdateShareTripStatus(updatedItem.id, updatedItem.shareTrip)
 
         } catch (error) {
             console.error('Error updating shareTrip status', error);
         }
-
-
     }
 
 
@@ -96,7 +90,8 @@ const MyPlanner = () => {
         return {
             id: data.id,
             routeName: data.routeName,
-            days: transformedDays
+            days: transformedDays,
+            shareTrip:data.shareTrip
         }
     }
 
