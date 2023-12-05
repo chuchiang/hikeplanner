@@ -26,7 +26,7 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
         dispatch(setUser({
           uid: user.uid,
           email: user.email,
-          displayName: user.displayName,
+          displayName: user.reloadUserInfo.displayName
         }));
       } else {
         // 用戶未登入，清除 store 中的用戶信息
@@ -38,17 +38,17 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
     return () => unsubscribe();
   }, [dispatch, router]);
 
-  const handlePlanningClick = (e) => {
-    if (!currentUser) {
-      e.preventDefault(); // 阻止鏈接默認行為
-      router.push('/')
-      setShowLogin(true); // 顯示登入表單
-      setIsLoginMode(true); // 設置為登入模式
-    } else {
-      router.push('/planning')
-    }
+  // const handlePlanningClick = (e) => {
+  //   if (!currentUser) {
+  //     e.preventDefault(); // 阻止鏈接默認行為
+  //     router.push('/')
+  //     setShowLogin(true); // 顯示登入表單
+  //     setIsLoginMode(true); // 設置為登入模式
+  //   } else {
+  //     router.push('/planning')
+  //   }
 
-  };
+  // };
 
 
   return (

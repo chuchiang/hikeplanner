@@ -1,5 +1,5 @@
 import { db,auth } from "../firebase/firebase"
-import { createUserWithEmailAndPassword } from "firebase/auth"
+import { createUserWithEmailAndPassword, updateProfile} from "firebase/auth"
 
 import {
     getFirestore, // 用來創造一個 firestore 實例
@@ -44,7 +44,15 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
 };
 
 
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+
+export const createAuthUserWithEmailAndPassword = async (email, password, displayName) => {
     if (!email || !password) return;
-    return await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    // 更新用户的 displayName
+    if (displayName) {
+        await updateProfile(userCredential.user, {
+            displayName: displayName
+        });
+    }
+    return userCredential;
 };

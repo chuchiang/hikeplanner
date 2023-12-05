@@ -2,13 +2,15 @@ import { useState } from "react"
 import { useRouter } from 'next/navigation';//換頁
 import { firebaseLogin } from '../api/firebase/loginFirebase';
 import { signInWithGooglePopup } from '../api/firebase/googleFirebase';
-
+import FromLoading from "./fromLoading";
 
 
 
 const LoginForm = ({ onClose, handleRegisterClick }) => {
 
     const [error, setError] = useState(null);// 創建 error 以存儲錯誤訊息
+    const [isLoading, setIsLoading] = useState(false);// 創建 error 以存儲錯誤訊息
+
 
     const [data, setData] = useState({
         username: '',
@@ -46,6 +48,8 @@ const LoginForm = ({ onClose, handleRegisterClick }) => {
     const submit = async (e) => {
         e.preventDefault();
         console.log(data);
+        setError()
+        setIsLoading(true)
         try {
             const user = await firebaseLogin(data);
             console.log(user.user)
@@ -57,6 +61,8 @@ const LoginForm = ({ onClose, handleRegisterClick }) => {
             console.log(errorMessage);
             setError("信箱或密碼輸入錯誤");
         }
+        setIsLoading(false)
+
     }
 
 
@@ -70,17 +76,16 @@ const LoginForm = ({ onClose, handleRegisterClick }) => {
                     <h3 className='text-2xl co-646564 pb-5 font-bold'>登入會員帳號</h3>
                     <input className=' mb-4 w-72 p-2' type='email' name='email' placeholder="請輸入信箱" onChange={handleChange}></input><br />
                     <input className='mb-4 w-72 p-2' type='password' name='password' placeholder="請輸入帳號" onChange={handleChange}></input><br />
-                    <button type='submit' className='bg-5B6E60 text-lg text-white w-72 p-2' >登入帳號</button>
+                    <button type='submit' className='text-lg text-white w-72 p-2 bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl' >登入帳號</button>
                 </form>
                 <div className='mt-4 mb-4 flex items-center justify-center'>
                     <div className='flex-grow border-t border-gray-400 w-28'></div>
                     <span className='mx-5 text-lg text-gray-400'>or</span>
                     <div className='flex-grow border-t border-gray-400 w-28'></div>
                 </div>
-                <button onClick={logGoogleUser} className=' border border-blue-500 t-4 w-72 text-lg bg-white flex items-center justify-center text-blue-500 font-medium'><img src='/google.png' className="w-5 mr-2" />Login with Google</button>
-                <div className='text-base co-646564 h-8 mt-2'>還沒有帳戶? <button onClick={handleRegisterClick} >註冊帳號</button>
-                    {error && <div className="mb-3 text-orange-700">{error}</div>}
-
+                <button onClick={logGoogleUser} className=' hover:bg-blue-100 shadow-md hover:shadow-xl border border-blue-500 t-4 w-72 text-lg bg-white flex items-center justify-center text-blue-500 font-medium'><img src='/google.png' className="w-5 mr-2" />Login with Google</button>
+                <div className='text-base co-646564 h-8 mt-2'>還沒有帳戶? <button onClick={handleRegisterClick} className='hover:font-bold' >註冊帳號</button>
+                    {isLoading ? (<FromLoading />) : (error && <div className="mb-3 text-orange-700">{error}</div>)}
                 </div>
             </div>
         </div>
