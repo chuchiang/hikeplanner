@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
-import { addimg, addimgState, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName } from '../slice/planningSlice'
+import { addimg, addimgState, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName,clearStateAction } from '../slice/planningSlice'
 import ExportGpx from './exportGPX';
 import { asyncAddData } from '../api/firebase/asyncAdd';
 import { selectorCurrentUser } from '../slice/authSlice';
@@ -531,6 +531,7 @@ function Route() {
                 });
                 dispatch(addimg());
                 dispatch(addimgState());
+                dispatch(clearStateAction())
                 console.log("Document written with ID: ", docRef.id);
             } catch (e) {
                 console.error("添加文檔時出錯：", e);
