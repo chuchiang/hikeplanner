@@ -639,12 +639,10 @@ function Route() {
                     <div className='flex justify-between mt-3 items-center'>
                         <ExportGpx />
                         <button className=' w-32 text-white bg-507780 hover:bg-43646B shadow-md hover:shadow-xl' type="submit ">儲存</button>
-                        {/* <p>分享行程</p> */}
-                        {/* <input className='w-8' type="checkbox" name="myCheckbox" onChange={handleShareTripChange} /> */}
+
                     </div>
                 </form>
-                {/* <button type="button" onClick={() => handlePrint(map)}>截圖地圖</button> */}
-                {/* <HandlePrint /> */}
+
             </div >
             {isFullLoading && (<>
                 <FullLoading />

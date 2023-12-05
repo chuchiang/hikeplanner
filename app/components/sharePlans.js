@@ -8,6 +8,7 @@ import { addData } from '../slice/planningSlice'
 import { asyncGetShareData, asyncGetSearchData } from '../api/firebase/asyncGet'
 import { selectorCurrentUser } from '../slice/authSlice'
 import Loading from '../components/loading'; // 確保路徑正確
+import Link from 'next/link';
 
 const SharePlan = () => {
 
@@ -91,16 +92,17 @@ const SharePlan = () => {
 
     //轉跳planning 頁面
     const handleUseRouteClick = (item) => {
-       
             console.log(item)
             const reduxData = transformFirebaseDataToRedux(item);
             console.log(reduxData)
             dispatch(addData(reduxData))
             router.push('/planning');
-        
-
     }
 
+    // 沒有路線重新整理
+    const refreshPage = ()=>{
+        window.location.reload();
+    }
 
 
     return (
@@ -150,7 +152,7 @@ const SharePlan = () => {
                         )
                     })
 
-                ) : <div className='co-005264 mt-5 font-medium'>沒有可分享的路線</div>)
+                ) : <div className='co-005264 mt-5 font-medium'>沒有此路線，<button onClick={refreshPage} className='hover:font-bold underline'>查看全部路線</button></div>)
             }
         </div>
 

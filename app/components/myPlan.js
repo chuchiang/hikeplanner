@@ -182,7 +182,7 @@ const MyPlanner = () => {
                         )
                     })}</>
 
-            ) : <div className='co-005264 mt-5 font-medium'> 沒有已規劃的路線，請前往<Link href='/planning' className='hover:font-bold'>規劃助手</Link>，制定專屬路線 </div>)}
+            ) : <div className='co-005264 mt-5 font-medium'> 沒有已規劃的路線，<Link href='/planning' className='hover:font-bold underline'>開始規劃你的登山路線</Link></div>)}
 
 
 
