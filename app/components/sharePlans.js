@@ -86,32 +86,32 @@ const SharePlan = () => {
             id: data.id,
             routeName: data.routeName,
             days: transformedDays,
-            shareTrip:false,
+            shareTrip: false,
         }
     }
 
     //轉跳planning 頁面
     const handleUseRouteClick = (item) => {
-            console.log(item)
-            const reduxData = transformFirebaseDataToRedux(item);
-            console.log(reduxData)
-            dispatch(addData(reduxData))
-            router.push('/planning');
+        console.log(item)
+        const reduxData = transformFirebaseDataToRedux(item);
+        console.log(reduxData)
+        dispatch(addData(reduxData))
+        router.push('/planning');
     }
 
     // 沒有路線重新整理
-    const refreshPage = ()=>{
+    const refreshPage = () => {
         window.location.reload();
     }
 
 
     return (
-        <div className='flex flex-col items-center w-800 space-y-6'>
+        <div className='flex flex-col items-center  space-y-6'>
             <h3 className='co-005264 font-bold text-xl'>路線分享</h3>
-            <div className='bg-E7EDD8 flex rounded-xl w-full p-3 items-center'>
-                <p className='co-005264 font-bold mr-2'>請搜尋路線名稱：</p>
-                <div className='rounded-xl border-black flex items-center bg-white'>
-                    <input className='rounded-xl w-600' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></input><button onClick={handleSearch}><img src='/search.png' className='w-6'></img></button>
+            <div className='bg-E7EDD8 flex rounded-xl w-full p-3 items-center justify-center'>
+                <p className='co-005264 font-bold mr-2'>搜尋路線名稱：</p>
+                <div className='rounded-xl border-black flex items-center bg-white w-9/12'>
+                    <input className='rounded-xl w-11/12' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></input><button onClick={handleSearch}><img src='/search.png' className='w-6'></img></button>
                 </div>
             </div>
             {isLoading ? (
@@ -122,28 +122,29 @@ const SharePlan = () => {
                     sharePlan.map((item, index) => {
                         const readableDate = convertTimestampToDate(item.recordTime)?.toLocaleString();
                         return (
-                            <div key={index} className='flex'>
-                                <img src={item.img} className='w-52 h-auto rounded-l-xl'></img>
-                                <div className=' bg-E7EDD8  rounded-r-xl p-5 w-600 relative'>
+                            <div key={index} className='flex flex-wrap'>
+                                <img src={item.img} className=' w-52 h-auto rounded-l-xl'></img>
+                                <div className=' bg-E7EDD8  rounded-r-xl p-5 flex flex-col '>
                                     <h3 className='co-005264 font-bold text-xl mb-4'>{item.routeName}</h3>
                                     <table>
                                         <tbody>
                                             <tr>
-                                                <td className='  pr-8 pb-3'><div className='flex'><img src='/plan/direction.png' className='w-6 co-5B6E60 mr-2' />距離：{item.total.kilometers}km</div></td>
-                                                <td className='  pb-3'><div className='flex'><img src='/plan/time.png' className='w-6 co-5B6E60 mr-2' /><p>預估時間：{item.total.hours}h {item.total.minutes}min</p></div></td>
+                                                <td className='  pr-8 pb-3'><div className='flex'><img src='/plan/direction.png' className='w-6 h-6 co-5B6E60 mr-2' />距離：{item.total.kilometers}km</div></td>
+                                                <td className='  pb-3'><div className='flex'><img src='/plan/time.png' className='w-6 h-6 co-5B6E60 mr-2' /><p>預估時間：{item.total.hours}h {item.total.minutes}min</p></div></td>
                                             </tr>
                                             <tr>
-                                                <td className=' pb-5'><div className='flex'><img src='/plan/trend.png' className='w-6 mr-2' /><p>上升：{item.total.ascent}m</p></div></td>
-                                                <td className=' pb-5'><div className='flex'><img src='/plan/chart-down.png' className='w-6 mr-2' /><p>下降：{item.total.descent}m</p></div></td>
-                                            </tr>
-                                            <tr>
-                                                <td className=''><div className='flex'><img src='/member.png' className='w-6 mr-2' /><p>{item.userName}</p></div></td>
-                                                <td className='co-646564 mr-2'><p>更新時間：{readableDate}</p></td>
-
+                                                <td className=' pb-3'><div className='flex'><img src='/plan/trend.png' className='w-6 h-6 mr-2' /><p>上升：{item.total.ascent}m</p></div></td>
+                                                <td className=' pb-3'><div className='flex'><img src='/plan/chart-down.png' className='w-6 h-6 mr-2' /><p>下降：{item.total.descent}m</p></div></td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <button className=' absolute right-5 bottom-5 bg-507780 hover:bg-43646B shadow-md hover:shadow-xl text-white hover:bg-5B6E60' onClick={() => handleUseRouteClick(item)}>規劃此路線</button>
+                                    <div className='flex justify-between mt-2 items-center flex-wrap'>
+                                        <div className='mr-3 mt-2'><div className='flex'><img src='/member.png' className='w-6 h-6 mr-2' /><p>{item.userName}</p></div></div>
+
+                                        <div className='co-646564 mr-3 mt-2 text-sm'><p>更新時間：{readableDate}</p></div>
+
+                                        <button className=' w-30 mt-2 bg-507780 hover:bg-43646B shadow-md hover:shadow-xl text-white hover:bg-5B6E60' onClick={() => handleUseRouteClick(item)}>規劃此路線</button>
+                                    </div>
 
 
                                 </div>

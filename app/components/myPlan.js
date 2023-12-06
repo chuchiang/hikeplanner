@@ -126,61 +126,63 @@ const MyPlanner = () => {
         <>
 
             {isLoading ? (<Loading />) : (myPlan && myPlan.length > 0 ? (
-                <>
-                    <h3 className='co-646564 font-medium text-lg'>Hi {currentUser ? (currentUser.displayName) : ""}！ 您規劃的路線如下</h3>
-
+                <div>
+                    <h3 className='co-646564 font-medium text-lg pb-5'>Hi {currentUser ? (currentUser.displayName) : ""}！ 您規劃的路線如下</h3>
                     {myPlan.map((item, index) => {
                         const readableDate = convertTimestampToDate(item.recordTime)?.toLocaleString();
                         return (
-                            <div key={index} >
-
-                                <div className=' bg-F5F2ED  rounded-md p-5 w-800 relative'>
-                                    <div className='flex items-center mb-4'><img src='/logo.png' className='w-10 h-10' /><h3 className='co-5B6E60 font-bold text-xl'>{item.routeName}</h3></div>
-
-                                    <div className="flex items-center justify-center absolute right-5 top-6">
-                                        {item.shareTrip ? <div className="mr-3 co-90a955 font-medium">分享行程</div> : <div className="mr-3 co-646564 font-medium">不分享行程</div>}
-                                        <label htmlFor={`toggle-${index}`} className="flex items-center cursor-pointer">
-                                            <div className="relative ">
-                                                <input
-                                                    id={`toggle-${index}`}
-                                                    type="checkbox"
-                                                    className="sr-only "
-                                                    onChange={() => { toogleSwitch(item, index) }}
-                                                    checked={item.shareTrip}
-                                                />
-                                                <div className={`shadow-md hover:shadow-lg block w-14 h-8 rounded-full transition ${item.shareTrip ? 'bg-90a955' : 'bg-646564'}`}></div>
-                                                <div className={`shadow-md hover:shadow-lg dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${item.shareTrip ? 'transform translate-x-full' : ''}`}></div>
-                                            </div>
-                                        </label>
+                            <div key={index}>
+                                <div className=' bg-F5F2ED rounded-md p-5  '>
+                                    <div className='flex justify-between flex-wrap items-center'>
+                                        <div className='flex items-center justify-center'><img src='/logo.png' className='w-10 h-10' /><h3 className='co-5B6E60 font-bold text-xl'>{item.routeName}</h3></div>
+                                        <div className="flex items-center justify-center ">
+                                            {item.shareTrip ? <div className="mr-3 co-90a955 font-medium">分享行程</div> : <div className="mr-3 co-646564 font-medium">不分享行程</div>}
+                                            <label htmlFor={`toggle-${index}`} className="flex items-center cursor-pointer">
+                                                <div className="relative ">
+                                                    <input
+                                                        id={`toggle-${index}`}
+                                                        type="checkbox"
+                                                        className="sr-only "
+                                                        onChange={() => { toogleSwitch(item, index) }}
+                                                        checked={item.shareTrip}
+                                                    />
+                                                    <div className={`shadow-md hover:shadow-lg block w-14 h-8 rounded-full transition ${item.shareTrip ? 'bg-90a955' : 'bg-646564'}`}></div>
+                                                    <div className={`shadow-md hover:shadow-lg dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${item.shareTrip ? 'transform translate-x-full' : ''}`}></div>
+                                                </div>
+                                            </label>
+                                        </div>
                                     </div>
 
-                                    <table>
+                                    <table className='mt-5'>
                                         <tbody>
                                             <tr>
-                                                <td className='  pr-5 pb-3'><div className='flex'><img src='/plan/direction.png' className='w-6 co-5B6E60 mr-2' />距離：{item.total.kilometers}km</div></td>
-                                                <td className='  pb-3'><div className='flex'><img src='/plan/time.png' className='w-6 co-5B6E60 mr-2' /><p>預估時間：{item.total.hours}h {item.total.minutes}min</p></div></td>
+                                                <td className='  pr-5 pb-3'><div className='flex'><img src='/plan/direction.png' className='w-6 h-6 co-5B6E60 mr-2' />距離：{item.total.kilometers}km</div></td>
+                                                <td className='  pb-3'><div className='flex'><img src='/plan/time.png' className='w-6 h-6 co-5B6E60 mr-2' /><p>預估時間：{item.total.hours}h {item.total.minutes}min</p></div></td>
                                             </tr>
                                             <tr>
-                                                <td className=' pb-5'><div className='flex'><img src='/plan/trend.png' className='w-6 mr-2' /><p>上升：{item.total.ascent}m</p></div></td>
-                                                <td className=' pb-5'><div className='flex'><img src='/plan/chart-down.png' className='w-6 mr-2' /><p>下降：{item.total.descent}m</p></div></td>
-                                            </tr>
-                                            <tr>
-                                                <td className='co-646564 mr-2'><p>更新時間：{readableDate}</p></td>
-
+                                                <td className=' pb-3'><div className='flex'><img src='/plan/trend.png' className='w-6 h-6 mr-2' /><p>上升：{item.total.ascent}m</p></div></td>
+                                                <td className=' pb-3'><div className='flex'><img src='/plan/chart-down.png' className='w-6 h-6 mr-2' /><p>下降：{item.total.descent}m</p></div></td>
                                             </tr>
                                         </tbody>
                                     </table>
 
-                                    <div className='flex justify-between items-center mt-4 absolute right-5 bottom-5'>
-                                        <div className='rounded border mr-4  bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl '><button className='text-white' onClick={() => handleUseRouteClick(item)}>規劃此路線</button></div>
-                                        <div className='rounded border bg-997F7D hover:bg-87706F  shadow-md hover:shadow-xl '><button id={item.id} className='text-white' onClick={() => handleDeleteRouteClick(item.id)}>刪除</button></div>
+                                    <div className='flex justify-between items-center flex-wrap'>
+                                        <div className='co-646564 mr-2'><p>更新時間：{readableDate}</p></div>
+                                        <div className='flex flex-wrap mt-1'>
+                                            <div className='rounded border mr-3 bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl '><button className='text-white' onClick={() => handleUseRouteClick(item)}>規劃此路線</button></div>
+                                            <div className='rounded border bg-997F7D hover:bg-87706F  shadow-md hover:shadow-xl '><button id={item.id} className='text-white' onClick={() => handleDeleteRouteClick(item.id)}>刪除</button></div>
+                                        </div>
                                     </div>
+
+
+
+
                                 </div>
                             </div>
 
 
                         )
-                    })}</>
+                    })}</div>
 
             ) : <div className='co-005264 mt-5 font-medium'> 沒有已規劃的路線，<Link href='/planning' className='hover:font-bold underline'>開始規劃你的登山路線</Link></div>)}
 
@@ -194,5 +196,77 @@ const MyPlanner = () => {
 }
 
 export default MyPlanner
+
+
+
+// return (
+//     <>
+
+//         {isLoading ? (<Loading />) : (myPlan && myPlan.length > 0 ? (
+//             <>
+//                 <h3 className='co-646564 font-medium text-lg'>Hi {currentUser ? (currentUser.displayName) : ""}！ 您規劃的路線如下</h3>
+
+//                 {myPlan.map((item, index) => {
+//                     const readableDate = convertTimestampToDate(item.recordTime)?.toLocaleString();
+//                     return (
+//                         <div key={index} >
+
+//                             <div className=' bg-F5F2ED  rounded-md p-5 w-800 relative'>
+//                                 <div className='flex items-center mb-4'><img src='/logo.png' className='w-10 h-10' /><h3 className='co-5B6E60 font-bold text-xl'>{item.routeName}</h3></div>
+
+//                                 <div className="flex items-center justify-center absolute right-5 top-6">
+//                                     {item.shareTrip ? <div className="mr-3 co-90a955 font-medium">分享行程</div> : <div className="mr-3 co-646564 font-medium">不分享行程</div>}
+//                                     <label htmlFor={`toggle-${index}`} className="flex items-center cursor-pointer">
+//                                         <div className="relative ">
+//                                             <input
+//                                                 id={`toggle-${index}`}
+//                                                 type="checkbox"
+//                                                 className="sr-only "
+//                                                 onChange={() => { toogleSwitch(item, index) }}
+//                                                 checked={item.shareTrip}
+//                                             />
+//                                             <div className={`shadow-md hover:shadow-lg block w-14 h-8 rounded-full transition ${item.shareTrip ? 'bg-90a955' : 'bg-646564'}`}></div>
+//                                             <div className={`shadow-md hover:shadow-lg dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${item.shareTrip ? 'transform translate-x-full' : ''}`}></div>
+//                                         </div>
+//                                     </label>
+//                                 </div>
+
+//                                 <table>
+//                                     <tbody>
+//                                         <tr>
+//                                             <td className='  pr-5 pb-3'><div className='flex'><img src='/plan/direction.png' className='w-6 co-5B6E60 mr-2' />距離：{item.total.kilometers}km</div></td>
+//                                             <td className='  pb-3'><div className='flex'><img src='/plan/time.png' className='w-6 co-5B6E60 mr-2' /><p>預估時間：{item.total.hours}h {item.total.minutes}min</p></div></td>
+//                                         </tr>
+//                                         <tr>
+//                                             <td className=' pb-5'><div className='flex'><img src='/plan/trend.png' className='w-6 mr-2' /><p>上升：{item.total.ascent}m</p></div></td>
+//                                             <td className=' pb-5'><div className='flex'><img src='/plan/chart-down.png' className='w-6 mr-2' /><p>下降：{item.total.descent}m</p></div></td>
+//                                         </tr>
+//                                         <tr>
+//                                             <td className='co-646564 mr-2'><p>更新時間：{readableDate}</p></td>
+
+//                                         </tr>
+//                                     </tbody>
+//                                 </table>
+
+//                                 <div className='flex justify-between items-center mt-4 absolute right-5 bottom-5'>
+//                                     <div className='rounded border mr-4  bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl '><button className='text-white' onClick={() => handleUseRouteClick(item)}>規劃此路線</button></div>
+//                                     <div className='rounded border bg-997F7D hover:bg-87706F  shadow-md hover:shadow-xl '><button id={item.id} className='text-white' onClick={() => handleDeleteRouteClick(item.id)}>刪除</button></div>
+//                                 </div>
+//                             </div>
+//                         </div>
+
+
+//                     )
+//                 })}</>
+
+//         ) : <div className='co-005264 mt-5 font-medium'> 沒有已規劃的路線，<Link href='/planning' className='hover:font-bold underline'>開始規劃你的登山路線</Link></div>)}
+
+
+
+
+
+//     </>
+
+// )
 
 

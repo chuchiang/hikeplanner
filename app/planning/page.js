@@ -50,17 +50,6 @@ export default function Home() {
 
 
 
-
-
-  // const handleLoginClick = () => {
-  //   setShowLogin(true);
-  //   setIsLoginMode(true); // 點擊登入時，設置為登入模式
-  // };
-
-  // const handleRegisterClick = () => {
-  //   setShowLogin(true);
-  //   setIsLoginMode(false); // 點擊註冊時，設置為註冊模式
-  // };
   
   // console.log(pathname);
   // // 觸發清空 Redux 狀態的 action
@@ -75,15 +64,6 @@ export default function Home() {
 
 
 
-// if (showLogin) {
-//   return (showLogin && (
-//     isLoginMode ?
-//       <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
-//       <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
-//   ));
-// }
-
-
 
 return (
   // <main className="flex bg-white min-h-screen flex-col items-center justify-between p-24 ">
@@ -95,8 +75,6 @@ return (
         <Route />
         <RouteMap />
       </div>
-      {/* <ElevationChart /> */}
-
     </Provider>
     
   </>

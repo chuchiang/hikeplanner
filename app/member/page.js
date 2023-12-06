@@ -29,11 +29,10 @@ export default function Home() {
 
 
     return (
-        <main className="flex bg-white min-h-screen flex-col items-center justify-between p-10 ">
+        <main className=" bg-white min-h-screen p-5 ">
             <Provider store={store}>
-                <div className='flex flex-col  space-y-5'>
+                <div className='flex flex-col  space-y-5 max-w-full w-800 mx-auto'>
                     {/* <h3 className='co-646564 font-medium text-lg'>Hi {currentUser ? (currentUser.displayName) : ""}！ 您規劃的路線如下</h3> */}
-
                     <MyPlanner />
                 </div>
             </Provider>
