@@ -4,13 +4,14 @@ import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '
 import { signInWithGooglePopup } from '../api/firebase/googleFirebase';
 import { useRouter } from 'next/navigation';//換頁
 import FromLoading from "./fromLoading";
-
-
+import { useDispatch } from 'react-redux';
+import {addUserName} from '../slice/authSlice'
 
 const RegisterForm = ({ onClose, handleLoginClick }) => {
 
     const [message, setmessage] = useState(null);// 創建 error 以存儲錯誤訊息
     const [isLoading, setIsLoading] = useState(false);// 創建 error 以存儲錯誤訊息
+    const dispatch = useDispatch();
 
 
     const [formFields, setFormFields] = useState({
@@ -60,6 +61,7 @@ const RegisterForm = ({ onClose, handleLoginClick }) => {
                 formFields.displayName
             );
             await createUserDocumentFromAuth(user, { displayName: formFields.displayName });
+            dispatch(addUserName(formFields.displayName))
             setFormFields(formFields);
             setmessage("註冊成功，請重新登入")
         } catch (error) {
