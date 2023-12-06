@@ -555,8 +555,8 @@ function Route() {
         <>
 
 
-            <div className='flex flex-col  w-full h-full mt-5 lg:h-screen lg:w-380 lg:mr-5 lg:mt-0 '>
-                <form onSubmit={onSubmit} className='h-full lg:h-screen'>
+            <div className='flex flex-col  w-full h-full mt-5 lg:h-full lg:w-380 lg:mr-5 lg:mt-0 '>
+                <form onSubmit={onSubmit} className='h-full lg:h-full'>
                     <div className=' h-full bg-F5F2ED p-2 rounded overflow-y-scroll scrollbar'>
                         <div className='flex mb-5 justify-between items-center'>
                             <div className='flex flex-col mb-2'>

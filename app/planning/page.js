@@ -69,7 +69,7 @@ export default function Home() {
 
     <>
       {/* <main className="flex justify-center mx-1 sm:mx-9 w-full h-screen"> */}
-      <main className="flex flex-wrap-reverse mx-1 md:flex-row lg:flex-nowrap sm:mx-6 lg:mx-14 h-ull my-5">
+      <main className="flex flex-wrap-reverse mx-1 md:flex-row lg:flex-nowrap sm:mx-6 lg:mx-14 h-screen my-5">
 
         <Provider store={store}>
           {/* <div className='flex justify-center mx-1 sm:mx-9 w-full h-screen'> */}

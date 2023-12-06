@@ -28,34 +28,38 @@ export default function Home() {
       <Banner />
       <div className='z-10  w-full items-center justify-between flex flex-col lg:flex bg-DAD1C5 pt-10 pb-20'>
         <p className='font-bold text-xl co-434E4E text-center mb-12'>讓登山之旅更輕鬆<br />由你決定每一步</p>
-        <div className=' relative w-1000 items-center space-y-12'>
-          <div className='flex  items-center'>
-            <div><img src='./test.png'></img></div>
-            <div className='  rounded-lg py-12 px-20 absolute right-0 '>
+        <div className=' flex flex-col  items-center lg:w-1000 lg:space-y-12'>
+
+          <div className='flex flex-wrap justify-center items-center mb-8 md:justify-between'>
+            <div className='rounded-lg  bg-DAD1C5 '><img src='./index/routeIndex.gif' className='w-full h-full rounded-lg'></img></div>
+            <div className=' bg-F5F2ED rounded-lg p-5 m-5 lg:py-10 lg:px-16 '>
               <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>規劃助手</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>個性化登山行程</p>
               <p className='co-646564 text-base'>可以根據自身體能、路線難度、時間等條件，輕鬆制定專屬路線</p>
               <div className='flex justify-end'><button className='mt-9 bg-6C8272 hover:bg-5B6E60  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>開始規劃</Link></button></div>
             </div>
           </div>
-          <div className='flex justify-end items-center'>
-            <div className=' bg-white rounded-lg py-12 px-20 absolute left-0 '>
+
+          <div className='flex flex-wrap-reverse justify-center items-center sm:flex-nowrap lg:justify-end mb-8 md:justify-between '>
+            <div className='bg-F5F2ED rounded-lg p-5 m-5 lg:py-10 lg:px-16 '>
               <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>路線分析</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>全面掌握路線資訊</p>
               <p className='co-646564 text-base'>提供全面的路線資訊，包含爬升下降高度以及預估的行走時間</p>
               <div className='flex justify-end'><button className='mt-9 bg-6C8272 hover:bg-5B6E60  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>路線資訊</Link></button></div>
             </div>
-            <div><img src='./test.png'></img></div>
+            <div className='rounded-lg  bg-DAD1C5 px-24'><img src='./index/elevationIndex.gif' className='w-full h-full rounded-lg'></img></div>
           </div>
-          <div className='flex  items-center'>
-            <div><img src='./test.png'></img></div>
-            <div className=' bg-white rounded-lg py-12 px-20 absolute right-0 '>
+
+          <div className='flex flex-wrap justify-center items-center lg:justify-between'>
+            <div className='rounded-lg  bg-DAD1C5 px-2'><img src='./index/explore.jpg' className='w-full h-full rounded-lg'></img></div>
+            <div className=' bg-F5F2ED rounded-lg p-5 m-5 lg:py-10 lg:px-16 '>
               <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>探索</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>觀看其他人的路線</p>
               <p className='co-646564 text-base'>規劃可儲存與分享，資料不遺失，還可輸出照片和GPX格式</p>
               <div className='flex justify-end'><button className='mt-9 bg-6C8272 hover:bg-5B6E60  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>探索路線</Link></button></div>
             </div>
           </div>
+
         </div>
 
 
