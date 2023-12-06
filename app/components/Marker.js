@@ -41,14 +41,13 @@ export const Markers = () => {
 
         const legendControl = L.control({ position: 'bottomright' });
 
-
         // 設定圖例內容
         legendControl.onAdd = function () {
             const div = L.DomUtil.create('div', 'info legend');
             // 自訂圖例內容
             if (getsearchLocation.length > 0) {
                 div.innerHTML = `
-                <div class='w-72 h-28 bg-white p-2 rounded-lg flex flex-col justify-center shadow-md font-sans'>
+                <div class=' w-72 h-28 bg-white p-2 rounded-lg flex flex-col justify-center shadow-md font-sans'>
                     <div class='text-sm font-bold'>${attraction.name || '搜尋景點名稱...'} / ${attraction.region || '搜尋地點名稱...'}</div>
                     <div class='text-sm'>${getsearchLocation ? `經度:${getsearchLocation[0].lng}<br />緯度:${getsearchLocation[0].lat}` : ''}</div>
                     <div>${attraction.name ? "<button class='hover:bg-gray-300 border-gray-400 hover:shadow-xl border-2 p-1 mt-1 hover:' type='submit' onClick='handleAddMarker(event)'><p class='font-bold text-black flex items-center'><img src='/marker-icon.png' class='w-3 mr-1'/>新增</p></button>" : ''}</div >

@@ -18,6 +18,7 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
   const currentUser = useSelector(selectorCurrentUser);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // 用於追踪漢堡菜單的狀態
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -53,28 +54,29 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
 
   return (
     <main className=" bg-DAD1C5">
-        <div className='mx-1 md:mx-9 flex justify-between'>
-          <Link href='/'>
-            <div className='flex items-center'>
-              <img className='w-12' src='/logo.png' alt='logo'></img>
-              <h2 className='text-2xl co-41588C'>HikePlanner</h2>
-            </div>
-          </Link>
-          <div className='flex space-x-4 items-center'>
-            <Link href='/planning' className='co-5B6E60 font-medium hover:font-bold'>開始規劃</Link>
-            <Link href='/share' className='co-5B6E60 font-medium hover:font-bold'>路線列表</Link>
+      <div className='mx-1 sm:mx-3 lg:mx-9 flex justify-between'>
+        <Link href='/'>
+          <div className='flex items-center'>
+            <img className='w-12' src='/logo.png' alt='logo'></img>
+            <h2 className='text-2xl co-41588C'>HikePlanner</h2>
+          </div>
+        </Link>
+          <button className="p-0  sm:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}> <img src='./more.png'></img>  </button>
+          {/* <div className={`flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center ${isMenuOpen ? 'block' : 'hidden'} sm:block`}> */}
+          <div className={`z-1100 flex flex-col p-2 absolute top-12 right-0 shadow-lg bg-F5F2ED text-center sm:p-1 sm:right-9 sm:shadow-none sm:space-x-4 sm:top-2 sm:bg-DAD1C5 sm:flex-row sm:items-center ${isMenuOpen ? 'block' : 'hidden'} sm:block`}>
+            {/* 導航鏈接 */}
+            <Link href='/planning' className='co-5B6E60 font-medium border-b-2 hover:font-bold sm:border-0 '>開始規劃</Link>
+            <Link href='/share' className='co-5B6E60 font-medium border-b-2  hover:font-bold sm:border-0'>路線列表</Link>
             {currentUser ? (
               <>
-                <Link href='/member' className='co-5B6E60 font-medium hover:font-bold'>會員中心</Link>
+                <Link href='/member' className='co-5B6E60 font-medium border-b hover:font-bold sm:border-0'>會員中心</Link>
                 <LogOut />
               </>
             ) : (
-              <div>
-                <button className='co-5B6E60 font-medium hover:font-bold' onClick={onLoginClick}>登入與註冊</button>
-              </div>
+                <button className='co-5B6E60 font-medium hover:font-bold p-0' onClick={onLoginClick}>登入與註冊</button>
             )}
           </div>
-        </div>
+      </div>
     </main>)
 }
 

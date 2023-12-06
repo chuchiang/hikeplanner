@@ -133,8 +133,8 @@ const leafletMap = () => {
     };
 
     return (
-        <div  >
-            <MapContainer id='map' style={{ width: '800px', height: '720px' }} center={coord} zoom={13} scrollWheelZoom={false} >
+        <div className='bg-white w-full h-full'>
+            <MapContainer id='map' style={{ width: '100%', height: '100%'}} center={coord} zoom={13} scrollWheelZoom={false} >
 
                 <SearchControl
                     provider={prov}

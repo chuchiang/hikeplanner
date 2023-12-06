@@ -29,7 +29,7 @@ const DynamicMap = dynamic(() => import('../components/baseMap'), {
 function RouteMap() {
   return (
     <>
-      <div className='mt-10 relative bg-white w-800'>
+      <div className=' flex flex-col bg-white w-screen h-screen'>
         <DynamicMap />
         <ElevationChart />
       </div>
@@ -50,7 +50,7 @@ export default function Home() {
 
 
 
-  
+
   // console.log(pathname);
   // // 觸發清空 Redux 狀態的 action
   // useEffect(() => {
@@ -65,19 +65,20 @@ export default function Home() {
 
 
 
-return (
-  // <main className="flex bg-white min-h-screen flex-col items-center justify-between p-24 ">
-  // </main>
-  <>
-    
-    <Provider store={store}>
-      <div className='flex justify-center mb-10'>
-        <Route />
-        <RouteMap />
-      </div>
-    </Provider>
-    
-  </>
-)
+  return (
+
+    <>
+      {/* <main className="flex justify-center mx-1 sm:mx-9 w-full h-screen"> */}
+      <main className="flex flex-wrap-reverse mx-1 md:flex-row lg:flex-nowrap sm:mx-6 lg:mx-14 h-ull my-5">
+
+        <Provider store={store}>
+          {/* <div className='flex justify-center mx-1 sm:mx-9 w-full h-screen'> */}
+          <Route />
+          <RouteMap />
+          {/* </div> */}
+        </Provider>
+      </main>
+    </>
+  )
 
 }
