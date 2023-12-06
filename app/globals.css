@@ -157,9 +157,7 @@ button {
     background-color: #90a955;
   }
 
-  .bg-D8EBE4{
-    background-color: #D8EBE4;
-  }
+ 
   .co-90a955{
     color: #90a955;
   }
@@ -194,6 +192,9 @@ button {
   }
 .z-1000{
   z-index: 1000;
+}
+.z-1200{
+  z-index: 1200;
 }
 .z-1100{
   z-index: 1100;

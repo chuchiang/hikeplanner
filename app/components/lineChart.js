@@ -10,7 +10,7 @@ import { verticalLinePlugin } from '../lib/chartVerticalLine'
 import { customBorderPlugin } from '../lib/chartBorder'
 ChartJS.register(verticalLinePlugin);//hover 線條
 ChartJS.register(customBorderPlugin);//外框
-import {clearSearchLocations } from '../slice/mapSlice';
+import { clearSearchLocations } from '../slice/mapSlice';
 
 const ElevationChart = () => {
 
@@ -34,7 +34,6 @@ const ElevationChart = () => {
         dispatch(clearCoordinates());
     };
 
-
     useEffect(() => {
         const handleGlobalClick = (event) => {
             // 檢查點擊事件是否在圖表或按鈕外部
@@ -50,12 +49,10 @@ const ElevationChart = () => {
         };
     }, [showChart]);
 
-
     const data = useSelector((state) => {
         console.log(state.planning)
         return state.planning.days
     });
-
 
     const handleClick = () => {
         //顯示chart
@@ -66,11 +63,10 @@ const ElevationChart = () => {
         let elevations = [];
         let lastDistance = 0;
 
-
         data.forEach(day => {
             day.locations.forEach(location => {
                 // if (location.direction && location.direction.path && location.direction.length > 0) {
-                    if (location.direction && location.direction.path) {
+                if (location.direction && location.direction.path) {
                     // 計算段距離
                     const segmentDistances = calculateDistances(location.direction.path);
                     // 新計算距離累加到之前的距離
@@ -112,11 +108,9 @@ const ElevationChart = () => {
         return d;
     }
 
-
     function deg2rad(deg) {
         return deg * (Math.PI / 180)
     }
-
 
     function calculateDistances(path) {
         let distances = [0];
@@ -141,7 +135,6 @@ const ElevationChart = () => {
                     display: true,
                     text: '海拔 (m)'
                 },
-
             },
             x: {
                 grid: {
@@ -162,7 +155,6 @@ const ElevationChart = () => {
                 }
             }
         },
-
         layout: {
             padding: {
                 right: 5
@@ -177,7 +169,9 @@ const ElevationChart = () => {
             tooltip: {
                 mode: 'index',
                 intersect: false,
+                displayColors: false,
                 callbacks: {
+                    title :function(){return"" },
                     label: function (context) {
                         let index = context.dataIndex;
                         const elevation = context.dataset.data[index];
@@ -226,13 +220,10 @@ const ElevationChart = () => {
                         dispatch(addCoordinates({ 'lng': lng, 'lat': lat }))
 
                         return ` 經度: ${lng}, 緯度: ${lat}, 公里: ${context.label} km, 海拔: ${elevation} m`;
-                        // return `context.dataIndex:${context.dataIndex}, index${index}, 經度: ${lng}, 緯度: ${lat}, 公里: ${context.label} km, 海拔: ${elevation} m`;
-
                     }
                 }
             },
             verticalLinePlugin: {}
-
         },
         elements: {
             line: {
@@ -243,7 +234,6 @@ const ElevationChart = () => {
             }
         }
     };
-
 
     //total 距離時間
     const directionData = useSelector((state) => {
@@ -267,7 +257,6 @@ const ElevationChart = () => {
                 total.descent += location.direction.descent;
                 total.hours += location.direction.hours;
                 total.minutes += location.direction.minutes;
-
                 while (total.minutes >= 60) {
                     total.hours += 1,
                         total.minutes -= 60
@@ -276,9 +265,6 @@ const ElevationChart = () => {
         })
     });
 
-
-
-    // <div className='absolute z-1000 bottom-0  bg-white w-full '>
 
     return <div className=' z-1000  bg-white w-full mt-1'>
         {showChart && (
@@ -295,7 +281,7 @@ const ElevationChart = () => {
                 <li className='border-r-2'></li>
                 <li className='co-646564 sm:text-base'>總下降高度：<br />{total.descent}m</li>
             </ul>
-            < button className='mt-2 bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl text-white w-30 chart-button flex items-center' onClick={handleClick} >{showChart ? (<img src='/down.png' className='mr-1'></img>):(<img src='/up.png' className='mr-1' ></img>)}海拔剖面圖</button>
+            < button className='mt-2 bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl text-white w-30 chart-button flex items-center' onClick={handleClick} >{showChart ? (<img src='/down.png' className='mr-1'></img>) : (<img src='/up.png' className='mr-1' ></img>)}海拔剖面圖</button>
         </div>
     </div >
 }
