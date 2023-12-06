@@ -52,30 +52,30 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
 
 
   return (
-    <div className='bg-DAD1C5'>
-      <div className='mx-auto w-1200 flex justify-between'>
-        <Link href='/'>
-          <div className='flex items-center'>
-            <img className='w-12' src='/logo.png' alt='logo'></img>
-            <h2 className='text-2xl co-41588C'>HikePlanner</h2>
-          </div>
-        </Link>
-        <div className='flex space-x-4 items-center'>
-          <Link href='/planning' className='co-5B6E60 font-medium hover:font-bold'>開始規劃</Link>
-          <Link href='/share' className='co-5B6E60 font-medium hover:font-bold'>路線列表</Link>
-          {currentUser ? (
-            <>
-              <Link href='/member' className='co-5B6E60 font-medium hover:font-bold'>會員中心</Link>
-              <LogOut />
-            </>
-          ) : (
-            <div>
-              <button className='co-5B6E60 font-medium hover:font-bold' onClick={onLoginClick}>登入與註冊</button>
+    <main className=" bg-DAD1C5">
+        <div className='mx-9 flex justify-between'>
+          <Link href='/'>
+            <div className='flex items-center'>
+              <img className='w-12' src='/logo.png' alt='logo'></img>
+              <h2 className='text-2xl co-41588C'>HikePlanner</h2>
             </div>
-          )}
+          </Link>
+          <div className='flex space-x-4 items-center'>
+            <Link href='/planning' className='co-5B6E60 font-medium hover:font-bold'>開始規劃</Link>
+            <Link href='/share' className='co-5B6E60 font-medium hover:font-bold'>路線列表</Link>
+            {currentUser ? (
+              <>
+                <Link href='/member' className='co-5B6E60 font-medium hover:font-bold'>會員中心</Link>
+                <LogOut />
+              </>
+            ) : (
+              <div>
+                <button className='co-5B6E60 font-medium hover:font-bold' onClick={onLoginClick}>登入與註冊</button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </div>)
+    </main>)
 }
 
 

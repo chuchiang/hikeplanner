@@ -104,6 +104,9 @@ button {
   .co-005264{
     color: #005264;
   }
+  .co-739A65{
+    color: #739A65;
+  }
   .bg-F5F2ED{
     background-color:#F5F2ED;
   }
@@ -159,6 +162,9 @@ button {
   .w-1200 {
     width: 1200px;
   }
+  .w-1000 {
+    width: 1000px;
+  }
   .w-600 {
     width: 600px;
   }
@@ -193,6 +199,12 @@ button {
 }
 .border-t-4A6075{
   border-top-color: #4A6075;
+
+}
+
+.border-t-5B6E60{
+  border-color: #5B6E60;
+
 
 }
   
