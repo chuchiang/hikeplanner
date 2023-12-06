@@ -62,11 +62,9 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
           </div>
         </Link>
           <button className="p-0  sm:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}> <img src='./more.png'></img>  </button>
-          {/* <div className={`flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center ${isMenuOpen ? 'block' : 'hidden'} sm:block`}> */}
           <div className={`z-1100 flex flex-col p-2 absolute top-12 right-0 shadow-lg bg-F5F2ED text-center sm:p-1 sm:right-9 sm:shadow-none sm:space-x-4 sm:top-2 sm:bg-DAD1C5 sm:flex-row sm:items-center ${isMenuOpen ? 'block' : 'hidden'} sm:block`}>
-            {/* 導航鏈接 */}
             <Link href='/planning' className='co-5B6E60 font-medium border-b-2 hover:font-bold sm:border-0 '>開始規劃</Link>
-            <Link href='/share' className='co-5B6E60 font-medium border-b-2  hover:font-bold sm:border-0'>路線列表</Link>
+            <Link href='/share' className='co-5B6E60 font-medium border-b-2  hover:font-bold sm:border-0'>探索</Link>
             {currentUser ? (
               <>
                 <Link href='/member' className='co-5B6E60 font-medium border-b hover:font-bold sm:border-0'>會員中心</Link>

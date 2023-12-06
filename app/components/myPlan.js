@@ -126,8 +126,8 @@ const MyPlanner = () => {
         <>
 
             {isLoading ? (<Loading />) : (myPlan && myPlan.length > 0 ? (
-                <div>
-                    <h3 className='co-646564 font-medium text-lg pb-5'>Hi {currentUser ? (currentUser.displayName) : ""}！ 您規劃的路線如下</h3>
+                <div className='space-y-5'>
+                    <h3 className='co-646564 font-medium text-lg'>Hi {currentUser ? (currentUser.displayName) : ""}！ 您規劃的路線如下</h3>
                     {myPlan.map((item, index) => {
                         const readableDate = convertTimestampToDate(item.recordTime)?.toLocaleString();
                         return (

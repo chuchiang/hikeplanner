@@ -11,9 +11,10 @@ export default function Home() {
     //判斷登入
 
     return (
-        <main className=" bg-white min-h-screen p-5 ">
+        <main className=" flex flex-col items-center bg-white">
             <Provider store={store}>
-                <div className='flex flex-col  space-y-5 max-w-full w-800 mx-auto'>
+                <div className=' '>
+
                     <SharePlan />
                 </div>
             </Provider>
