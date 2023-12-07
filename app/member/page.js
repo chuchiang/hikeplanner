@@ -10,24 +10,25 @@ import { selectorCurrentUser } from '../slice/authSlice';
 import LoginForm from '../components/login';
 import MyPlanner from '../components/myPlan';
 import { useRouter } from 'next/navigation';
+import { auth } from "../api/firebase/firebase"; // 確保這裡是正確的導入
+
 
 export default function Home() {
 
-    //判斷登入
-    const currentUser = useSelector(selectorCurrentUser);
     const router = useRouter();
 
-
-
     useEffect(() => {
-        // 如果沒有用戶登入，顯示登入表單
-        if (!currentUser) {
-            router.push('/'); // 重定向到首頁
-        }
-    }, [currentUser, router]);
-
-
-
+        const unsubscribe = auth.onAuthStateChanged(user => {
+          if (! user) {
+            // 用戶已登入，更新 Redux store
+            router.push('/'); 
+          }
+        });
+    
+        // 清理監聽器
+        return () => unsubscribe();
+      }, [router]);
+    
     return (
         <main className=" bg-white min-h-screen p-5 ">
             <Provider store={store}>

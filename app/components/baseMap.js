@@ -9,7 +9,6 @@ import SearchControl from './mapSearch'
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import { useSelector, useDispatch } from 'react-redux';
 import { geoSearchAdd, clearSearchLocations } from '../slice/mapSlice';
-import { PrintComponent } from '../components/printMap'
 import { useMap } from 'react-leaflet';
 import { addimg, addimgState } from '../slice/planningSlice';
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
@@ -62,6 +61,7 @@ const MapScreenshoter = () => {
             hideElementsWithSelectors: [".leaflet-control-container", ".leaflet-dont-include-pane", "#snapshot-button"],
             hidden: false,
             mimeType: 'image/jpeg',
+            position:'topleft'
         }).addTo(map);
 
         map.hasScreenshoter = true; 
@@ -85,7 +85,7 @@ const MapScreenshoter = () => {
                 const dataURL = await screenshoter.takeScreen('image');
                 dispatch(addimg(dataURL));
             } catch (error) {
-                console.error("截图过程中发生错误", error);
+                console.error("截圖錯誤", error);
             }
         };
 
@@ -192,7 +192,6 @@ const leafletMap = () => {
                     />
                 ))}
                 <MapScreenshoter className='z-40' />
-                {/* <PrintComponent className='z-40' /> */}
                 <CirclieHover />
             </MapContainer>
         </div >
