@@ -3,7 +3,7 @@
 
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Popup, LayersControl, Polyline } from 'react-leaflet'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { Markers } from './Marker'
 import SearchControl from './mapSearch'
 import { OpenStreetMapProvider } from "leaflet-geosearch";
@@ -28,7 +28,7 @@ const CirclieHover = () => {
     useEffect(() => {
         let circleMarker;
 
-        // 确保 addCoordinatesChart 包含坐标信息
+        // addCoordinatesChart 包含座標
         if (addCoordinatesChart && addCoordinatesChart.coordinates) {
             const { lat, lng } = addCoordinatesChart.coordinates;
             circleMarker = L.circleMarker([lat, lng], {
@@ -39,7 +39,7 @@ const CirclieHover = () => {
             }).addTo(map);
         }
 
-        // 组件卸载或坐标更新时移除圆点
+        // 卸載或座標更新移除圓點
         return () => {
             if (circleMarker) {
                 circleMarker.remove();
@@ -48,44 +48,52 @@ const CirclieHover = () => {
     }, [addCoordinatesChart, map]);
 }
 
+// 地圖列印
 const MapScreenshoter = () => {
     const map = useMap();
     const dispatch = useDispatch();
     const imgState = useSelector((state) => state.planning.imgState);
-
+    const [screenshoter, setScreenshoter] = useState(null);
 
     useEffect(() => {
-        if (!map) return;
+        if (!map || map.hasScreenshoter) return;
 
-        // 使用whenCreated回调获取地图实例
-        const screenshoter = new SimpleMapScreenshoter({
+        const newScreenshoter = new SimpleMapScreenshoter({
             hideElementsWithSelectors: [".leaflet-control-container", ".leaflet-dont-include-pane", "#snapshot-button"],
-            hidden: true,
+            hidden: false,
             mimeType: 'image/jpeg',
         }).addTo(map);
 
+        map.hasScreenshoter = true; 
+        setScreenshoter(newScreenshoter);
+
+        // 清理
+        return () => {
+            if (newScreenshoter) {
+                newScreenshoter.remove();
+            }
+            map.hasScreenshoter = false;
+        };
+    }, [map]);
+
+    useEffect(() => {
+        if (!screenshoter || imgState !== 'True') return;
+        
+         // 觸發截圖轉base64
         const captureScreenshot = async () => {
             try {
                 const dataURL = await screenshoter.takeScreen('image');
-                dispatch(addimg(dataURL)); // 将 base64 图像数据发送到 Redux
+                dispatch(addimg(dataURL));
             } catch (error) {
                 console.error("截图过程中发生错误", error);
             }
         };
 
-        if (imgState === 'True') {
-            // 监听一次地图的'load'事件
-            map.once('load', captureScreenshot);
-            // 如果地图已经加载（例如，用户在地图上进行了交互），直接截图
-            if (map._loaded) {
-                captureScreenshot();
-            }
+        map.once('load', captureScreenshot);
+        if (map._loaded) {
+            captureScreenshot();
         }
-
-
-
-    }, [map, imgState, dispatch]);
-
+    }, [screenshoter, imgState, dispatch]); 
     return null;
 };
 
@@ -134,7 +142,7 @@ const leafletMap = () => {
 
     return (
         <div className='bg-white w-full h-full'>
-            <MapContainer id='map' style={{ width: '100%', height: '100%'}} center={coord} zoom={13} scrollWheelZoom={false} >
+            <MapContainer id='map' style={{ width: '100%', height: '100%' }} center={coord} zoom={13} scrollWheelZoom={false} >
 
                 <SearchControl
                     provider={prov}
@@ -184,7 +192,7 @@ const leafletMap = () => {
                     />
                 ))}
                 <MapScreenshoter className='z-40' />
-                <PrintComponent className='z-40' />
+                {/* <PrintComponent className='z-40' /> */}
                 <CirclieHover />
             </MapContainer>
         </div >
