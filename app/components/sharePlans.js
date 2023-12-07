@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { addData } from '../slice/planningSlice'
 import { asyncGetShareData, asyncGetSearchData } from '../api/firebase/asyncGet'
-import Loading from '../components/loading'; 
+import Loading from '../components/loading';
 const SharePlan = () => {
 
     const router = useRouter();
@@ -14,10 +14,9 @@ const SharePlan = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
-    // useEffect 用來在元件載入後取得 Firebase 中的資料
     useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true); 
+            setIsLoading(true);
             try {
                 const getData = await asyncGetShareData();
                 console.log(getData);
@@ -30,10 +29,10 @@ const SharePlan = () => {
         fetchData();
     }, []);
 
- 
+
     // 點擊觸發搜尋
     const handleSearch = async () => {
-        setIsLoading(true); 
+        setIsLoading(true);
         try {
             setSharePlan();
             const searchDate = await asyncGetSearchData(searchTerm);
@@ -94,19 +93,24 @@ const SharePlan = () => {
         window.location.reload();
     }
 
+
     return (
-        <div className='flex flex-col items-center  space-y-6 '>
-            <div className='relative w-screen h-96 overflow-hidden'>
+        <div className='flex flex-col items-center  space-y-6 w-full'>
+            <div className='relative  h-96 overflow-hidden  w-full '>
                 <img src='./shareBanner.jpg' className='w-full h-full object-cover object-left'></img>
-                <div className='absolute top-1/2 translate-y-[-50%] left-10 sm:left-20 md:left-20 lg:left-1/4 '>
-                    <h3 className='text-white font-bold text-2xl opacity-75'>探索山林之美，追隨足跡</h3>
-                    <div className='rounded border-black flex items-center bg-white mt-3'>
-                        <input placeholder="請輸入路線名稱" className='rounded-xl w-11/12' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></input>
-                        <button onClick={handleSearch} className='bg-DAD1C5'><img src='/search.png' className='w-6'></img></button>
+                <div className='flex justify-center items-center'>
+                    <div className='absolute top-1/2 translate-y-[-50%] xl:w-1200  md:px-20 '>
+                        <h3 className='text-white font-bold text-2xl opacity-95'>探索山林之美，追隨足跡</h3>
+                        <p className='text-white font-medium text-lg opacity-95 mt-2'>複製地圖，重新規劃個人化路徑</p>
+                        <div className='rounded border-black flex items-center bg-white mt-3 w-80'>
+                            <input placeholder="請輸入路線名稱" className='rounded-xl w-11/12' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></input>
+                            <button onClick={handleSearch} className='bg-DAD1C5'><img src='/search.png' className='w-6'></img></button>
+                        </div>
                     </div>
+
                 </div>
             </div>
-            <div className='flex flex-wrap justify-center lg:w-1200 '>
+            <div className='flex flex-wrap justify-center xl:w-1200 '>
                 {isLoading ? (
                     <Loading />
                 ) : (

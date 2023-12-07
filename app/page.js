@@ -28,64 +28,39 @@ export default function Home() {
       <Banner />
       <div className='z-10  w-full items-center justify-between flex flex-col lg:flex bg-DAD1C5 pt-10 pb-20'>
         <p className='font-bold text-xl co-434E4E text-center mb-12'>讓登山之旅更輕鬆<br />由你決定每一步</p>
-        <div className=' flex flex-col  items-center lg:w-1000 lg:space-y-12'>
+        <div className=' flex flex-col  items-center space-y-10  lg:space-y-12'>
 
-          <div className='flex flex-wrap justify-center items-center mb-8 md:justify-between'>
-            <div className='rounded-lg  bg-DAD1C5 '><img src='./index/routeIndex.gif' className='w-full h-full rounded-lg'></img></div>
-            <div className=' bg-F5F2ED rounded-lg p-5 m-5 lg:py-10 lg:px-16 '>
+          <div className='flex flex-wrap justify-center items-center  md:justify-between '>
+            <div className='rounded-lg  bg-white p-2 shadow-lg '><img src='./index/routeIndex.gif' className='w-80 lg:w-96 h-full rounded-lg'></img></div>
+            <div className='  rounded-lg mt-4 md:ml-8 md:mt-8 p-2 w-72 md:w-96 md:p-0 lg:ml-24'>
               <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>規劃助手</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>個性化登山行程</p>
               <p className='co-646564 text-base'>可以根據自身體能、路線難度、時間等條件，輕鬆制定專屬路線</p>
-              <div className='flex justify-end'><button className='mt-9 bg-6C8272 hover:bg-5B6E60  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>開始規劃</Link></button></div>
+              <div className='flex justify-end'><button className='mt-9 bg-005264 hover:opacity-75  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>開始規劃</Link></button></div>
             </div>
           </div>
 
-          <div className='flex flex-wrap-reverse justify-center items-center sm:flex-nowrap lg:justify-end mb-8 md:justify-between '>
-            <div className='bg-F5F2ED rounded-lg p-5 m-5 lg:py-10 lg:px-16 '>
+          <div className='flex flex-wrap-reverse justify-center items-center sm:flex-nowrap lg:justify-end  md:justify-between '>
+          <div className='  rounded-lg mt-4 md:mr-8 md:mt-8 w-72 p-2 md:w-96 md:p-0 lg:mr-24'>
               <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>路線分析</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>全面掌握路線資訊</p>
               <p className='co-646564 text-base'>提供全面的路線資訊，包含爬升下降高度以及預估的行走時間</p>
-              <div className='flex justify-end'><button className='mt-9 bg-6C8272 hover:bg-5B6E60  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>路線資訊</Link></button></div>
+              <div className='flex justify-end'><button className='mt-9 bg-005264 hover:opacity-75  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>路線資訊</Link></button></div>
             </div>
-            <div className='rounded-lg  bg-DAD1C5 px-24'><img src='./index/elevationIndex.gif' className='w-full h-full rounded-lg'></img></div>
+            <div className='rounded-lg  bg-white p-2 shadow-lg '><img src='./index/elevationIndex.gif' className='w-80 lg:w-96 h-full rounded-lg'></img></div>
           </div>
 
-          <div className='flex flex-wrap justify-center items-center lg:justify-between'>
-            <div className='rounded-lg  bg-DAD1C5 px-2'><img src='./index/explore.jpg' className='w-full h-full rounded-lg'></img></div>
-            <div className=' bg-F5F2ED rounded-lg p-5 m-5 lg:py-10 lg:px-16 '>
-              <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>探索</p><div className='border-t-5B6E60 border w-full'></div></div>
+          <div className='flex flex-wrap justify-center items-center  lg:justify-between'>
+            <div className='rounded-lg  bg-white p-2 shadow-lg'><img src='./index/explore.jpg' className='w-80 lg:w-96  h-full rounded-lg'></img></div>
+            <div className='  rounded-lg mt-4 md:ml-8 md:mt-8 w-72 p-2 md:w-96  md:p-0 lg:ml-24' >
+              <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>探索景點</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>觀看其他人的路線</p>
-              <p className='co-646564 text-base'>規劃可儲存與分享，資料不遺失，還可輸出照片和GPX格式</p>
-              <div className='flex justify-end'><button className='mt-9 bg-6C8272 hover:bg-5B6E60  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>探索路線</Link></button></div>
+              <p className='co-646564 text-base'>規劃路線可儲存與分享，他人也能使用，還可輸出照片和GPX格式</p>
+              <div className='flex justify-end'><button className='mt-9 bg-005264 hover:opacity-75  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>探索路線</Link></button></div>
             </div>
           </div>
-
         </div>
-
-
-
       </div>
-
-      {/* <div className='w-full items-center justify-between flex flex-col bg-gyay-500 pt-10 pb-20'>
-        <p className='font-bold text-xl co-434E4E text-center mb-12'>讓登山之旅更輕鬆<br />由你決定每一步</p>
-        <div className='w-full lg:w-1000 '>
-          <div className='flex flex-wrap justify-center items-center lg:relative'>
-            <div className='mx-2 mb-10 lg:absolute lg:inset-y-0 lg:left-0'>
-              <img src='./test.png' alt="Test" className='w-full lg:w-auto lg:h-auto' />
-            </div>
-            <div className='mx-2 bg-white rounded-lg py-12 px-20 lg:absolute  lg:right-0'>
-              <div className='flex items-center mb-6'><p className='text-5B6E60 text-xl font-bold whitespace-nowrap mr-5'>規劃助手</p><div className='border-t-5B6E60 border w-full'></div></div>
-              <p className='text-739A65 text-2xl font-bold'>個性化登山行程</p>
-              <p className='text-646564 text-base'>可以根據自身體能、路線難度、時間等條件，輕鬆制定專屬路線</p>
-              <div className='flex justify-end'><button className='mt-9 bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>開始規劃</Link></button></div>
-            </div>
-          </div>
-        </div>
-
-
-
-      </div> */}
-
     </main>
   )
 }

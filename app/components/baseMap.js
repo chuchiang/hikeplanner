@@ -161,7 +161,7 @@ const leafletMap = () => {
                         handleSearchResult(coordinates);
                     }}
                 />
-                <LayersControl position='topright'>
+                <LayersControl position='topright'className='z-40'>
                     <LayersControl.BaseLayer name="開放街圖">
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
