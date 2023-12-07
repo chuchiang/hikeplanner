@@ -5,9 +5,9 @@ import RegisterForm from './components/register'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser, clearUser, selectorCurrentUser } from './slice/authSlice'
-import { store } from './store';//剛剛的store 要引入
-import { Provider } from 'react-redux';//Provider 要引入
-import { auth } from "./api/firebase/firebase"; // 確保這裡是正確的導入
+import { store } from './store';
+import { Provider } from 'react-redux';
+import { auth } from "./api/firebase/firebase"; 
 import LoginForm from './components/login'
 
 import LogOut from './components/logout'
@@ -18,7 +18,7 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
   const currentUser = useSelector(selectorCurrentUser);
   const dispatch = useDispatch();
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // 用於追踪漢堡菜單的狀態
+  const [isMenuOpen, setIsMenuOpen] = useState(false); 
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {

@@ -273,13 +273,13 @@ const ElevationChart = () => {
             </div>)}
         <div className='flex flex-wrap-reverse justify-between items-end'>
             <ul className='mt-2 md:mt-0 flex space-x-2 '>
-                <li className=' sm:text-base font-medium ' >總距離：<br />{total.kilometers}km</li>
-                <li className='border-r-2 sm:text-base'></li>
-                <li className=' sm:text-base font-medium '>總預估時間：<br />{total.hours}h{total.minutes}min</li>
+                <li className='co-434E4E sm:text-base ' >總距離：<br />{total.kilometers}km</li>
+                <li className='border-r-2 '></li>
+                <li className='co-434E4E sm:text-base '>總預估時間：<br />{total.hours}h{total.minutes}min</li>
                 <li className='border-r-2'></li>
-                <li className=' sm:text-base font-medium '>總爬升高度：<br />{total.ascent}m</li>
+                <li className=' co-434E4E sm:text-base '>總爬升高度：<br />{total.ascent}m</li>
                 <li className='border-r-2'></li>
-                <li className=' sm:text-base font-medium '>總下降高度：<br />{total.descent}m</li>
+                <li className='co-434E4E sm:text-base fo'>總下降高度：<br />{total.descent}m</li>
             </ul>
             < button className='mt-2 bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl text-white w-30 chart-button flex items-center' onClick={handleClick} >{showChart ? (<img src='/down.png' className='mr-1'></img>) : (<img src='/up.png' className='mr-1' ></img>)}海拔剖面圖</button>
         </div>

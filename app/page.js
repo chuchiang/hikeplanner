@@ -3,7 +3,6 @@ import './globals.css'
 import Head from 'next/head';
 import Link from 'next/link'
 
-
 function Banner() {
   return (<div className='relative w-screen overflow-hidden'style={{ height: 'calc(100vh - 44px)' }}>
     <img src='/banner.jpg' alt='mountain banner' className='h-full w-full object-cover'></img>
@@ -18,8 +17,6 @@ function Banner() {
 
 export default function Home() {
   return (
-    // <main className="flex min-h-screen flex-col items-center justify-between p-24">
-
     <main className="flex  flex-col items-center justify-between   ">
       <Head>
         <title> HikePlanner</title>

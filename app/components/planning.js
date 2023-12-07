@@ -28,41 +28,16 @@ function addTime(startTime, hoursToAdd, minutesToAdd) {
 function Route() {
     const [isLoading, setIsLoading] = useState(true);
     const [isFullLoading, setIsFullLoading] = useState(false);
-
     const [deletedIndex, setDeletedIndex] = useState(null);
-    // const [showLogin, setShowLogin] = useState(false);
-    // const [isLoginMode, setIsLoginMode] = useState(true); // 新增用於追踪登入或註冊模式的狀態
     const currentUser = useSelector(selectorCurrentUser);
-
-    // const [shareTrip, setShareTrip] = useState(false);
-    // const captureMapSnapshot = useSelector(getMapSnapshotFunction);
-
-
-    // const handleLoginClick = () => {
-    //     setShowLogin(true);
-    //     setIsLoginMode(true); // 點擊登入時，設置為登入模式
-    // };
-
-    // const handleRegisterClick = () => {
-    //     setShowLogin(true);
-    //     setIsLoginMode(false); // 點擊註冊時，設置為註冊模式
-    // };
-
-
-
-
 
     const addNewImg = useSelector((state) => {
         console.log(state.planning)
         return state.planning.img
     })
 
-
-
     const dispatch = useDispatch();
     const previousLocationsRef = useRef();
-    // const mapRef = useContext(MapContext);
-
 
     //取得 planning資料
     const addNewLocation = useSelector((state) => {
@@ -70,17 +45,12 @@ function Route() {
         return state.planning.days
     })
 
-
     //取得 planning資料
     const addNewPlanning = useSelector((state) => {
         console.log('addNewPlanning' + state.planning)
         return state.planning
     })
     const [routeName, setRouteName] = useState(addNewPlanning ? addNewPlanning.routeName : '');
-
-
-
-
 
     //日期改變
     const handleDateChange = (event) => {
@@ -119,13 +89,11 @@ function Route() {
             dayIndex !== 0 &&
             addNewLocation[dayIndex].locations.length == 1
 
-
         //某天最後一個且第二天有第二個
         const isLastLocationAndNextDayHave =
             index == addNewLocation[dayIndex].locations.length - 1 &&
             dayIndex < addNewLocation.length - 1 &&
             addNewLocation[dayIndex + 1].locations.length >= 2
-
 
         //某天第一個且有第二個
         const isNextDayHaveLocations =
@@ -137,10 +105,6 @@ function Route() {
         const isLastLocationNoNextDay =
             index == addNewLocation[dayIndex].locations.length - 1 &&
             dayIndex == addNewLocation.length - 1
-
-
-
-
 
         if (isFirstLocation || isLastLocationAndNextDayNo || isNextDayFirstLocation || isLastLocationNoNextDay) {
             console.log("null")
@@ -163,21 +127,11 @@ function Route() {
         // 得到最一天日期
         const lastDay = addNewLocation[addNewLocation.length - 1]
         const lastDayDate = lastDay.date
-
         const plannerDateObject = new Date(lastDayDate);
-
-        // 为 plannerDate 增加一天
-        plannerDateObject.setDate(plannerDateObject.getDate() + 1);
-        console.log(plannerDateObject)
-
-        // 将新日期转换回 YYYY-MM-DD 格式
+        plannerDateObject.setDate(plannerDateObject.getDate() + 1);//  plannerDate 增加一天
         const newDate = plannerDateObject.toISOString().split('T')[0];
-
-        // 获取最后一天的最后一个地点
-        // const lastDay = addNewLocation[addNewLocation.length - 1];
         const lastDayLocation = lastDay.locations[lastDay.locations.length - 1];
 
-        // 分发 action 增加新的一天
         dispatch(addDay({
             date: newDate,
 
@@ -276,13 +230,7 @@ function Route() {
                                 isLoading: false
                             }));
                         }
-
-
-
-
                     }
-
-
                 } catch (error) {
                     console.error('Error:', error);
                     //若是路徑錯誤把已經加入的刪除
@@ -312,7 +260,6 @@ function Route() {
                             icon: 'error',
                             confirmButtonText: '好的',
                             confirmButtonColor: '#5B6E60',
-
                             customClass: {
                                 confirmButton: 'custom-button',
                                 title: 'text-2xl',
@@ -333,14 +280,9 @@ function Route() {
                                 text: 'text-base'
                             },
                         });
-
-
                     }
-
                 }
             };
-
-
 
             //處理景點變更
             addNewLocation.forEach((day, dayIndex) => {
@@ -350,8 +292,6 @@ function Route() {
                     const newLocationIndex = day.locations.length - 1;
                     const lastLocation = day.locations[newLocationIndex - 1];
                     const lastSecondLocation = day.locations[newLocationIndex];
-                    // const coordinatesStar = [lastSecondLocation.lng, lastSecondLocation.lat];
-                    // const coordinatesEnd = [lastLocation.lng, lastLocation.lat];
                     const coordinatesStar = [lastLocation.lng, lastLocation.lat];
                     const coordinatesEnd = [lastSecondLocation.lng, lastSecondLocation.lat];
                     fetchData(coordinatesStar, coordinatesEnd, dayIndex, newLocationIndex - 1);
@@ -361,10 +301,8 @@ function Route() {
                         isLoading: true
                     }));
                 } else if (deletedIndex !== null) {
-
                     const deleteLocationDay = deletedIndex.deleteDayIndex
                     const deleteLocationIndex = deletedIndex.deleteIndex
-
                     const starLocation = addNewLocation[deleteLocationDay].locations[deleteLocationIndex - 1];
                     const endLocation = addNewLocation[deleteLocationDay].locations[deleteLocationIndex];
                     const coordinatesStar = [starLocation.lng, starLocation.lat];
@@ -375,15 +313,8 @@ function Route() {
                         locationIndex: deleteLocationIndex - 1,
                         isLoading: true
                     }))
-
-
                 }
-
             });
-
-
-
-
         }
 
         // 更新參考以追蹤當前陣列狀態
@@ -395,11 +326,6 @@ function Route() {
         setRouteName(e.target.value);
         dispatch(addRouteName(e.target.value))
     }
-
-    // // 是否同意分享行程
-    // const handleShareTripChange = (e) => {
-    //     setShareTrip(e.target.checked)
-    // }
 
     //資料轉換
     const transformDataForFirestore = (data) => {
@@ -418,8 +344,6 @@ function Route() {
             }))
         }))
     }
-
-
 
     //計算總行走時間
     function calculateTotal(directionData) {
@@ -447,14 +371,8 @@ function Route() {
                 }
             });
         });
-
         return total;
     }
-
-
-
-
-
 
     //儲存檔案
     const onSubmit = async (event) => {
@@ -493,10 +411,8 @@ function Route() {
             setIsFullLoading(true)
             dispatch(addimgState('True'))
         }
-
     }
 
-    // planning.js
     useEffect(() => {
         const transformedData = transformDataForFirestore(addNewLocation);
         const totalData = calculateTotal(addNewLocation);
@@ -509,12 +425,10 @@ function Route() {
                 userName: currentUser.displayName,
                 id: addNewPlanning.id,
                 routeName: routeName,
-                // shareTrip: addNewPlanning ? addNewPlanning.shareTrip : false,
                 shareTrip: addNewPlanning.shareTrip || false,
-
                 total: totalData,
                 locations: transformedData,
-                img: addNewImg  // 从 Redux 获取最新的截图数据
+                img: addNewImg  
             };
 
             try {
@@ -540,23 +454,10 @@ function Route() {
         saveToFirebase();
     }, [addNewImg]);
 
-    // if (showLogin) {
-    //     return (showLogin && (
-    //         isLoginMode ?
-    //             <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
-    //             <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
-    //     ));
-    // }
 
-
-
-    // onSubmit={handleSubmit(onSubmit)}
     return (
         <>
-
-
             <div className='w-full mt-5 lg:w-380 lg:mr-5 lg:mt-0 flex flex-col'style={{ height: 'calc(100vh - 84px)' }}>
-                {/* <form onSubmit={onSubmit} className='' > */}
                     <div className='bg-F5F2ED h-full p-2 rounded overflow-y-scroll scrollbar'>
                         <div className='flex mb-5 justify-between items-center'>
                             <div className='flex flex-col mb-2'>
@@ -643,10 +544,6 @@ function Route() {
                         <ExportGpx />
                         <button className=' w-32 text-white bg-507780 hover:bg-43646B shadow-md hover:shadow-xl' type="submit " onClick={onSubmit}>儲存</button>
                     </div>
-
-                {/* </form> */}
-
-
             </div >
             {isFullLoading && (<>
                 <FullLoading />
@@ -656,111 +553,7 @@ function Route() {
     )
 }
 
-
-
 export default Route
-
-
-// return (
-//     <>
-
-
-//         <div className='flex flex-col mt-10 mr-5 w-380 '>
-//             <form onSubmit={onSubmit}>
-//                 <div className='bg-F5F2ED p-5 rounded h-72 overflow-y-scroll scrollbar'>
-//                     <div className='flex mb-5 justify-center'>
-//                         <div className='flex flex-col mb-2'>
-//                             <label className='co-434E4E font-medium '>路線名稱</label>
-//                             <input className='mr-2.5' onChange={handleRouteNameChange} value={addNewPlanning.routeName}></input>
-//                         </div>
-//                         <div className='flex flex-col mb-2'>
-//                             <label className='co-434E4E font-medium'>開始日期</label>
-//                             <input
-//                                 type='date'
-//                                 value={addNewLocation[0].date}
-//                                 onChange={handleDateChange}
-//                             ></input>
-//                         </div>
-//                     </div>
-
-//                     <hr className='mb-2' />
-//                     {addNewLocation.map((day, dayIndex) => {
-//                         let locationTime = day.time;
-
-
-//                         //計算日期
-//                         return (
-//                             <div key={dayIndex} className='pb-2'>
-
-//                                 {day.date && (
-//                                     <p className='co-005264 font-bold text-center mb-2'>-- 第{dayIndex + 1}天 --  {day.date}
-//                                         <input
-//                                             className='w-32 bg-F5F2ED px-1'
-//                                             type='time'
-//                                             value={day.time}
-//                                             onChange={(event) => handleTimeChange(dayIndex, event)}
-//                                         /></p>)}
-
-//                                 {day.locations.map((attraction, index) => {
-//                                     //計算景點時間
-//                                     console.log(attraction)
-//                                     // 如果當前景點不是第一個，有 direction 就累加時間
-//                                     if (index > 0 && day.locations[index - 1].direction) {
-//                                         const prevDirection = day.locations[index - 1].direction;
-//                                         if (!isNaN(prevDirection.hours) && !isNaN(prevDirection.minutes)) {
-//                                             locationTime = addTime(locationTime, prevDirection.hours, prevDirection.minutes);
-//                                         }
-//                                     }
-//                                     return (<div key={`${dayIndex}-${index}`} >
-//                                         {/* 地點訊息 */}
-//                                         <div className='flex space-x-3'>
-//                                             <div className='w-8 h-8 bg-739A65 text-xl text-white flex items-center justify-center rounded '>{index + 1}</div>
-//                                             <p className="text-center flex items-center bg-005264 text-white rounded px-1">{locationTime}</p>
-//                                             <input className='w-44 px-2 py-1 bg-white rounded' value={`${attraction.name}/${attraction.region}`} readOnly></input>
-//                                             <button type="button" className='w-8 p-0' onClick={handleDeleteLocation(dayIndex, index)}><img src='/delete.png' alt='delete icon' /></button>
-//                                         </div>
-
-//                                         {/* 路線訊息 */}
-//                                         {attraction.isLoading ? (
-//                                             <div>計算數據中...</div>
-//                                         ) : (
-//                                             attraction.direction ? (<div className='co-646564 border-l-2 border-slate-300 ml-3 mb-2'>
-//                                                 <div className='ml-9 mt-2'>
-//                                                     <p>行走時間：{attraction.direction.hours} 小時 {attraction.direction.minutes} 分鐘</p>
-//                                                     <p>距離：{attraction.direction.kilometers} km </p>
-//                                                     <p>總爬升高度：{attraction.direction.ascent} m</p>
-//                                                     <p>總下降高度：{attraction.direction.descent} m</p>
-//                                                 </div>
-//                                             </div>) : null
-
-//                                         )
-//                                         }
-//                                     </div>)
-//                                 })}
-
-//                                 {dayIndex == addNewLocation.length - 1 && day.locations.length >= 2 && (
-//                                     <div className='flex justify-end'>
-//                                         <button onClick={addNewDay} className='bg-5B6E60 text-white w-28 mt-4 '>新增下一天</button>
-//                                     </div>
-//                                 )}
-
-//                             </div>)
-//                     })}
-//                 </div>
-//                 <div className='flex justify-between mt-3 items-center'>
-//                     <ExportGpx />
-//                     <button className=' w-32 text-white bg-507780 hover:bg-43646B shadow-md hover:shadow-xl' type="submit ">儲存</button>
-
-//                 </div>
-//             </form>
-
-//         </div >
-//         {isFullLoading && (<>
-//             <FullLoading />
-//         </>
-//         )}
-//     </>
-// )
 
 
 

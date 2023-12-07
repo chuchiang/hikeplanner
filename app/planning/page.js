@@ -68,7 +68,7 @@ export default function Home() {
   return (
 
     <>
-      <main className="flex flex-wrap-reverse mx-1 my-1 md:flex-row lg:flex-nowrap sm:mx-6 lg:mx-14 sm:my-5 ">
+      <main className="flex flex-wrap-reverse mx-1 my-1 md:flex-row lg:flex-nowrap sm:mx-6 lg:mx-14 sm:my-4 ">
         <Provider store={store}>
           <Route />
           <RouteMap />

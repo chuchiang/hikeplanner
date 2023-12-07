@@ -7,7 +7,7 @@ export const planningSlice = createSlice({
         routeName: '',
         img: "",
         imgState: "",
-        shareTrip:'',
+        shareTrip: '',
         days: [
             {
                 date: new Date().toISOString().split('T')[0],
@@ -71,15 +71,21 @@ export const planningSlice = createSlice({
             const hasNextLocation = state.days[deleteDayIndex].locations.length === 1
             const notFirstLocation = deleteDayIndex !== 0
             const isFirstLocation = deleteDayIndex === 0
-
-
+            const days = state.days.length
 
             //如果是最後一格並且有下一天
             if (isLastLocationOfDay && nextDay) {
                 const nextDayFirstLocation = state.days[deleteDayIndex + 1].locations[1];
 
+                if (state.days[deleteDayIndex + 1].locations.length === 2) {
+                    const secondLocationNextDay = state.days[deleteDayIndex + 1].locations[1];
+                    state.days[deleteDayIndex].locations.splice(deleteIndex, 1);
+                    state.days[deleteDayIndex].locations.push({ ...secondLocationNextDay });
+                    state.days.splice(deleteDayIndex + 1, 1);
+                }
+
                 //如果下一天只有一個位置，刪除整個下一天
-                if (state.days[deleteDayIndex + 1].locations.length === 1) {
+                else if (state.days[deleteDayIndex + 1].locations.length === 1) {
                     state.days[deleteDayIndex].locations.splice(deleteIndex, 1);
                     if (state.days[deleteDayIndex].locations.length >= 1) { state.days[deleteDayIndex].locations[deleteIndex - 1].direction = undefined; }
                     state.days.splice(deleteDayIndex + 1, 1)
@@ -91,7 +97,6 @@ export const planningSlice = createSlice({
                     if (state.days[deleteDayIndex].locations.length > 1) {
                         state.days[deleteDayIndex].locations[deleteIndex - 1].direction = undefined;
                         state.days[deleteDayIndex].locations[deleteIndex].direction = undefined;
-
                     }
 
                 }
@@ -100,17 +105,20 @@ export const planningSlice = createSlice({
                 const previousDayLastLocationIndex = state.days[deleteDayIndex - 1].locations.length - 1;//前一天最後一格'location
 
                 // 檢查第二天是否有多於一個景點
-                if (state.days[deleteDayIndex].locations.length > 1) {
+                if (state.days[deleteDayIndex].locations.length == 2) {
+                    const secondLocation = state.days[deleteDayIndex].locations[1];
+                    state.days[deleteDayIndex - 1].locations.splice(previousDayLastLocationIndex, 1);
+                    state.days[deleteDayIndex - 1].locations.push(secondLocation);
+                    state.days.splice(deleteDayIndex, 1);
+                } else if (state.days[deleteDayIndex].locations.length > 1) {
                     const nextLocation = state.days[deleteDayIndex].locations[1];
-                    state.days[deleteDayIndex - 1].locations.splice(previousDayLastLocationIndex, 1); // 删除当前天的第一个位置
-                    state.days[deleteDayIndex].locations.splice(0, 1); // 删除当前天的第一个位置
+                    state.days[deleteDayIndex - 1].locations.splice(previousDayLastLocationIndex, 1); // 删除當前天的第一個位置
+                    state.days[deleteDayIndex].locations.splice(0, 1); // 删除當前天的第一個位置
                     if (state.days[deleteDayIndex - 1].locations.length >= 1) {
                         state.days[deleteDayIndex - 1].locations[previousDayLastLocationIndex - 1].direction = undefined;
                     }
-
                     state.days[deleteDayIndex - 1].locations[previousDayLastLocationIndex] = { ...nextLocation };
                     state.days[deleteDayIndex - 1].locations[previousDayLastLocationIndex].direction = undefined;
-
                 }
                 // 如果當天只有一個位置，刪除整天
                 else {
@@ -118,10 +126,15 @@ export const planningSlice = createSlice({
                     state.days[deleteDayIndex - 1].locations[previousDayLastLocationIndex - 1].direction = undefined;
                     state.days.splice(deleteDayIndex, 1);
                 }
+
             }//第一格位置 
             else if (isFirstLocationOfDay && isFirstLocation) {
-                state.days[deleteDayIndex].locations.splice(0, 1); // 删除当前天的第一个位置
-                state.days.splice(1, 1);
+                if (state.days[deleteDayIndex].locations.length == 2 && days>1) {
+                    state.days.splice(deleteDayIndex, 1);
+                } else {
+                    state.days[deleteDayIndex].locations.splice(0, 1); // 删除當前天的第一個位置
+                    // state.days.splice(1, 1);
+                }
             }
             else {
                 state.days[deleteDayIndex].locations.splice(deleteIndex, 1); // 這將會刪除指定索引的元素
@@ -130,9 +143,6 @@ export const planningSlice = createSlice({
                     state.days[deleteDayIndex].locations[deleteIndex - 1].direction = undefined;
                 }
             }
-
-
-
         },
 
         //增加錯誤地點
@@ -198,7 +208,7 @@ export const planningSlice = createSlice({
         },
 
         //清空redux
-        clearStateAction:(state)=>{
+        clearStateAction: (state) => {
             state.id = '';
             state.routeName = '';
             state.img = '';
@@ -218,7 +228,7 @@ export const planningSlice = createSlice({
 
 //定義的REDUCERS可以使用ACTION匯出(具名匯出)
 //會帶入REDUCER 定義的名稱
-export const { clearStateAction,addimgState,addimg, addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, addData } = planningSlice.actions;
+export const { clearStateAction, addimgState, addimg, addLocation, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, addData } = planningSlice.actions;
 
 
 export default planningSlice.reducer;
