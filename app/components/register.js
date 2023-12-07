@@ -63,7 +63,7 @@ const RegisterForm = ({ onClose, handleLoginClick }) => {
             await createUserDocumentFromAuth(user, { displayName: formFields.displayName });
             dispatch(addUserName(formFields.displayName))
             setFormFields(formFields);
-            setmessage("註冊成功，請重新登入")
+            setmessage("註冊成功，已登入")
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 setmessage("信箱已註冊過")

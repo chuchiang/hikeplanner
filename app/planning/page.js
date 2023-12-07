@@ -29,7 +29,8 @@ const DynamicMap = dynamic(() => import('../components/baseMap'), {
 function RouteMap() {
   return (
     <>
-      <div className=' flex flex-col bg-white w-screen h-screen'>
+      <div className=' flex flex-col bg-white w-screen 'style={{ height: 'calc(100vh - 84px)' }}>
+      {/* <div className=' flex flex-col bg-white w-screen h-screen'> */}
         <DynamicMap />
         <ElevationChart />
       </div>
@@ -68,9 +69,8 @@ export default function Home() {
   return (
 
     <>
-      {/* <main className="flex justify-center mx-1 sm:mx-9 w-full h-screen"> */}
-      <main className="flex flex-wrap-reverse mx-1 md:flex-row lg:flex-nowrap sm:mx-6 lg:mx-14 h-screen my-5">
-
+      {/* <main className="flex flex-wrap-reverse mx-1 md:flex-row lg:flex-nowrap sm:mx-6 lg:mx-14 my-5" style={{ height: 'calc(100vh - 84px)' }}> */}
+      <main className="flex flex-wrap-reverse mx-1 md:flex-row lg:flex-nowrap sm:mx-6 lg:mx-14  my-5 ">
         <Provider store={store}>
           {/* <div className='flex justify-center mx-1 sm:mx-9 w-full h-screen'> */}
           <Route />

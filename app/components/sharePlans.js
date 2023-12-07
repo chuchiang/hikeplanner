@@ -17,7 +17,7 @@ const SharePlan = () => {
     // useEffect 用來在元件載入後取得 Firebase 中的資料
     useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true); // 開始加載數據
+            setIsLoading(true); 
             try {
                 const getData = await asyncGetShareData();
                 console.log(getData);
@@ -33,6 +33,7 @@ const SharePlan = () => {
  
     // 點擊觸發搜尋
     const handleSearch = async () => {
+        setIsLoading(true); 
         try {
             setSharePlan();
             const searchDate = await asyncGetSearchData(searchTerm);
@@ -41,6 +42,7 @@ const SharePlan = () => {
         } catch (error) {
             console.error('error fetching data', error);
         }
+        setIsLoading(false);
     }
 
     // 轉換時間戳

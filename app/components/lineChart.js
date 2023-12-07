@@ -268,7 +268,7 @@ const ElevationChart = () => {
 
     return <div className=' z-1000  bg-white w-full mt-1'>
         {showChart && (
-            <div className='h-50 bg-white chart-container'>
+            <div className='  bg-white chart-container'>
                 <Line className='' data={chartData} options={options} onMouseOut={handleMouseOut}></Line>
             </div>)}
         <div className='flex flex-wrap-reverse justify-between items-end'>

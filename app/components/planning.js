@@ -555,9 +555,9 @@ function Route() {
         <>
 
 
-            <div className='flex flex-col  w-full h-full mt-5 lg:h-full lg:w-380 lg:mr-5 lg:mt-0 '>
-                <form onSubmit={onSubmit} className='h-full lg:h-full'>
-                    <div className=' h-full bg-F5F2ED p-2 rounded overflow-y-scroll scrollbar'>
+            <div className='w-full mt-5 lg:w-380 lg:mr-5 lg:mt-0 flex flex-col'style={{ height: 'calc(100vh - 84px)' }}>
+                {/* <form onSubmit={onSubmit} className='' > */}
+                    <div className='bg-F5F2ED h-full p-2 rounded overflow-y-scroll scrollbar'>
                         <div className='flex mb-5 justify-between items-center'>
                             <div className='flex flex-col mb-2'>
                                 <label className='co-434E4E font-medium '>路線名稱</label>
@@ -577,8 +577,6 @@ function Route() {
                         <hr className='mb-2' />
                         {addNewLocation.map((day, dayIndex) => {
                             let locationTime = day.time;
-
-
                             //計算日期
                             return (
                                 <div key={dayIndex} className='pb-2'>
@@ -641,12 +639,13 @@ function Route() {
                                 </div>)
                         })}
                     </div>
+                    <div className='flex justify-between mt-3 items-center'>
+                        <ExportGpx />
+                        <button className=' w-32 text-white bg-507780 hover:bg-43646B shadow-md hover:shadow-xl' type="submit " onClick={onSubmit}>儲存</button>
+                    </div>
 
-                </form>
-                <div className='flex justify-between mt-3 items-center'>
-                    <ExportGpx />
-                    <button className=' w-32 text-white bg-507780 hover:bg-43646B shadow-md hover:shadow-xl' type="submit " onClick={onSubmit}>儲存</button>
-                </div>
+                {/* </form> */}
+
 
             </div >
             {isFullLoading && (<>

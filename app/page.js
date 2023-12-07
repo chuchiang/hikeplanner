@@ -5,12 +5,12 @@ import Link from 'next/link'
 
 
 function Banner() {
-  return (<div className='relative h-screen w-screen overflow-hidden'>
+  return (<div className='relative w-screen overflow-hidden'style={{ height: 'calc(100vh - 44px)' }}>
     <img src='/banner.jpg' alt='mountain banner' className='h-full w-full object-cover'></img>
     <div className='flex flex-col items-center text-gray-50 absolute top-1/2 transform -translate-y-1/2 left-1/2 transform -translate-x-1/2'>
-      <h2 className='text-5xl pb-3 opacity-75'>HikePlanner</h2>
-      <h3 className='text-center opacity-75 font-medium text-xl'>讓山徑由你設計</h3 >
-      < button className='mt-8 bg-gray-900 hover:bg-gray-400 shadow-md hover:shadow-xl text-white w-24'><Link href='/planning'>開始規劃</Link></button>
+      <h2 className='text-3xl sm:text-5xl pb-3 opacity-75'>HikePlanner</h2>
+      <h3 className='text-center opacity-75 font-medium text-lg sm:text-xl'>讓山徑由你設計</h3 >
+      < button className='mt-8 bg-5B6E60 hover:bg-gray-400 shadow-md hover:shadow-xl text-white w-24'><Link href='/planning'>開始規劃</Link></button>
     </div>
 
   </div>)

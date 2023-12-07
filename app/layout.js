@@ -54,7 +54,7 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
 
   return (
     <main className=" bg-DAD1C5">
-      <div className='mx-1 sm:mx-3 lg:mx-9 flex justify-between'>
+      <div className='mx-1 h-11  sm:mx-3 lg:mx-9 flex justify-between items-center'>
         <Link href='/'>
           <div className='flex items-center'>
             <img className='w-12' src='/logo.png' alt='logo'></img>
