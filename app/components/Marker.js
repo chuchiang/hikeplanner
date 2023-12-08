@@ -113,9 +113,10 @@ export const Markers = () => {
                 day.locations.map((location, index) => (
                     <Marker key={`${day.date}-${index}`} position={[location.lat, location.lng]}>
                         <Popup>
-                            地點：{location.name}<br />經度：{location.lng.toFixed(4)}<br />緯度：{location.lat.toFixed(4)}
+                            <div className='flex'><img src='./pin.png' alt='Location Pin' className='w-3 h-full'/><b>{location.name}</b></div>
+                            &emsp;經度：{location.lng.toFixed(4)}<br />
+                            &emsp;緯度：{location.lat.toFixed(4)}
                         </Popup>
-
                     </Marker>
                 ))
 
