@@ -61,12 +61,6 @@ const fetchDirection = async(plannerLocation, setDirectionData, setPath, setIsLo
             setPath(prevPath => [...prevPath, ...path]); // 更新 path 数据
 
 
-            // 将 newDirection 合并到 plannerLocation 数组的倒数第二个元素中
-            // addNewDirection(newDirection);
-
-            // setIsLoading(false);
-            // return(path,newDirection)
-
         } catch (error) {
             console.error('Error:', error);
             setIsLoading(false);
