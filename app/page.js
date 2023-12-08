@@ -2,18 +2,51 @@
 import './globals.css'
 import Head from 'next/head';
 import Link from 'next/link'
+import { useEffect, useState } from 'react';
 
 function Banner() {
-  return (<div className='relative w-full overflow-hidden' style={{ height: 'calc(100vh - 44px)' }}>
-    <div className='relative w-full overflow-hidden'><img src='/banner.jpg' alt='mountain banner' className='w-full h-full object-cover '></img></div>
-    <div className='flex flex-col items-center text-gray-50 absolute top-1/2 transform -translate-y-1/2 left-1/2 transform -translate-x-1/2'>
-      <h2 className='text-3xl sm:text-5xl pb-3 opacity-75'>HikePlanner</h2>
-      <h3 className='text-center opacity-75 font-medium text-lg sm:text-xl'>讓山徑由你設計</h3 >
-      < button className='mt-8 bg-5B6E60 hover:bg-gray-400 shadow-md hover:shadow-xl text-white w-24'><Link href='/planning'>開始規劃</Link></button>
-    </div>
 
-  </div>)
+
+  useEffect(() => {
+    const text = "讓山徑由你設計";
+    const typingElement = document.getElementById('typing-effect');
+    let timer;
+  
+    function typeEffect(index = 0) {
+      if (index < text.length) {
+        typingElement.innerHTML += text.charAt(index);
+        timer = setTimeout(() => typeEffect(index + 1), 150); // 打字速度
+      } else {
+        // 打字完停顿，重置重新开始
+        timer = setTimeout(() => {
+          typingElement.innerHTML = ''; // 清空之前的文本
+          typeEffect(0); // 重新开始打字效果
+        }, 2000); // 2秒后重置
+      }
+    }
+  
+    typeEffect();
+  
+    // 清理
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+  
+
+  return (
+    <div className='relative w-full overflow-hidden' style={{ height: '500px' }}>
+      <div className='relative h-full overflow-hidden'>
+        <img src='/banner.jpg' alt='mountain banner' className='h-full w-full object-cover object-top ' />
+      </div>
+      <div className='flex flex-col items-center text-gray-50 absolute top-1/2 transform -translate-y-1/2 left-1/2 transform -translate-x-1/2'>
+        <h2 className='text-3xl sm:text-5xl pb-3 opacity-75'>HikePlanner</h2>
+        <h3 id="typing-effect" className='text-center opacity-75 font-medium text-lg sm:text-xl'>讓山徑由你設計</h3 >
+        < button className='mt-8 bg-5B6E60 hover:bg-gray-400 shadow-md hover:shadow-xl text-white w-24'><Link href='/planning'>開始規劃</Link></button>
+      </div>
+    </div>)
 }
+
 
 export default function Home() {
   return (
@@ -33,7 +66,7 @@ export default function Home() {
               <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>規劃助手</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>個性化登山行程</p>
               <p className='co-646564 text-base'>可以根據自身體能、路線難度、時間等條件，輕鬆制定專屬路線</p>
-              <div className='flex justify-end'><button className='mt-9 bg-005264 hover:opacity-75  shadow-md hover:shadow-xl text-white w-24 'href='/planning'><Link href='/planning'>開始規劃</Link></button></div>
+              <div className='flex justify-end'><button className='mt-9 bg-005264 hover:opacity-75  shadow-md hover:shadow-xl text-white w-24 ' href='/planning'><Link href='/planning'>開始規劃</Link></button></div>
             </div>
           </div>
 
