@@ -171,8 +171,8 @@ const leafletMap = () => {
                     <LayersControl.BaseLayer name='魯地圖 Taiwan Topo'>
                         <TileLayer
                             attribution='&copy; <a href="https://rudy.basecamp.tw/taiwan_topo.html">Rudy Taiwan TOPO</a> | &copy; <a href="https://twmap.happyman.idv.tw/map/">地圖產生器</a>'
-                            // url='https://tile.happyman.idv.tw/mp/wmts/rudy/gm_grid/{z}/{x}/{y}.png'
-                            url='https://tile.happyman.idv.tw/map/moi_osm/{z}/{x}/{y}.png'
+                            url='https://tile.happyman.idv.tw/mp/wmts/rudy/gm_grid/{z}/{x}/{y}.png'
+                            // url='https://tile.happyman.idv.tw/map/moi_osm/{z}/{x}/{y}.png'
                         />
                     </LayersControl.BaseLayer>
                     <LayersControl.BaseLayer checked name="Mapbox等高線地形圖">
