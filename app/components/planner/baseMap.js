@@ -1,6 +1,5 @@
 'use client'
 
-
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Popup, LayersControl, Polyline } from 'react-leaflet'
 import { useState, useEffect, use } from 'react'
@@ -8,13 +7,13 @@ import { Markers } from './Marker'
 import SearchControl from './mapSearch'
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import { useSelector, useDispatch } from 'react-redux';
-import { geoSearchAdd, clearSearchLocations } from '../slice/mapSlice';
+import { geoSearchAdd, clearSearchLocations } from '../../slice/mapSlice';
 import { useMap } from 'react-leaflet';
-import { addimg, addimgState } from '../slice/planningSlice';
+import { addimg, addimgState } from '../../slice/planningSlice';
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import L from 'leaflet';
-import '../globals.css'
-import { addCoordinates, clearCoordinates } from '../slice/coordinatesSlice'
+import '../../globals.css'
+import { addCoordinates, clearCoordinates } from '../../slice/coordinatesSlice'
 
 
 const CirclieHover = () => {
@@ -61,10 +60,10 @@ const MapScreenshoter = () => {
             hideElementsWithSelectors: [".leaflet-control-container", ".leaflet-dont-include-pane", "#snapshot-button"],
             hidden: false,
             mimeType: 'image/jpeg',
-            position:'bottomleft',
+            position: 'bottomleft',
         }).addTo(map);
 
-        map.hasScreenshoter = true; 
+        map.hasScreenshoter = true;
         setScreenshoter(newScreenshoter);
 
         // 清理
@@ -78,8 +77,8 @@ const MapScreenshoter = () => {
 
     useEffect(() => {
         if (!screenshoter || imgState !== 'True') return;
-        
-         // 觸發截圖轉base64
+
+        // 觸發截圖轉base64
         const captureScreenshot = async () => {
             try {
                 const dataURL = await screenshoter.takeScreen('image');
@@ -93,7 +92,7 @@ const MapScreenshoter = () => {
         if (map._loaded) {
             captureScreenshot();
         }
-    }, [screenshoter, imgState, dispatch]); 
+    }, [screenshoter, imgState, dispatch]);
     return null;
 };
 
@@ -161,7 +160,7 @@ const leafletMap = () => {
                         handleSearchResult(coordinates);
                     }}
                 />
-                <LayersControl position='bottomleft'className='z-40'>
+                <LayersControl position='bottomleft' className='z-40'>
                     <LayersControl.BaseLayer name="開放街圖">
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -172,7 +171,7 @@ const leafletMap = () => {
                         <TileLayer
                             attribution='&copy; <a href="https://rudy.basecamp.tw/taiwan_topo.html">Rudy Taiwan TOPO</a> | &copy; <a href="https://twmap.happyman.idv.tw/map/">地圖產生器</a>'
                             url='https://tile.happyman.idv.tw/mp/wmts/rudy/gm_grid/{z}/{x}/{y}.png'
-                            // url='https://tile.happyman.idv.tw/map/moi_osm/{z}/{x}/{y}.png'
+                        // url='https://tile.happyman.idv.tw/map/moi_osm/{z}/{x}/{y}.png'
                         />
                     </LayersControl.BaseLayer>
                     <LayersControl.BaseLayer checked name="Mapbox等高線地形圖">

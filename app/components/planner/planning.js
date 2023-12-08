@@ -1,17 +1,17 @@
-import '../globals.css'
+import '../../globals.css'
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
-import { addimg, addimgState, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, clearStateAction } from '../slice/planningSlice'
+import { addimg, addimgState, updataLocationDirection, deleteLocation, addDay, changeDate, changeTime, addWrongLocation, addRouteName, clearStateAction } from '../../slice/planningSlice'
 import ExportGpx from './exportGPX';
-import { asyncAddData } from '../api/firebase/asyncAdd';
-import { selectorCurrentUser } from '../slice/authSlice';
-import FullLoading from '../components/fullLoading'
-import Loading from '../components/loading'; // 確保路徑正確
-import LoginForm from '../components/login'
+import { asyncAddData } from '../../api/firebase/asyncAdd';
+import { selectorCurrentUser } from '../../slice/authSlice';
+import FullLoading from '../loading/fullLoading'
+import Loading from '../loading/areaLoading'; // 確保路徑正確
+import LoginForm from '../member/login'
 
-import RegisterForm from '../components/register'
+import RegisterForm from '../member/register'
 
 // 函數：添加時間（小時和分鐘）
 function addTime(startTime, hoursToAdd, minutesToAdd) {
@@ -428,7 +428,7 @@ function Route() {
                 shareTrip: addNewPlanning.shareTrip || false,
                 total: totalData,
                 locations: transformedData,
-                img: addNewImg  
+                img: addNewImg
             };
 
             try {
@@ -457,93 +457,93 @@ function Route() {
 
     return (
         <>
-            <div className='w-full mt-5 lg:w-380 lg:mr-5 lg:mt-0 flex flex-col'style={{ height: 'calc(100vh - 84px)' }}>
-                    <div className='bg-F5F2ED h-full p-2 rounded overflow-y-scroll scrollbar'>
-                        <div className='flex mb-5 justify-between items-center'>
-                            <div className='flex flex-col mb-2'>
-                                <label className='co-434E4E font-medium '>路線名稱</label>
-                                <input className=' h-full mr-1 mob:w-44 sm:w-80 lg:w-44' onChange={handleRouteNameChange} value={addNewPlanning.routeName}></input>
-                            </div>
-                            <div className='flex flex-col mb-2'>
-                                <label className='co-434E4E font-medium'>開始日期</label>
-                                <input
-                                    type='date'
-                                    value={addNewLocation[0].date}
-                                    onChange={handleDateChange}
-                                    className=''
-                                ></input>
-                            </div>
+            <div className='w-full mt-5 lg:w-380 lg:mr-5 lg:mt-0 flex flex-col' style={{ height: 'calc(100vh - 84px)' }}>
+                <div className='bg-F5F2ED h-full p-2 rounded overflow-y-scroll scrollbar'>
+                    <div className='flex mb-5 justify-between items-center'>
+                        <div className='flex flex-col mb-2'>
+                            <label className='co-434E4E font-medium '>路線名稱</label>
+                            <input className=' h-full mr-1 mob:w-44 sm:w-80 lg:w-44' onChange={handleRouteNameChange} value={addNewPlanning.routeName}></input>
                         </div>
+                        <div className='flex flex-col mb-2'>
+                            <label className='co-434E4E font-medium'>開始日期</label>
+                            <input
+                                type='date'
+                                value={addNewLocation[0].date}
+                                onChange={handleDateChange}
+                                className=''
+                            ></input>
+                        </div>
+                    </div>
 
-                        <hr className='mb-2' />
-                        {addNewLocation.map((day, dayIndex) => {
-                            let locationTime = day.time;
-                            //計算日期
-                            return (
-                                <div key={dayIndex} className='pb-2'>
+                    <hr className='mb-2' />
+                    {addNewLocation.map((day, dayIndex) => {
+                        let locationTime = day.time;
+                        //計算日期
+                        return (
+                            <div key={dayIndex} className='pb-2'>
 
-                                    {day.date && (
-                                        <p className='co-005264 font-bold text-center mb-2'>-- 第{dayIndex + 1}天 --  {day.date}
-                                            <input
-                                                className='w-32 bg-F5F2ED px-1'
-                                                type='time'
-                                                value={day.time}
-                                                onChange={(event) => handleTimeChange(dayIndex, event)}
-                                            /></p>)}
-                                    {dayIndex === 0 && day.locations.length === 0 && (<div className='bg-cyan-50 co-646564 rounded-lg p-4'>在地圖上點擊任一點或使用搜尋功能，即可新增地點，開始規畫行程。<br />請注意每一天需要有兩個地點，才可新增下一天。</div>)}
+                                {day.date && (
+                                    <p className='co-005264 font-bold text-center mb-2'>-- 第{dayIndex + 1}天 --  {day.date}
+                                        <input
+                                            className='w-32 bg-F5F2ED px-1'
+                                            type='time'
+                                            value={day.time}
+                                            onChange={(event) => handleTimeChange(dayIndex, event)}
+                                        /></p>)}
+                                {dayIndex === 0 && day.locations.length === 0 && (<div className='bg-cyan-50 co-646564 rounded-lg p-4'>在地圖上點擊任一點或使用搜尋功能，即可新增地點，開始規畫行程。<br />請注意每一天需要有兩個地點，才可新增下一天。</div>)}
 
-                                    {day.locations.map((attraction, index) => {
-                                        //計算景點時間
-                                        console.log(attraction)
-                                        // 如果當前景點不是第一個，有 direction 就累加時間
-                                        if (index > 0 && day.locations[index - 1].direction) {
-                                            const prevDirection = day.locations[index - 1].direction;
-                                            if (!isNaN(prevDirection.hours) && !isNaN(prevDirection.minutes)) {
-                                                locationTime = addTime(locationTime, prevDirection.hours, prevDirection.minutes);
-                                            }
+                                {day.locations.map((attraction, index) => {
+                                    //計算景點時間
+                                    console.log(attraction)
+                                    // 如果當前景點不是第一個，有 direction 就累加時間
+                                    if (index > 0 && day.locations[index - 1].direction) {
+                                        const prevDirection = day.locations[index - 1].direction;
+                                        if (!isNaN(prevDirection.hours) && !isNaN(prevDirection.minutes)) {
+                                            locationTime = addTime(locationTime, prevDirection.hours, prevDirection.minutes);
                                         }
-                                        return (<div key={`${dayIndex}-${index}`} >
-                                            {/* 地點訊息 */}
-                                            <div className='flex space-x-1 justify-center sm:flex sm:space-x-4'>
-                                                <div className='w-8 h-8 bg-739A65 text-xl text-white flex items-center justify-center rounded '>{index + 1}</div>
-                                                <p className="text-center flex items-center bg-005264 text-white rounded px-1">{locationTime}</p>
-                                                <input className='w-44 sm:w-52 md:w-96 lg:w-44 bg-white rounded sm:py-1 sm:px-2' value={`${attraction.name}/${attraction.region}`} readOnly></input>
-                                                <button type="button" className='w-6 p-0' onClick={handleDeleteLocation(dayIndex, index)}><img src='/delete.png' alt='delete icon' /></button>
-                                            </div>
-
-                                            {/* 路線訊息 */}
-                                            {attraction.isLoading ? (
-                                                <div className='text-center'>計算數據中...</div>
-                                            ) : (
-                                                attraction.direction ? (
-                                                    <div className='flex justify-center items-center my-2'>
-                                                        <div className='co-646564 border-l-2 border-slate-300 ml-10 h-24 '></div>
-                                                        <div className='ml-10 '>
-                                                            <p>行走時間：{attraction.direction.hours} 小時 {attraction.direction.minutes} 分鐘</p>
-                                                            <p>距離：{attraction.direction.kilometers} km </p>
-                                                            <p>總爬升高度：{attraction.direction.ascent} m</p>
-                                                            <p>總下降高度：{attraction.direction.descent} m</p>
-                                                        </div>
-
-                                                    </div>) : null
-                                            )
-                                            }
-                                        </div>)
-                                    })}
-
-                                    {dayIndex == addNewLocation.length - 1 && day.locations.length >= 2 && (
-                                        <div className='flex justify-end'>
-                                            <button onClick={addNewDay} className='bg-5B6E60 text-white w-28 mt-4 '>新增下一天</button>
+                                    }
+                                    return (<div key={`${dayIndex}-${index}`} >
+                                        {/* 地點訊息 */}
+                                        <div className='flex space-x-1 justify-center sm:flex sm:space-x-4'>
+                                            <div className='w-8 h-8 bg-739A65 text-xl text-white flex items-center justify-center rounded '>{index + 1}</div>
+                                            <p className="text-center flex items-center bg-005264 text-white rounded px-1">{locationTime}</p>
+                                            <input className='w-44 sm:w-52 md:w-96 lg:w-44 bg-white rounded sm:py-1 sm:px-2' value={`${attraction.name}/${attraction.region}`} readOnly></input>
+                                            <button type="button" className='w-6 p-0' onClick={handleDeleteLocation(dayIndex, index)}><img src='/delete.png' alt='delete icon' /></button>
                                         </div>
-                                    )}
 
-                                </div>)
-                        })}
-                    </div>
-                    <div className='flex justify-between mt-3 items-center'>
-                        <ExportGpx />
-                        <button className=' w-32 text-white bg-507780 hover:bg-43646B shadow-md hover:shadow-xl' type="submit " onClick={onSubmit}>儲存</button>
-                    </div>
+                                        {/* 路線訊息 */}
+                                        {attraction.isLoading ? (
+                                            <div className='text-center'>計算數據中...</div>
+                                        ) : (
+                                            attraction.direction ? (
+                                                <div className='flex justify-center items-center my-2'>
+                                                    <div className='co-646564 border-l-2 border-slate-300 ml-10 h-24 '></div>
+                                                    <div className='ml-10 '>
+                                                        <p>行走時間：{attraction.direction.hours} 小時 {attraction.direction.minutes} 分鐘</p>
+                                                        <p>距離：{attraction.direction.kilometers} km </p>
+                                                        <p>總爬升高度：{attraction.direction.ascent} m</p>
+                                                        <p>總下降高度：{attraction.direction.descent} m</p>
+                                                    </div>
+
+                                                </div>) : null
+                                        )
+                                        }
+                                    </div>)
+                                })}
+
+                                {dayIndex == addNewLocation.length - 1 && day.locations.length >= 2 && (
+                                    <div className='flex justify-end'>
+                                        <button onClick={addNewDay} className='bg-5B6E60 text-white w-28 mt-4 '>新增下一天</button>
+                                    </div>
+                                )}
+
+                            </div>)
+                    })}
+                </div>
+                <div className='flex justify-between mt-3 items-center'>
+                    <ExportGpx />
+                    <button className=' w-32 text-white bg-507780 hover:bg-43646B shadow-md hover:shadow-xl' type="submit " onClick={onSubmit}>儲存</button>
+                </div>
             </div >
             {isFullLoading && (<>
                 <FullLoading />

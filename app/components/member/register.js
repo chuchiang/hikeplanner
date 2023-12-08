@@ -1,11 +1,11 @@
 import { React } from 'react';
 import { useState } from "react"
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../api/firebase/registerFirebase';
-import { signInWithGooglePopup } from '../api/firebase/googleFirebase';
+import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../api/firebase/registerFirebase';
+import { signInWithGooglePopup } from '../../api/firebase/googleFirebase';
 import { useRouter } from 'next/navigation';//換頁
-import FromLoading from "./fromLoading";
+import FromLoading from "../loading/fromLoading";
 import { useDispatch } from 'react-redux';
-import {addUserName} from '../slice/authSlice'
+import { addUserName } from '../../slice/authSlice'
 
 const RegisterForm = ({ onClose, handleLoginClick }) => {
 

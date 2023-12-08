@@ -1,11 +1,11 @@
-import '../globals.css'
+import '../../globals.css'
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { addData } from '../slice/planningSlice'
-import { asyncGetShareData, asyncGetSearchData } from '../api/firebase/asyncGet'
-import Loading from '../components/loading';
+import { addData } from '../../slice/planningSlice'
+import { asyncGetShareData, asyncGetSearchData } from '../../api/firebase/asyncGet'
+import Loading from '../loading/areaLoading';
 const SharePlan = () => {
 
     const router = useRouter();

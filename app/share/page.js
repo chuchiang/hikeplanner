@@ -4,7 +4,7 @@ import React from 'react';
 import '../globals.css'
 import { store } from '../store';
 import { Provider } from 'react-redux';
-import SharePlan from '../components/sharePlans';
+import SharePlan from '../components/sharePlan/sharePlans';
 
 export default function Home() {
 

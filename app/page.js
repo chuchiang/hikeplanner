@@ -4,8 +4,8 @@ import Head from 'next/head';
 import Link from 'next/link'
 
 function Banner() {
-  return (<div className='relative  overflow-hidden' style={{ height: 'calc(100vh - 44px)' }}>
-    <div className='w-full h-full overflow-hidden'><img src='/banner.jpg' alt='mountain banner' className='h-full object-cover '></img></div>
+  return (<div className='relative w-full overflow-hidden' style={{ height: 'calc(100vh - 44px)' }}>
+    <div className='relative w-full overflow-hidden'><img src='/banner.jpg' alt='mountain banner' className='w-full h-full object-cover '></img></div>
     <div className='flex flex-col items-center text-gray-50 absolute top-1/2 transform -translate-y-1/2 left-1/2 transform -translate-x-1/2'>
       <h2 className='text-3xl sm:text-5xl pb-3 opacity-75'>HikePlanner</h2>
       <h3 className='text-center opacity-75 font-medium text-lg sm:text-xl'>讓山徑由你設計</h3 >
@@ -33,7 +33,7 @@ export default function Home() {
               <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>規劃助手</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>個性化登山行程</p>
               <p className='co-646564 text-base'>可以根據自身體能、路線難度、時間等條件，輕鬆制定專屬路線</p>
-              <div className='flex justify-end'><button className='mt-9 bg-005264 hover:opacity-75  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>開始規劃</Link></button></div>
+              <div className='flex justify-end'><button className='mt-9 bg-005264 hover:opacity-75  shadow-md hover:shadow-xl text-white w-24 'href='/planning'><Link href='/planning'>開始規劃</Link></button></div>
             </div>
           </div>
 
@@ -53,7 +53,7 @@ export default function Home() {
               <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>探索景點</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>觀看其他人的路線</p>
               <p className='co-646564 text-base'>規劃路線可儲存與分享，他人也能使用，還可輸出照片和GPX格式</p>
-              <div className='flex justify-end'><button className='mt-9 bg-005264 hover:opacity-75  shadow-md hover:shadow-xl text-white w-24 '><Link href='/planning'>探索路線</Link></button></div>
+              <div className='flex justify-end'><button className='mt-9 bg-005264 hover:opacity-75  shadow-md hover:shadow-xl text-white w-24 '><Link href='/share'>探索路線</Link></button></div>
             </div>
           </div>
         </div>

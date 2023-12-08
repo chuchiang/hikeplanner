@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useRouter } from 'next/navigation';//換頁
-import { firebaseLogin } from '../api/firebase/loginFirebase';
-import { signInWithGooglePopup } from '../api/firebase/googleFirebase';
-import FromLoading from "./fromLoading";
+import { firebaseLogin } from '../../api/firebase/loginFirebase';
+import { signInWithGooglePopup } from '../../api/firebase/googleFirebase';
+import FromLoading from "../loading/fromLoading";
 
 
 

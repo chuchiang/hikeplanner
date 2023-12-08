@@ -4,23 +4,23 @@
 import '../globals.css'
 import dynamic from 'next/dynamic';
 import React from 'react';
-import Route from "../components/planning"
+import Route from "../components/planner/planning"
 import '../globals.css'
 import { store } from '../store';//剛剛的store 要引入
 import { Provider } from 'react-redux';//Provider 要引入
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectorCurrentUser } from '../slice/authSlice';
-import LoginForm from '../components/login';
-import RegisterForm from '../components/register'
+import LoginForm from '../components/member/login';
+import RegisterForm from '../components/member/register'
 import Head from 'next/head';
 import { clearStateAction } from '../slice/planningSlice';
 import { usePathname, useSearchParams } from 'next/navigation'
-import ElevationChart from '../components/lineChart';
+import ElevationChart from '../components/planner/lineChart';
 import { useRouter } from 'next/navigation';
-import FullLoading from '../components/fullLoading'; // 確保路徑正確
+import FullLoading from '../components/loading/fullLoading'; // 確保路徑正確
 
-const DynamicMap = dynamic(() => import('../components/baseMap'), {
+const DynamicMap = dynamic(() => import('../components/planner/baseMap'), {
   ssr: false,
   loading: () => <FullLoading />
 });
@@ -29,7 +29,7 @@ const DynamicMap = dynamic(() => import('../components/baseMap'), {
 function RouteMap() {
   return (
     <>
-      <div className=' flex flex-col bg-white w-screen 'style={{ height: 'calc(100vh - 84px)' }}>
+      <div className=' flex flex-col bg-white w-screen ' style={{ height: 'calc(100vh - 84px)' }}>
         <DynamicMap />
         <ElevationChart />
       </div>

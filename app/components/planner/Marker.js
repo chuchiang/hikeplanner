@@ -4,9 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import { Marker, useMapEvents, useMap, Popup } from 'react-leaflet';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addLocation } from '../slice/planningSlice';
-import { geoSearchAdd, clearSearchLocations } from '../slice/mapSlice';
-import fetchLocation from '../api/fetchLocation';
+import { addLocation } from '../../slice/planningSlice';
+import { geoSearchAdd, clearSearchLocations } from '../../slice/mapSlice';
+import fetchLocation from '../../api/fetchLocation';
 
 
 export const Markers = () => {
@@ -113,7 +113,7 @@ export const Markers = () => {
                 day.locations.map((location, index) => (
                     <Marker key={`${day.date}-${index}`} position={[location.lat, location.lng]}>
                         <Popup>
-                            <div className='flex'><img src='./pin.png' alt='Location Pin' className='w-3 h-full'/><b>{location.name}</b></div>
+                            <div className='flex'><img src='./pin.png' alt='Location Pin' className='w-3 h-full' /><b>{location.name}</b></div>
                             &emsp;經度：{location.lng.toFixed(4)}<br />
                             &emsp;緯度：{location.lat.toFixed(4)}
                         </Popup>

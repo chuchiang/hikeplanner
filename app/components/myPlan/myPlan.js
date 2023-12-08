@@ -1,15 +1,15 @@
-import '../globals.css'
+import '../../globals.css'
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux';
-import { addData } from '../slice/planningSlice'
-import { asyncGetMyData } from '../api/firebase/asyncGet'
-import asyncDeleteData from '../api/firebase/asyncDelete';
-import { asyncUpdateShareTripStatus } from '../api/firebase/asyncAdd';
-import Loading from '../components/loading';
-import { selectorCurrentUser } from '../slice/authSlice';
+import { addData } from '../../slice/planningSlice'
+import { asyncGetMyData } from '../../api/firebase/asyncGet'
+import asyncDeleteData from '../../api/firebase/asyncDelete';
+import { asyncUpdateShareTripStatus } from '../../api/firebase/asyncAdd';
+import Loading from '../loading/areaLoading';
+import { selectorCurrentUser } from '../../slice/authSlice';
 
 const MyPlanner = () => {
 

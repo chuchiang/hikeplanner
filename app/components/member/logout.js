@@ -1,11 +1,11 @@
-import { firebaseSignOut } from '../api/firebase/logoutFirebase';
+import { firebaseSignOut } from '../../api/firebase/logoutFirebase';
 import { useDispatch } from 'react-redux'
-import { clearUser } from '../slice/authSlice'
+import { clearUser } from '../../slice/authSlice'
 
 
 
-const LogOut =()=> {
-    
+const LogOut = () => {
+
     const dispatch = useDispatch();
 
     const submit = async (e) => {
@@ -14,7 +14,7 @@ const LogOut =()=> {
             await firebaseSignOut();
             dispatch(clearUser());//登出
             window.location.href = '/';
-            
+
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -27,7 +27,7 @@ const LogOut =()=> {
         <>
             <button onClick={submit} className='co-5B6E60 font-medium p-0 hover:font-bold'>登出</button>
         </>
-        )
+    )
 }
 
 export default LogOut

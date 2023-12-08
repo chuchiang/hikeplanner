@@ -3,14 +3,14 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { useSelector } from 'react-redux';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 import { useState, useEffect } from 'react';
-import '../globals.css'
-import { addCoordinates, clearCoordinates } from '../slice/coordinatesSlice';
+import '../../globals.css'
+import { addCoordinates, clearCoordinates } from '../../slice/coordinatesSlice';
 import { useDispatch } from 'react-redux';
-import { verticalLinePlugin } from '../lib/chartVerticalLine'
-import { customBorderPlugin } from '../lib/chartBorder'
+import { verticalLinePlugin } from '../../lib/chartVerticalLine'
+import { customBorderPlugin } from '../../lib/chartBorder'
 ChartJS.register(verticalLinePlugin);//hover 線條
 ChartJS.register(customBorderPlugin);//外框
-import { clearSearchLocations } from '../slice/mapSlice';
+import { clearSearchLocations } from '../../slice/mapSlice';
 
 const ElevationChart = () => {
 
@@ -171,7 +171,7 @@ const ElevationChart = () => {
                 intersect: false,
                 displayColors: false,
                 callbacks: {
-                    title :function(){return"" },
+                    title: function () { return "" },
                     label: function (context) {
                         let index = context.dataIndex;
                         const elevation = context.dataset.data[index];
@@ -214,8 +214,8 @@ const ElevationChart = () => {
                             console.log(error);
                         }
                         const latLng = data[day].locations[locationIndex].direction.path[index];
-                        const lat = latLng[1].toFixed(4); 
-                        const lng = latLng[0].toFixed(4); 
+                        const lat = latLng[1].toFixed(4);
+                        const lng = latLng[0].toFixed(4);
 
                         dispatch(addCoordinates({ 'lng': lng, 'lat': lat }))
 
