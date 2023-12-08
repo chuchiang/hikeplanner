@@ -101,10 +101,7 @@ const MyPlanner = () => {
     const handleDeleteRouteClick = async (id) => {
         try {
             await asyncDeleteData(id);
-
             setMyPlan(currentPlans => currentPlans.filter(plan => plan.id != id))
-
-
         } catch (error) {
             console.error('Error deleting document', error)
         }
@@ -123,8 +120,8 @@ const MyPlanner = () => {
                         return (
                             <div key={index}>
                                 <div className=' bg-F5F2ED rounded-md p-5  '>
-                                    <div className='flex justify-between flex-wrap items-center'>
-                                        <div className='flex items-center justify-center'><img src='/logo.png' className='w-10 h-10' /><h3 className='co-5B6E60 font-bold text-xl'>{item.routeName}</h3></div>
+                                    <div className='flex justify-between flex-nowrap items-center'>
+                                        <div className='flex items-center justify-center'><img src='/logo.png' className='w-10 h-10' /><h3 className='co-5B6E60 font-bold text-lg sm:text-xl'>{item.routeName}</h3></div>
                                         <div className="flex items-center justify-center ">
                                             {item.shareTrip ? <div className="mr-3 co-90a955 font-medium">分享行程</div> : <div className="mr-3 co-646564 font-medium">不分享行程</div>}
                                             <label htmlFor={`toggle-${index}`} className="flex items-center cursor-pointer">
@@ -156,8 +153,8 @@ const MyPlanner = () => {
                                         </tbody>
                                     </table>
 
-                                    <div className='flex justify-between items-center flex-wrap'>
-                                        <div className='co-646564 mr-2'><p>更新時間：{readableDate}</p></div>
+                                    <div className='flex justify-end sm:justify-between items-center flex-wrap-reverse sm:flex-wrap '>
+                                        <div className='co-646564 mr-2 text-xs sm:text-base '><p>更新時間：{readableDate}</p></div>
                                         <div className='flex flex-wrap mt-1'>
                                             <div className='rounded border mr-3 bg-6C8272 hover:bg-5B6E60 shadow-md hover:shadow-xl '><button className='text-white' onClick={() => handleUseRouteClick(item)}>規劃此路線</button></div>
                                             <div className='rounded border bg-997F7D hover:bg-87706F  shadow-md hover:shadow-xl '><button id={item.id} className='text-white' onClick={() => handleDeleteRouteClick(item.id)}>刪除</button></div>

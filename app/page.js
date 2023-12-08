@@ -4,8 +4,8 @@ import Head from 'next/head';
 import Link from 'next/link'
 
 function Banner() {
-  return (<div className='relative w-screen overflow-hidden'style={{ height: 'calc(100vh - 44px)' }}>
-    <img src='/banner.jpg' alt='mountain banner' className='h-full w-full object-cover'></img>
+  return (<div className='relative  overflow-hidden' style={{ height: 'calc(100vh - 44px)' }}>
+    <div className='w-full h-full overflow-hidden'><img src='/banner.jpg' alt='mountain banner' className='bg-cover  object-cover '></img></div>
     <div className='flex flex-col items-center text-gray-50 absolute top-1/2 transform -translate-y-1/2 left-1/2 transform -translate-x-1/2'>
       <h2 className='text-3xl sm:text-5xl pb-3 opacity-75'>HikePlanner</h2>
       <h3 className='text-center opacity-75 font-medium text-lg sm:text-xl'>讓山徑由你設計</h3 >
@@ -38,7 +38,7 @@ export default function Home() {
           </div>
 
           <div className='flex flex-wrap-reverse justify-center items-center sm:flex-nowrap lg:justify-end  md:justify-between '>
-          <div className='  rounded-lg mt-4 md:mr-8 md:mt-8 w-72 p-2 md:w-96 md:p-0 lg:mr-24'>
+            <div className='  rounded-lg mt-4 md:mr-8 md:mt-8 w-72 p-2 md:w-96 md:p-0 lg:mr-24'>
               <div className='flex items-center mb-6'><p className='co-5B6E60 text-xl font-bold whitespace-nowrap mr-5 '>路線分析</p><div className='border-t-5B6E60 border w-full'></div></div>
               <p className='co-739A65 text-2xl font-bold'>全面掌握路線資訊</p>
               <p className='co-646564 text-base'>提供全面的路線資訊，包含爬升下降高度以及預估的行走時間</p>
