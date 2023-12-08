@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 function Banner() {
   return (<div className='relative  overflow-hidden' style={{ height: 'calc(100vh - 44px)' }}>
-    <div className='w-full h-full overflow-hidden'><img src='/banner.jpg' alt='mountain banner' className='bg-cover  object-cover '></img></div>
+    <div className='w-full h-full overflow-hidden'><img src='/banner.jpg' alt='mountain banner' className='h-full object-cover '></img></div>
     <div className='flex flex-col items-center text-gray-50 absolute top-1/2 transform -translate-y-1/2 left-1/2 transform -translate-x-1/2'>
       <h2 className='text-3xl sm:text-5xl pb-3 opacity-75'>HikePlanner</h2>
       <h3 className='text-center opacity-75 font-medium text-lg sm:text-xl'>讓山徑由你設計</h3 >

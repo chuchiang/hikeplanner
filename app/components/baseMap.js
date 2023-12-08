@@ -61,7 +61,7 @@ const MapScreenshoter = () => {
             hideElementsWithSelectors: [".leaflet-control-container", ".leaflet-dont-include-pane", "#snapshot-button"],
             hidden: false,
             mimeType: 'image/jpeg',
-            position:'topleft'
+            position:'bottomleft',
         }).addTo(map);
 
         map.hasScreenshoter = true; 
@@ -161,7 +161,7 @@ const leafletMap = () => {
                         handleSearchResult(coordinates);
                     }}
                 />
-                <LayersControl position='topright'className='z-40'>
+                <LayersControl position='bottomleft'className='z-40'>
                     <LayersControl.BaseLayer name="開放街圖">
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
