@@ -214,8 +214,8 @@ const ElevationChart = () => {
                             console.log(error);
                         }
                         const latLng = data[day].locations[locationIndex].direction.path[index];
-                        const lat = latLng[1].toFixed(6); // 保留六位小数
-                        const lng = latLng[0].toFixed(6); // 保留六位小数
+                        const lat = latLng[1].toFixed(4); 
+                        const lng = latLng[0].toFixed(4); 
 
                         dispatch(addCoordinates({ 'lng': lng, 'lat': lat }))
 
