@@ -86,11 +86,12 @@ button {
   @apply cursor-pointer rounded p-2 outline-none; 
 }
 
+
 #typing-effect {
   white-space: nowrap;  
   overflow: hidden;     
   border-right: .15em solid gray; 
-  animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+  animation: typing 3.5s steps(8, end), blink-caret .75s step-end infinite;
 }
 
 /* 打字動畫 */
@@ -99,11 +100,12 @@ button {
   to { width: 100% }
 }
 
-/* 光標閃爍動畫 */
+/* 光閃動動畫 */
 @keyframes blink-caret {
   from, to { border-color: transparent }
   50% { border-color: gray; }
 }
+
 
 
 @layer utilities{

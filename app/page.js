@@ -6,33 +6,32 @@ import { useEffect, useState } from 'react';
 
 function Banner() {
 
-
   useEffect(() => {
     const text = "讓山徑由你設計";
     const typingElement = document.getElementById('typing-effect');
     let timer;
-  
-    function typeEffect(index = 0) {
+
+    function typeEffect(index = 0, currentText = '') {
       if (index < text.length) {
-        typingElement.innerHTML += text.charAt(index);
-        timer = setTimeout(() => typeEffect(index + 1), 150); // 打字速度
+        currentText += text.charAt(index);
+        typingElement.innerHTML = currentText;
+        timer = setTimeout(() => typeEffect(index + 1, currentText), 150); // 打字速度
       } else {
-        // 打字完停顿，重置重新开始
+        // 打完停顿，重置重新开始
         timer = setTimeout(() => {
-          typingElement.innerHTML = ''; // 清空之前的文本
-          typeEffect(0); // 重新开始打字效果
-        }, 2000); // 2秒后重置
+          typeEffect(); // 重新開始打字效果
+        }, 2000); //  2 秒後重置
       }
     }
-  
+
     typeEffect();
-  
+
     // 清理
     return () => {
       clearTimeout(timer);
     };
   }, []);
-  
+
 
   return (
     <div className='relative w-full overflow-hidden' style={{ height: '500px' }}>
@@ -40,7 +39,7 @@ function Banner() {
         <img src='/banner.jpg' alt='mountain banner' className='h-full w-full object-cover object-top ' />
       </div>
       <div className='flex flex-col items-center text-gray-50 absolute top-1/2 transform -translate-y-1/2 left-1/2 transform -translate-x-1/2'>
-        <h2 className='text-3xl sm:text-5xl pb-3 opacity-75'>HikePlanner</h2>
+        <h2 className='text-4xl sm:text-5xl pb-3 opacity-75'>HikePlanner</h2>
         <h3 id="typing-effect" className='text-center opacity-75 font-medium text-lg sm:text-xl'>讓山徑由你設計</h3 >
         < button className='mt-8 bg-5B6E60 hover:bg-gray-400 shadow-md hover:shadow-xl text-white w-24'><Link href='/planning'>開始規劃</Link></button>
       </div>
