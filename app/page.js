@@ -34,9 +34,9 @@ function Banner() {
 
 
   return (
-    <div className='relative w-full overflow-hidden' style={{ height: '500px' }}>
+    <div className='relative w-full h-full overflow-hidden'>
       <div className='relative h-full overflow-hidden'>
-        <img src='/banner.jpg' alt='mountain banner' className='h-full w-full object-cover object-top ' />
+        <img src='/banner.jpg' alt='mountain banner' className='w-full object-cover' style={{ height: 'calc(100vh - 44px)' }}/>
       </div>
       <div className='flex flex-col items-center text-gray-50 absolute top-1/2 transform -translate-y-1/2 left-1/2 transform -translate-x-1/2'>
         <h2 className='text-4xl sm:text-5xl pb-3 opacity-75'>HikePlanner</h2>
