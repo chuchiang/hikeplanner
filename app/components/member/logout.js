@@ -25,7 +25,7 @@ const LogOut = () => {
 
     return (
         <>
-            <button onClick={submit} className='co-5B6E60 font-medium p-2 hover:font-bold'>登出</button>
+            <button onClick={submit} className='co-5B6E60 font-medium p-2 hover:font-bold sm:p-0'>登出</button>
         </>
     )
 }
