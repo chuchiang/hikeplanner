@@ -94,11 +94,11 @@ button {
   animation: typing 3.5s steps(8, end), blink-caret .75s step-end infinite;
 }
 
-/* 打字動畫 */
+/* 打字動畫
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
-}
+} */
 
 /* 光閃動動畫 */
 @keyframes blink-caret {
