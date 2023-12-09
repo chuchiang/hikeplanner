@@ -23,15 +23,15 @@ const LoginForm = ({ onClose, handleRegisterClick }) => {
     const logGoogleUser = async () => {
         try {
             const response = await signInWithGooglePopup();
-            console.log(response);
+            // console.log(response);
             onClose();
 
         }
         catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
+            // console.log(errorCode);
+            // console.log(errorMessage);
             setError("google登入失敗");
         }
     }
@@ -39,26 +39,26 @@ const LoginForm = ({ onClose, handleRegisterClick }) => {
     //在input輸入任何內容，要綁定
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(name, value);
+        // console.log(name, value);
         setData({ ...data, [name]: value });
-        console.log(data)
+        // console.log(data)
     }
 
 
     const submit = async (e) => {
         e.preventDefault();
-        console.log(data);
+        // console.log(data);
         setError()
         setIsLoading(true)
         try {
             const user = await firebaseLogin(data);
-            console.log(user.user)
+            // console.log(user.user)
             onClose();
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
+            // console.log(errorCode);
+            // console.log(errorMessage);
             setError("信箱或密碼輸入錯誤");
         }
         setIsLoading(false)

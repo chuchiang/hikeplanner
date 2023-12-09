@@ -12,12 +12,12 @@ export const geoSearchSlice = createSlice({
 
         geoSearchAdd: (state, action) => {
             // 直接修改狀態，不需要展開符號
-            console.log(state, action)
+            // console.log(state, action)
             state.searchLocation.push(action.payload);
         },
          // 新增一个用于设置 newLocation 的 reducer
         setSearchLocation: (state, action) => {
-            console.log(state, action)
+            // console.log(state, action)
             state.newLocation = action.payload;
         },
         // 清空搜索位置

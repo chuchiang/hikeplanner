@@ -82,7 +82,7 @@ export const Markers = () => {
                 lat: e.latlng.lat,
                 lng: e.latlng.lng
             };
-            console.log(mapLocation)
+            // console.log(mapLocation)
             dispatch(geoSearchAdd(mapLocation)); // 更新 geoSearch 的 經緯度
             setAttraction('加載景點中...')
         },

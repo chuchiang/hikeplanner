@@ -32,7 +32,7 @@ function Route() {
     const currentUser = useSelector(selectorCurrentUser);
 
     const addNewImg = useSelector((state) => {
-        console.log(state.planning)
+        // console.log(state.planning)
         return state.planning.img
     })
 
@@ -41,13 +41,13 @@ function Route() {
 
     //取得 planning資料
     const addNewLocation = useSelector((state) => {
-        console.log(state.planning)
+        // console.log(state.planning)
         return state.planning.days
     })
 
     //取得 planning資料
     const addNewPlanning = useSelector((state) => {
-        console.log('addNewPlanning' + state.planning)
+        // console.log('addNewPlanning' + state.planning)
         return state.planning
     })
     const [routeName, setRouteName] = useState(addNewPlanning ? addNewPlanning.routeName : '');
@@ -107,19 +107,15 @@ function Route() {
             dayIndex == addNewLocation.length - 1
 
         if (isFirstLocation || isLastLocationAndNextDayNo || isNextDayFirstLocation || isLastLocationNoNextDay) {
-            console.log("null")
             setDeletedIndex(null)
         } else if (isNextDayHaveLocations) {
-            console.log("two")
             const lastone = addNewLocation[dayIndex - 1].locations.length - 1
             setDeletedIndex({ deleteDayIndex: dayIndex - 1, deleteIndex: lastone })
         }
         else {
-            console.log("three")
             setDeletedIndex({ deleteDayIndex: dayIndex, deleteIndex: index })
 
         }
-        console.log(addNewLocation)
     };
 
     // 新加天數
@@ -210,7 +206,6 @@ function Route() {
                             path: path, kilometers: kilometers, duration: duration, ascent: ascent, descent: descent, hours: hours, minutes: minutes
 
                         }
-                        console.log(newDirection);
                         if (deletedIndex && deletedIndex.deleteDayIndex !== undefined) {
                             const deleteLocationDay = deletedIndex.deleteDayIndex;
                             const deleteLocationIndex = deletedIndex.deleteIndex;
@@ -446,7 +441,7 @@ function Route() {
                 dispatch(addimg());
                 dispatch(addimgState());
                 dispatch(clearStateAction())
-                console.log("Document written with ID: ", docRef.id);
+                // console.log("Document written with ID: ", docRef.id);
             } catch (e) {
                 console.error("添加文檔時出錯：", e);
             }
@@ -494,7 +489,7 @@ function Route() {
 
                                 {day.locations.map((attraction, index) => {
                                     //計算景點時間
-                                    console.log(attraction)
+                                    // console.log(attraction)
                                     // 如果當前景點不是第一個，有 direction 就累加時間
                                     if (index > 0 && day.locations[index - 1].direction) {
                                         const prevDirection = day.locations[index - 1].direction;

@@ -40,7 +40,7 @@ const MyPlanner = () => {
             setIsLoading(true);
             try {
                 const getData = await asyncGetMyData();
-                console.log(getData);
+                // console.log(getData);
                 setMyPlan(getData);
             } catch (error) {
                 console.error('error fetching data', error);
@@ -90,9 +90,9 @@ const MyPlanner = () => {
 
     //轉跳planning 頁面
     const handleUseRouteClick = (item) => {
-        console.log(item)
+        // console.log(item)
         const reduxData = transformFirebaseDataToRedux(item);
-        console.log(reduxData)
+        // console.log(reduxData)
         dispatch(addData(reduxData))
         router.push('/planning');
     }

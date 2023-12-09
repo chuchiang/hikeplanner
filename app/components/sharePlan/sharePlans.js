@@ -19,7 +19,7 @@ const SharePlan = () => {
             setIsLoading(true);
             try {
                 const getData = await asyncGetShareData();
-                console.log(getData);
+                // console.log(getData);
                 setSharePlan(getData);
             } catch (error) {
                 console.error('error fetching data', error);
@@ -36,7 +36,7 @@ const SharePlan = () => {
         try {
             setSharePlan();
             const searchDate = await asyncGetSearchData(searchTerm);
-            console.log(searchDate)
+            // console.log(searchDate)
             setSharePlan(searchDate);
         } catch (error) {
             console.error('error fetching data', error);
@@ -81,9 +81,9 @@ const SharePlan = () => {
 
     // 轉跳planning 頁面
     const handleUseRouteClick = (item) => {
-        console.log(item)
+        // console.log(item)
         const reduxData = transformFirebaseDataToRedux(item);
-        console.log(reduxData)
+        // console.log(reduxData)
         dispatch(addData(reduxData))
         router.push('/planning');
     }

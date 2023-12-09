@@ -17,14 +17,13 @@ export const asyncGetMyData = async () => {
         const uid = user.uid; // 取得當前使用者的 uid
         const authData = query(hikeDocRef, where("auth", "==", uid),where("recordTime", "!=", null), // 檢查recordTime不為空
         orderBy("recordTime", "desc")); // 按recordTime降序排序) //query(集合的參考,查詢條件)，查詢 auth 等於 uid 的文件
-        // const authData = query(hikeDocRef, where("auth", "==", uid)); // 按recordTime降序排序) //query(集合的參考,查詢條件)，查詢 auth 等於 uid 的文件
 
         const querySnapshot = await getDocs(authData);
         const data = [];
-        console.log(querySnapshot);
+        // console.log(querySnapshot);
         querySnapshot.forEach((doc) => {
             const documentData = doc.data();
-            console.log(documentData)
+            // console.log(documentData)
             const documentWithId = { ...documentData, id: doc.id }
             data.push(documentWithId);
         });
@@ -45,11 +44,11 @@ export const asyncGetShareData = async () => {
         where("recordTime", "!=", null), // 檢查recordTime不為空
         orderBy("recordTime", "desc")); // 按recordTime降序排序
     const querySnapshotShare = await getDocs(shareData);
-    console.log(querySnapshotShare);
+    // console.log(querySnapshotShare);
     const data = []
     querySnapshotShare.forEach((doc) => {
         const sharePlan = doc.data();
-        console.log(sharePlan)
+        // console.log(sharePlan)
         data.push(sharePlan);
     })
     return data
@@ -62,11 +61,11 @@ export const asyncGetSearchData = async (searchTerm) => {
     const shareData = query(hikeDocRef, where("shareTrip", "==", true),
         where("routeName", "==", searchTerm));
     const querySnapshotShare = await getDocs(shareData);
-    console.log(querySnapshotShare);
+    // console.log(querySnapshotShare);
     const data = []
     querySnapshotShare.forEach((doc) => {
         const sharePlan = doc.data();
-        console.log(sharePlan)
+        // console.log(sharePlan)
         data.push(sharePlan);
     })
     return data

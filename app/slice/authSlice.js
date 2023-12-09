@@ -13,20 +13,20 @@ export const authSlice = createSlice({
 
         //設置會員狀態
         setUser: (state, action) => {
-            console.log(state, action)
+            // console.log(state, action)
             state.currentUser = action.payload;
         },
 
         //刪除會員狀態
         clearUser: (state, action) => {
-            console.log(state, action)
+            // console.log(state, action)
             state.currentUser = null;
         },
 
         //刪除會員狀態
         addUserName: (state, action) => {
             if (state.currentUser) {
-                console.log(state, action)
+                // console.log(state, action)
                 state.currentUser.displayName = action.payload;
             }
 

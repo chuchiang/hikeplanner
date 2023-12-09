@@ -50,7 +50,7 @@ const ElevationChart = () => {
     }, [showChart]);
 
     const data = useSelector((state) => {
-        console.log(state.planning)
+        // console.log(state.planning)
         return state.planning.days
     });
 
@@ -90,7 +90,7 @@ const ElevationChart = () => {
                 tension: 0.1
             }]
         });
-        console.log(chartData)
+        // console.log(chartData)
     }
 
 
@@ -251,7 +251,7 @@ const ElevationChart = () => {
     directionData.forEach(day => {
         day.locations.forEach(location => {
             if (location.direction) {
-                console.log(location.direction.kilometers)
+                // console.log(location.direction.kilometers)
                 total.kilometers = parseFloat((total.kilometers + parseFloat(location.direction.kilometers)).toFixed(1));
                 total.ascent += location.direction.ascent;
                 total.descent += location.direction.descent;

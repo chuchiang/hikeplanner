@@ -12,7 +12,7 @@ export const coordinatesSlice = createSlice({
 
         addCoordinates: (state, action) => {
             // 直接修改狀態，不需要展開符號
-            console.log(state, action)
+            // console.log(state, action)
             state.coordinates=(action.payload);
         },
         // 清空搜索位置

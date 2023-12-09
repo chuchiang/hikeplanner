@@ -1,6 +1,6 @@
 
 const fetchLocaiton = async (getsearchLocation) => {
-    console.log(getsearchLocation)
+    // console.log(getsearchLocation)
 
     if (!getsearchLocation) {
         return null;

@@ -20,7 +20,7 @@ const CirclieHover = () => {
     const map = useMap();
     const dispatch = useDispatch();
     const addCoordinatesChart = useSelector((state) => {
-        console.log(state.coordinates)
+        // console.log(state.coordinates)
         return state.coordinates
     })
     useEffect(() => {
@@ -106,13 +106,13 @@ const leafletMap = () => {
 
     //最短路徑資料取得
     const addPath = useSelector((state) => {
-        console.log(state.planning.days)
+        // console.log(state.planning.days)
         return state.planning.days
     })
 
     // 地圖畫面為已知景點第一格或初始值
     const position = useSelector((state) => {
-        console.log(state.planning.days)
+        // console.log(state.planning.days)
         return state.planning.days[0].locations[0]
     })
     const [coord, setCoord] = useState(position ? [position.lat, position.lng] : [23.248325497821178, 120.98989311938537]);
@@ -134,7 +134,7 @@ const leafletMap = () => {
             lat: result[0],
             lng: result[1]
         };
-        console.log(newLocation)
+        // console.log(newLocation)
         dispatch(clearSearchLocations()); //清除 geoSearch 的 經緯度
         dispatch(geoSearchAdd(newLocation)); // 更新 geoSearch 的 經緯度
     };
@@ -155,7 +155,7 @@ const leafletMap = () => {
                     searchLabel={"Enter address, please"}
                     keepResult={true}
                     onResult={(result) => {
-                        console.log(result);
+                        // console.log(result);
                         const coordinates = [result.location.y, result.location.x]; //搜尋結果
                         handleSearchResult(coordinates);
                     }}

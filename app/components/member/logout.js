@@ -18,14 +18,14 @@ const LogOut = () => {
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
+            // console.log(errorCode);
+            // console.log(errorMessage);
         }
     }
 
     return (
         <>
-            <button onClick={submit} className='co-5B6E60 font-medium p-0 hover:font-bold'>登出</button>
+            <button onClick={submit} className='co-5B6E60 font-medium p-2 hover:font-bold'>登出</button>
         </>
     )
 }

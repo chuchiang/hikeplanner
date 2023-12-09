@@ -29,7 +29,7 @@ const generateGPX = (data) => {
 const ExportGpx = () => {
 
     const plannerData = useSelector((state) => {
-        console.log(state.planning.days)
+        // console.log(state.planning.days)
         return state.planning.days
     })
 

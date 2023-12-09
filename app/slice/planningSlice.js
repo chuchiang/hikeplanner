@@ -26,7 +26,7 @@ export const planningSlice = createSlice({
         //增加景點
         addLocation: (state, action) => {
             if (state.days && state.days.length > 0) {
-                console.log(state, action)
+                // console.log(state, action)
 
                 //得到最後一天的位置並添加上去
                 const last = state.days[state.days.length - 1]
@@ -40,7 +40,7 @@ export const planningSlice = createSlice({
         //增加特定index的路徑取得
         updataLocationDirection: (state, action) => {
             const { dayIndex, locationIndex, direction, isLoading } = action.payload;
-            console.log(action.payload);
+            // console.log(action.payload);
 
             if (state.days[dayIndex] && locationIndex >= 0 && locationIndex < state.days[dayIndex].locations.length) {
                 // 更新特定天的特定景点的路径信息
@@ -198,12 +198,12 @@ export const planningSlice = createSlice({
 
         //增加照片
         addimg: (state, action) => {
-            console.log(action.payload)
+            // console.log(action.payload)
             state.img = action.payload; // 存儲 base64 圖像數據        
         },
         //增加照片
         addimgState: (state, action) => {
-            console.log(action.payload)
+            // console.log(action.payload)
             state.imgState = action.payload;
         },
 

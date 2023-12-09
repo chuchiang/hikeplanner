@@ -39,17 +39,7 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
     return () => unsubscribe();
   }, [dispatch, router]);
 
-  // const handlePlanningClick = (e) => {
-  //   if (!currentUser) {
-  //     e.preventDefault(); // 阻止鏈接默認行為
-  //     router.push('/')
-  //     setShowLogin(true); // 顯示登入表單
-  //     setIsLoginMode(true); // 設置為登入模式
-  //   } else {
-  //     router.push('/planning')
-  //   }
-
-  // };
+ 
   const menuClick = () => {
     setIsMenuOpen(false)
   }

@@ -26,7 +26,7 @@ const RegisterForm = ({ onClose, handleLoginClick }) => {
         try {
             const response = await signInWithGooglePopup();
             router.push('/planning');
-            console.log(response);
+            // console.log(response);
         }
         catch (error) {
             const errorCode = error.code;
@@ -42,9 +42,9 @@ const RegisterForm = ({ onClose, handleLoginClick }) => {
     //在input輸入任何內容，要綁定
     const handleChange = (event) => {
         const { name, value } = event.target;
-        console.log(name, value);
+        // console.log(name, value);
         setFormFields({ ...formFields, [name]: value });
-        console.log(formFields)
+        // console.log(formFields)
     }
 
 
