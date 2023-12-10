@@ -9,7 +9,6 @@ import { store } from './store';
 import { Provider } from 'react-redux';
 import { auth } from "./api/firebase/firebase";
 import LoginForm from './components/member/login'
-
 import LogOut from './components/member/logout'
 import { useRouter } from 'next/navigation';
 
@@ -71,6 +70,14 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
     </main>)
 }
 
+// function Footer() {
+//   return (
+//       <div className='bg-A59D93 h-11 flex items-center justify-center '>
+//         <div><p>Copyright© 2023 HikePlanner </p></div>
+//       </div>
+//     )
+// }
+
 
 export default function RootLayout({ children }) {
 
@@ -104,8 +111,8 @@ export default function RootLayout({ children }) {
               <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
               <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
           )}
+          {/* <Footer/> */}
         </Provider>
-
       </body>
     </html>
   )

@@ -9,7 +9,7 @@ import SharePlan from '../components/sharePlan/sharePlans';
 export default function Home() {
 
     return (
-        <main className=" flex flex-col items-center bg-white">
+        <main className=" flex flex-col items-center bg-white pb-10">
             <Provider store={store}>
                 <SharePlan />
             </Provider>
