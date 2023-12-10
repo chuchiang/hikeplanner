@@ -83,7 +83,7 @@ const RegisterForm = ({ onClose, handleLoginClick }) => {
 
 
     return (
-        <div className=' fixed inset-0 z-50 bg-gray-500 bg-opacity-25 flex justify-center items-center z-1000'>
+        <div className=' fixed inset-0 z-50 bg-gray-500 bg-opacity-25 flex justify-center items-center z-1100'>
             <div className='  shadow-md relative flex flex-col items-center pb-12 pt-8 bg-F5F2ED rounded px-5 text-center'>
                 <button className=' absolute top-1 right-1' onClick={onClose}><img src='/close.png' /></button>
                 <form onSubmit={handleSubmit}>
