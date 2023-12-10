@@ -39,7 +39,7 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
     return () => unsubscribe();
   }, [dispatch, router]);
 
- 
+
   const menuClick = () => {
     setIsMenuOpen(false)
   }
@@ -90,6 +90,10 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <title>HikePlanner</title>
+        <meta name="description" content="為台灣登山愛好者設計的免費路線規劃平台" />
+      </head>
       <body>
         <Provider store={store}>
           <Header onLoginClick={handleLoginClick} setShowLogin={setShowLogin} setIsLoginMode={setIsLoginMode} />
@@ -110,9 +114,3 @@ export default function RootLayout({ children }) {
 
 
 
-
-// 頁面標題
-// export const metadata = {
-//   title: 'HikePlanner',
-//   description: 'Your exclusive hiking route planning platform',
-// }
