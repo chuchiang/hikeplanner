@@ -49,6 +49,6 @@ Allows users to copy others' planned routes for personalized replanning.
 ![copying](public/readme/5.gif)
 
 ## Contact
-Name : 鄭竹晴  
+Name : 鄭竹晴 Chu Chiang Cheng
 Email : luluching1128@gmail.com
 
