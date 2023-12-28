@@ -70,13 +70,13 @@ function Header({ onLoginClick, setShowLogin, setIsLoginMode }) {
     </main>)
 }
 
-// function Footer() {
-//   return (
-//       <div className='bg-A59D93 h-11 flex items-center justify-center '>
-//         <div><p>Copyright© 2023 HikePlanner </p></div>
-//       </div>
-//     )
-// }
+function Footer() {
+  return (
+      <div className='bg-A59D93 h-12 flex items-center justify-center '>
+        <div className='flex'><p className='text-white'>Copyright © 2023 HikePlanner</p>&nbsp;<a href='https://github.com/chuchiang/hikeplanner' className='px-1'><img className='w-6 h-full' src='/github.png'/></a><a href='https://www.linkedin.com/in/chu-chiang-cheng'className='px-1'><img className='w-6 h-full' src='/linkedin-logo.png'/></a></div>
+      </div>
+    )
+}
 
 
 export default function RootLayout({ children }) {
@@ -111,7 +111,7 @@ export default function RootLayout({ children }) {
               <LoginForm onClose={() => setShowLogin(false)} handleRegisterClick={handleRegisterClick} /> :
               <RegisterForm onClose={() => setShowLogin(false)} handleLoginClick={handleLoginClick} />
           )}
-          {/* <Footer/> */}
+          <Footer/>
         </Provider>
       </body>
     </html>
