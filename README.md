@@ -23,6 +23,9 @@ A free platform for planning mountain climbing routes in Taiwan, offering trip c
 #### Integrating Leaflet maps, OpenRouteService for calculating the shortest path, and Chart.js for visualizing charts to develop the main features.
 ![technologies](public/readme/technologies.jpg)
 
+#### Hiking plans are managed using Redux Toolkit.
+![map](public/readme/redux.jpg)
+
 #### Interactive content linking map and route planning layers.
 ![map](public/readme/map.gif)
 
