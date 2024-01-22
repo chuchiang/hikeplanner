@@ -17,6 +17,7 @@ A free platform for planning mountain climbing routes in Taiwan, offering trip c
 - Tailwind CSS  
 - Next.js
 - Vercel
+- jest
 
 ## Architecture
 
